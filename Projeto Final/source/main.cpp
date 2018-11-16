@@ -51,12 +51,24 @@ int main(int argc, char* args[]) {
     // pegar textura
     unsigned int textura_grade = 0;
     unsigned int textura_fundo = 0;
+    unsigned int textura_base = 0;
     textura_grade = loadTexture("grade.png");
     textura_fundo = loadTexture("sand.png");
+    textura_base = loadTexture("base.png");
 
     //  Carrega mapa
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
     carrega_mapa(mapa, RY, LADO);
+
+
+    // i = 36, j = 1 time = 0
+    cria_base(mapa, 36, 1, 0);
+    
+    int mouse_x = -1;
+    int mouse_y = -1;
+
+    imagens_data imagens; 
+    mouse_data mouse;
 
     while (executando) {
         // eventos
@@ -70,6 +82,19 @@ int main(int argc, char* args[]) {
             if (eventos.type == SDL_KEYUP && eventos.key.keysym.sym == SDLK_ESCAPE) {
                 executando = false;
             }
+
+            if (eventos.type == SDL_MOUSEBUTTONDOWN) {
+                if (eventos.button.button == SDL_BUTTON_LEFT) {
+                    mouse_x = eventos.button.x;
+                    mouse_y = eventos.button.y;
+                    printf("x = %d y = %d\n", mouse_x, mouse_y);
+                    printf("i = %d j = %d\n", mouse_y/20, mouse_x/20);
+                }
+            } 
+            else if (eventos.type == SDL_MOUSEBUTTONUP) {
+                    mouse_x = -1;
+                    mouse_y = -1;
+            }
         }
         glClear(GL_COLOR_BUFFER_BIT);  // LIMPA O BUFFER
 
@@ -80,8 +105,14 @@ int main(int argc, char* args[]) {
         glColor3ub( R, G, B ) - 0 ATE 255
         glColor4ub(R, G, B, A) 0 ATE 255
         */
+        imagens.textura_grade = textura_grade;
+        imagens.textura_fundo = textura_fundo;
+        imagens.textura_base = textura_base;
 
-        carrega_interface(mapa, textura_grade, textura_fundo);
+        mouse.x = mouse_x;
+        mouse.y = mouse_y;
+
+        carrega_interface(mapa, imagens, mouse);
 
         // animacao
         SDL_GL_SwapBuffers();
