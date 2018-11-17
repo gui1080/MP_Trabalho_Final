@@ -1,15 +1,10 @@
 #include <gtest/gtest.h>
-#include <SDL/SDL.h>
-#include "SDL/SDL_opengl.h"
-#include <stdio.h>
-#include "SDL/SDL_image.h"
-#include "string"
 #include "funcoes.h"
 
 
 TEST(Testa, cria_mapa) {
 	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
-    ASSERT_EQ(0, carrega_mapa(mapa, RY, LADO));
+    ASSERT_EQ(0, cria_mapa(mapa));
 }
 
 /*

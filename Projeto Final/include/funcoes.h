@@ -1,4 +1,8 @@
+#include <SDL/SDL.h>
+#include "SDL/SDL_opengl.h"
 #include <stdio.h>
+#include "SDL/SDL_image.h"
+#include "string"
 
 #define RX 1200
 #define RY 800
@@ -40,6 +44,7 @@ typedef struct Base_Principal {
     int i;
     int j;
     int time;
+    int dim;
 }base_principal;
 
 typedef struct Cell_Mapa {
@@ -64,10 +69,13 @@ typedef struct Mouse_Data {
 
 GLuint loadTexture(const std::string&fileName);
 
-int carrega_mapa(cell_mapa mapa[40][40], int Y, int lado);
+int cria_mapa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]);
 
-int carrega_interface(cell_mapa mapa[40][40], imagens_data imagens, mouse_data mouse);
+int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse);
 
-int cria_base(cell_mapa mapa[40][40], int i, int j, int time);
+int cria_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, int dim, int vida, int time);
 
-int carrega_base(cell_mapa mapa[40][40], imagens_data imagens);
+int carrega_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens);
+
+bool verifica_imagem(const std::string&fileName);
+

@@ -1,13 +1,10 @@
-#include <SDL/SDL.h>
-#include "SDL/SDL_opengl.h"
-#include <stdio.h>
-#include "SDL/SDL_image.h"
-#include "string"
 #include "funcoes.h"
 
 int main(int argc, char* args[]) {
     printf("Rodando programa...\n");
     SDL_Init(SDL_INIT_EVERYTHING);
+
+    /*CRIANDO JANELA*/
 
     // memoria
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -44,42 +41,54 @@ int main(int argc, char* args[]) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    /*FIM DA CRIAÇÃO*/
+
     bool executando = true;
 
     SDL_Event eventos;
 
     // pegar textura
-    unsigned int textura_grade = 0;
-    unsigned int textura_fundo = 0;
-    unsigned int textura_base = 0;
+    unsigned int textura_grade;
+    unsigned int textura_fundo;
+    unsigned int textura_base;
+    imagens_data imagens;
+
+    if (verifica_imagem("grade.png") == false ||
+        verifica_imagem("sand.png") == false ||
+        verifica_imagem("base.png") == false) {
+
+        SDL_Quit();
+        return -1;
+    }
+
     textura_grade = loadTexture("grade.png");
     textura_fundo = loadTexture("sand.png");
     textura_base = loadTexture("base.png");
 
+    imagens.textura_grade = textura_grade;
+    imagens.textura_fundo = textura_fundo;
+    imagens.textura_base = textura_base;
+
     //  Carrega mapa
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
-    carrega_mapa(mapa, RY, LADO);
+    cria_mapa(mapa);
 
+    // i = 35, j = 1, dimensao = 4, vida = 20, time = 0
+    cria_base(mapa, 35, 1, 4, 20, 0);
+    // inimigo, time = 1
+    cria_base(mapa, 1, 35, 4, 20, 1);
 
-    // i = 36, j = 1 time = 0
-    cria_base(mapa, 36, 1, 0);
-    
     int mouse_x = -1;
     int mouse_y = -1;
-
-    imagens_data imagens; 
     mouse_data mouse;
 
     while (executando) {
         // eventos
         while (SDL_PollEvent(&eventos)) {
-            // fecha com o x da janela
+            // fecha com o x da janela ou com ESC
             if (eventos.type == SDL_QUIT) {
                 executando = false;
-            }
-
-            // esc
-            if (eventos.type == SDL_KEYUP && eventos.key.keysym.sym == SDLK_ESCAPE) {
+            } else if (eventos.type == SDL_KEYUP && eventos.key.keysym.sym == SDLK_ESCAPE) {
                 executando = false;
             }
 
@@ -88,26 +97,15 @@ int main(int argc, char* args[]) {
                     mouse_x = eventos.button.x;
                     mouse_y = eventos.button.y;
                     printf("x = %d y = %d\n", mouse_x, mouse_y);
-                    printf("i = %d j = %d\n", mouse_y/20, mouse_x/20);
+                    printf("i = %d j = %d\n", mouse_y/LADO, mouse_x/LADO);
                 }
-            } 
-            else if (eventos.type == SDL_MOUSEBUTTONUP) {
+            } else if (eventos.type == SDL_MOUSEBUTTONUP) {
                     mouse_x = -1;
                     mouse_y = -1;
             }
         }
-        glClear(GL_COLOR_BUFFER_BIT);  // LIMPA O BUFFER
-
-        /* 
-        cor
-        glColor3d( 1 ou 0)
-        glColor3f( decimais )
-        glColor3ub( R, G, B ) - 0 ATE 255
-        glColor4ub(R, G, B, A) 0 ATE 255
-        */
-        imagens.textura_grade = textura_grade;
-        imagens.textura_fundo = textura_fundo;
-        imagens.textura_base = textura_base;
+        // LIMPA O BUFFER
+        glClear(GL_COLOR_BUFFER_BIT);
 
         mouse.x = mouse_x;
         mouse.y = mouse_y;
