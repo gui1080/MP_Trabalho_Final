@@ -8,7 +8,7 @@ CFLAGS=-I $(IDIR)
 G_FLAGS=-I $(IDIR) -I $(GOOGLE_TEST_INCLUDE)
 LD_FLAGS=-I $(IDIR) -L /usr/local/lib -l $(GOOGLE_TEST_LIB) -l pthread
 FT_FLAGS=-I $(IDIR) -g -ftest-coverage -fprofile-arcs
-SDL_FLAGS=-I $(IDIR) -l SDLmain -l SDL -l GL -l SDL_image
+SDL_FLAGS=-I $(IDIR) -l SDLmain -l SDL -l GL -l SDL_image -l SDL_ttf
 
 ODIR=obj
 LDIR =../lib
@@ -18,10 +18,10 @@ LIBS=-lm
 _DEPS = funcoes.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o funcoes.o interface.o verificacao.o
+_OBJ = main.o criacao.o interface.o verificacao.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
-_OBJT = testa_main.o funcoes.o interface.o verificacao.o
+_OBJT = testa_main.o criacao.o interface.o verificacao.o
 OBJT = $(patsubst %,$(ODIR)/%,$(_OBJT))
 
 all: jogo testa_jogo

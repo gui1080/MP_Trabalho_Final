@@ -2,12 +2,14 @@
 #include "SDL/SDL_opengl.h"
 #include <stdio.h>
 #include "SDL/SDL_image.h"
+#include <SDL/SDL_ttf.h>
 #include "string"
 
 #define RX 1200
 #define RY 800
 #define LADO 20
 #define BLOCOS_LINHA 40
+#define LARGURA_INFERIOR 50
 
 enum divisao {HUMANO = 1, MECANICO, ELETRICO};
 enum classe {GERADOR_DE_RECURSO = 1, GERADOR_DE_TROPA,
@@ -22,6 +24,7 @@ typedef struct Unidade_Movel {
     int divisao;
     int time;
     int nivel;
+    int dim;
     int i;
     int j;
 }unidade_movel;
@@ -73,6 +76,9 @@ typedef struct Imagens_Data {
     unsigned int eletrico_GER_TROP;
     unsigned int eletrico_DEF_OFS;
     unsigned int eletrico_DEF_PAS;
+    unsigned int minerio;
+    unsigned int raio;
+    unsigned int comida;
 }imagens_data;
 
 typedef struct Mouse_Data {
@@ -104,4 +110,14 @@ bool verifica_espaco(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j);
 int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atributos_data atributos);
 
 int carrega_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens);
+
+int carrega_display_recursos (imagens_data imagens);
+
+int carrega_mapa (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse);
+
+int carrega_layout();
+
+int carrega_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens);
+
+int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atributos_data atributos);
 

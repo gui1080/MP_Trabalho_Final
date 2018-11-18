@@ -1,9 +1,33 @@
 #include "funcoes.h"
 
+void drawText
+(SDL_Surface* tela, char* string,
+int size, int x, int y,
+int fR, int fG, int fB) {
+TTF_Font* font = TTF_OpenFont("arial.ttf", size);
+
+SDL_Color foregroundColor = { fR, fG, fB };
+SDL_Color backgroundColor = { 126, 126, 126 };
+
+SDL_Surface* textSurface = TTF_RenderText_Shaded(font, string, foregroundColor, backgroundColor);
+
+SDL_Rect textLocation = { x, y, 0, 0 };
+
+SDL_BlitSurface(textSurface, NULL, tela, &textLocation);
+
+SDL_FreeSurface(textSurface);
+
+TTF_CloseFont(font);
+
+}
+
+
 int main(int argc, char* args[]) {
     printf("Rodando programa...\n");
     SDL_Init(SDL_INIT_EVERYTHING);
+    SDL_Surface *tela;
 
+    TTF_Init();
     /*CRIANDO JANELA*/
 
     // memoria
@@ -19,7 +43,7 @@ int main(int argc, char* args[]) {
     SDL_WM_SetCaption("Meu primeiro jogo SDL", NULL);
 
     // tamanho janela
-    SDL_SetVideoMode(RX, RY, 32, SDL_OPENGL);
+    tela = SDL_SetVideoMode(RX, RY, 32, SDL_OPENGL);
 
     // cor
     glClearColor(1, 1, 1, 1);
@@ -51,6 +75,7 @@ int main(int argc, char* args[]) {
     unsigned int textura_grade;
     unsigned int textura_fundo;
     unsigned int textura_base;
+
     unsigned int humano_GER_REC;
     unsigned int humano_GER_TROP;
     unsigned int humano_DEF_OFS;
@@ -63,23 +88,30 @@ int main(int argc, char* args[]) {
     unsigned int eletrico_GER_TROP;
     unsigned int eletrico_DEF_OFS;
     unsigned int eletrico_DEF_PAS;
+
+    unsigned int textura_minerio;
+    unsigned int textura_raio;
+    unsigned int textura_comida;
     imagens_data imagens;
 
-    if (verifica_imagem("grade.png") == false ||
-        verifica_imagem("sand.png") == false ||
-        verifica_imagem("base.png") == false ||
-        verifica_imagem("Akeno.png") == false ||
-        verifica_imagem("albedo.png") == false ||
-        verifica_imagem("chitoge2.png") == false ||
-        verifica_imagem("Dva.png") == false ||
-        verifica_imagem("Eliza.png") == false ||
-        verifica_imagem("Emilia.png") == false ||
-        verifica_imagem("Hatsune.png") == false ||
-        verifica_imagem("Lucy.png") == false ||
-        verifica_imagem("megumin.png") == false ||
-        verifica_imagem("Rias.png") == false ||
-        verifica_imagem("Lucy4.png") == false ||
-        verifica_imagem("Rias2.png") == false
+    if (verifica_imagem("imagens/grade.png") == false ||
+        verifica_imagem("imagens/sand.png") == false ||
+        verifica_imagem("imagens/base.png") == false ||
+        verifica_imagem("imagens/Akeno.png") == false ||
+        verifica_imagem("imagens/albedo.png") == false ||
+        verifica_imagem("imagens/chitoge2.png") == false ||
+        verifica_imagem("imagens/Dva.png") == false ||
+        verifica_imagem("imagens/Eliza.png") == false ||
+        verifica_imagem("imagens/Emilia.png") == false ||
+        verifica_imagem("imagens/Hatsune.png") == false ||
+        verifica_imagem("imagens/Lucy.png") == false ||
+        verifica_imagem("imagens/megumin.png") == false ||
+        verifica_imagem("imagens/Rias.png") == false ||
+        verifica_imagem("imagens/Lucy4.png") == false ||
+        verifica_imagem("imagens/Rias2.png") == false ||
+        verifica_imagem("imagens/minerio.png") == false ||
+        verifica_imagem("imagens/raio.png") == false ||
+        verifica_imagem("imagens/comida.png") == false
         ) {
 
         printf("FALHA AO CARREGAR IMAGEM\n");
@@ -87,21 +119,24 @@ int main(int argc, char* args[]) {
         return -1;
     }
 
-    textura_grade = loadTexture("grade.png");
-    textura_fundo = loadTexture("sand.png");
-    textura_base = loadTexture("base.png");
-    humano_GER_REC = loadTexture("Akeno.png");
-    humano_GER_TROP = loadTexture("albedo.png");
-    humano_DEF_OFS = loadTexture("chitoge2.png");
-    humano_DEF_PAS = loadTexture("Dva.png");
-    mecanico_GER_REC = loadTexture("Eliza.png");
-    mecanico_GER_TROP = loadTexture("Emilia.png");
-    mecanico_DEF_OFS = loadTexture("Hatsune.png");
-    mecanico_DEF_PAS = loadTexture("Lucy.png");
-    eletrico_GER_REC = loadTexture("megumin.png");
-    eletrico_GER_TROP = loadTexture("Rias.png");
-    eletrico_DEF_OFS = loadTexture("Lucy4.png");
-    eletrico_DEF_PAS = loadTexture("Rias2.png");
+    textura_grade = loadTexture("imagens/grade.png");
+    textura_fundo = loadTexture("imagens/sand.png");
+    textura_base = loadTexture("imagens/base.png");
+    humano_GER_REC = loadTexture("imagens/Akeno.png");
+    humano_GER_TROP = loadTexture("imagens/albedo.png");
+    humano_DEF_OFS = loadTexture("imagens/chitoge2.png");
+    humano_DEF_PAS = loadTexture("imagens/Dva.png");
+    mecanico_GER_REC = loadTexture("imagens/Eliza.png");
+    mecanico_GER_TROP = loadTexture("imagens/Emilia.png");
+    mecanico_DEF_OFS = loadTexture("imagens/Hatsune.png");
+    mecanico_DEF_PAS = loadTexture("imagens/Lucy.png");
+    eletrico_GER_REC = loadTexture("imagens/megumin.png");
+    eletrico_GER_TROP = loadTexture("imagens/Rias.png");
+    eletrico_DEF_OFS = loadTexture("imagens/Lucy4.png");
+    eletrico_DEF_PAS = loadTexture("imagens/Rias2.png");
+    textura_minerio = loadTexture("imagens/minerio.png");
+    textura_comida = loadTexture("imagens/comida.png");
+    textura_raio = loadTexture("imagens/raio.png");
 
     imagens.textura_grade = textura_grade;
     imagens.textura_fundo = textura_fundo;
@@ -118,6 +153,9 @@ int main(int argc, char* args[]) {
     imagens.eletrico_GER_TROP = eletrico_GER_TROP;
     imagens.eletrico_DEF_OFS = eletrico_DEF_OFS;
     imagens.eletrico_DEF_PAS = eletrico_DEF_PAS;
+    imagens.raio = textura_raio;
+    imagens.comida = textura_comida;
+    imagens.minerio = textura_minerio;
 
     //  Carrega mapa
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
@@ -126,76 +164,23 @@ int main(int argc, char* args[]) {
     // i = 35, j = 1, dimensao = 4, vida = 20, time = 0
     if (cria_base(mapa, 35, 1, 4, 20, 0) == -1) {
         printf("FALHA AO CRIAR BASE 1\n");
+        TTF_Quit();
         SDL_Quit();
         return -1; 
     }
     //1, 35, 4, 20, 1
     if (cria_base(mapa, 1, 35, 4, 20, 1) == -1) {
         printf("FALHA AO CRIAR BASE 2\n");
+        TTF_Quit();
         SDL_Quit();
         return -1; 
-    }
-
-    atributos_data atributos;
-
-    atributos.divisao = ELETRICO;
-    atributos.classe = GERADOR_DE_RECURSO;
-    atributos.time = 0;
-    atributos.nivel = 1;
-
-    if (cria_uni_estatico(mapa, 20, 20, atributos) == -1) {
-        printf("FALHA AO CRIAR ESTRUTURA\n");
-        SDL_Quit();
-        return -1;   
-    }
-
-    atributos.divisao = MECANICO;
-    atributos.classe = GERADOR_DE_TROPA;
-    atributos.time = 0;
-    atributos.nivel = 1;
-
-    if (cria_uni_estatico(mapa, 30, 30, atributos) == -1) {
-        printf("FALHA AO CRIAR ESTRUTURA\n");
-        SDL_Quit();
-        return -1;   
-    }
-
-    atributos.divisao = ELETRICO;
-    atributos.classe = DEFESA_OFENSIVA;
-    atributos.time = 0;
-    atributos.nivel = 1;
-
-    if (cria_uni_estatico(mapa, 10, 10, atributos) == -1) {
-        printf("FALHA AO CRIAR ESTRUTURA\n");
-        SDL_Quit();
-        return -1;   
-    }
-
-    atributos.divisao = HUMANO;
-    atributos.classe = DEFESA_OFENSIVA;
-    atributos.time = 0;
-    atributos.nivel = 1;
-
-    if (cria_uni_estatico(mapa, 30, 10, atributos) == -1) {
-        printf("FALHA AO CRIAR ESTRUTURA\n");
-        SDL_Quit();
-        return -1;   
-    }
-
-    atributos.divisao = ELETRICO;
-    atributos.classe = DEFESA_PASSIVA;
-    atributos.time = 0;
-    atributos.nivel = 1;
-
-    if (cria_uni_estatico(mapa, 10, 30, atributos) == -1) {
-        printf("FALHA AO CRIAR ESTRUTURA\n");
-        SDL_Quit();
-        return -1;   
     }
 
     int mouse_x = -1;
     int mouse_y = -1;
     mouse_data mouse;
+
+    char* string = "FUNCIONA PLS";
 
     while (executando) {
         // eventos
@@ -225,7 +210,8 @@ int main(int argc, char* args[]) {
         mouse.x = mouse_x;
         mouse.y = mouse_y;
 
-        carrega_interface(mapa, imagens, mouse);
+        //carrega_interface(mapa, imagens, mouse);
+        drawText(tela, string, 20, 500, 500, 0, 255, 0);
 
         // animacao
         SDL_GL_SwapBuffers();
@@ -233,6 +219,7 @@ int main(int argc, char* args[]) {
 
     printf("Fechado com sucesso!\n");
 
+    TTF_Quit();
     SDL_Quit();
 
     return 0;
