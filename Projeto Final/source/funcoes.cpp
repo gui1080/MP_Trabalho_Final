@@ -30,7 +30,68 @@ int cria_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, int dim,
 
     for (int p = i; p <= (i + dim-1); p++) {
         for (int q = j; q <= (j + dim-1); q++) {
-            mapa[p][q].pBase = Base;
+            if (verifica_espaco(mapa, p, q) == true)
+                mapa[p][q].pBase = Base;
+            else
+                return -1;
+        }
+    }
+    return 0;
+}
+
+int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atributos_data atributos) {
+    unidade_estatica *Unidade = (unidade_estatica*)malloc(sizeof(unidade_estatica));
+    Unidade->i = i;
+    Unidade->j = j; 
+    Unidade->time = atributos.time;
+    Unidade->classe = atributos.classe;
+    Unidade->divisao = atributos.divisao;
+    Unidade->nivel = atributos.nivel;
+
+    /*  
+        CLASSE 1: GERADOR DE RECURSO
+        CLASSE 2: GERADOR DE TROPA
+        CLASSE 3: DEFESA OFENSIVA
+        CLASSE 4: DEFESA PASSIVA
+    */
+    
+    switch (atributos.classe) {
+        case GERADOR_DE_RECURSO:
+            Unidade->dim = 3;
+            Unidade->vida = 10;
+            Unidade->ataque = 0;
+            Unidade->defesa = 5;
+            Unidade->alcance = 0;
+            break;
+        case GERADOR_DE_TROPA:
+            Unidade->dim = 3;
+            Unidade->vida = 10;
+            Unidade->ataque = 0;
+            Unidade->defesa = 5;
+            Unidade->alcance = 0;
+            break;
+        case DEFESA_OFENSIVA:
+            Unidade->dim = 2;
+            Unidade->vida = 10;
+            Unidade->ataque = 3;
+            Unidade->defesa = 5;
+            Unidade->alcance = 2;
+            break;
+        case DEFESA_PASSIVA:
+            Unidade->dim = 1;
+            Unidade->vida = 10;
+            Unidade->ataque = 0;
+            Unidade->defesa = 5;
+            Unidade->alcance = 0;
+            break;
+    }
+
+    for (int p = i; p <= (i + Unidade->dim-1); p++) {
+        for (int q = j; q <= (j + Unidade->dim-1); q++) {
+            if (verifica_espaco(mapa, p, q) == true)
+                mapa[p][q].pUniImovel = Unidade;
+            else
+                return -1;
         }
     }
     return 0;

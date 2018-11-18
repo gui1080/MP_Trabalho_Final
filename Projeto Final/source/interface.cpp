@@ -95,11 +95,12 @@ int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
     glEnd();
 
     carrega_base(mapa, imagens);
-
-    glDisable(GL_TEXTURE_2D);   
+    carrega_uni_estatico(mapa, imagens);  
 
     // fecha matriz
     glPopMatrix();
+
+    glDisable(GL_TEXTURE_2D);
 
     return 0;
 }
@@ -127,6 +128,79 @@ int carrega_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagen
         }
     }
     glEnd();
+
+    return 0;
+}
+
+int carrega_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens) {
+
+    for (int i = 0; i < BLOCOS_LINHA; i++) {
+        for (int j = 0; j < BLOCOS_LINHA; j++) {
+            if (mapa[i][j].pUniImovel != NULL) {
+                if (mapa[i][j].pUniImovel->i == i && mapa[i][j].pUniImovel->j == j) {
+                    if (mapa[i][j].pUniImovel->time == 0) glColor4ub(255, 255, 255, 255); 
+                    else glColor4ub(255, 255, 255, 255);
+
+                        switch (mapa[i][j].pUniImovel->divisao) {
+                            case HUMANO:
+                                switch (mapa[i][j].pUniImovel->classe) {
+                                    case GERADOR_DE_RECURSO:
+                                        glBindTexture(GL_TEXTURE_2D, imagens.humano_GER_REC);
+                                        break;
+                                    case GERADOR_DE_TROPA:
+                                        glBindTexture(GL_TEXTURE_2D, imagens.humano_GER_TROP);
+                                        break;
+                                    case DEFESA_OFENSIVA:
+                                        glBindTexture(GL_TEXTURE_2D, imagens.humano_DEF_OFS);
+                                        break;
+                                    case DEFESA_PASSIVA:
+                                        glBindTexture(GL_TEXTURE_2D, imagens.humano_DEF_PAS);
+                                        break;
+                                }
+                                break;
+                            case MECANICO:
+                                switch (mapa[i][j].pUniImovel->classe) {
+                                    case GERADOR_DE_RECURSO:
+                                        glBindTexture(GL_TEXTURE_2D, imagens.mecanico_GER_REC);
+                                        break;
+                                    case GERADOR_DE_TROPA:
+                                        glBindTexture(GL_TEXTURE_2D, imagens.mecanico_GER_TROP);
+                                        break;
+                                    case DEFESA_OFENSIVA:
+                                        glBindTexture(GL_TEXTURE_2D, imagens.mecanico_DEF_OFS);
+                                        break;
+                                    case DEFESA_PASSIVA:
+                                        glBindTexture(GL_TEXTURE_2D, imagens.mecanico_DEF_PAS);
+                                        break;
+                                }
+                                break;
+                            case ELETRICO:
+                                switch (mapa[i][j].pUniImovel->classe) {
+                                    case GERADOR_DE_RECURSO:
+                                        glBindTexture(GL_TEXTURE_2D, imagens.eletrico_GER_REC);
+                                        break;
+                                    case GERADOR_DE_TROPA:
+                                        glBindTexture(GL_TEXTURE_2D, imagens.eletrico_GER_TROP);
+                                        break;
+                                    case DEFESA_OFENSIVA:
+                                        glBindTexture(GL_TEXTURE_2D, imagens.eletrico_DEF_OFS);
+                                        break;
+                                    case DEFESA_PASSIVA:
+                                        glBindTexture(GL_TEXTURE_2D, imagens.eletrico_DEF_PAS);
+                                        break;
+                                }
+                                break;
+                        }                    
+                    glBegin(GL_QUADS);
+                    glTexCoord2d(0,0);  glVertex2f(j*LADO, i*LADO); // primeiro ponto
+                    glTexCoord2d(1,0);  glVertex2f((j*LADO + mapa[i][j].pUniImovel->dim*LADO), i*LADO); // segundo ponto
+                    glTexCoord2d(1,1);  glVertex2f((j*LADO + mapa[i][j].pUniImovel->dim*LADO), (i*LADO + mapa[i][j].pUniImovel->dim*LADO));
+                    glTexCoord2d(0,1);  glVertex2f(j*LADO, (i*LADO + mapa[i][j].pUniImovel->dim*LADO));
+                    glEnd();
+                }
+            }
+        }
+    }
 
     return 0;
 }
