@@ -1,33 +1,10 @@
 #include "funcoes.h"
 
-void drawText
-(SDL_Surface* tela, char* string,
-int size, int x, int y,
-int fR, int fG, int fB) {
-TTF_Font* font = TTF_OpenFont("arial.ttf", size);
-
-SDL_Color foregroundColor = { fR, fG, fB };
-SDL_Color backgroundColor = { 126, 126, 126 };
-
-SDL_Surface* textSurface = TTF_RenderText_Shaded(font, string, foregroundColor, backgroundColor);
-
-SDL_Rect textLocation = { x, y, 0, 0 };
-
-SDL_BlitSurface(textSurface, NULL, tela, &textLocation);
-
-SDL_FreeSurface(textSurface);
-
-TTF_CloseFont(font);
-
-}
-
-
-int main(int argc, char* args[]) {
-    printf("Rodando programa...\n");
+int main() {
     SDL_Init(SDL_INIT_EVERYTHING);
-    SDL_Surface *tela;
-
     TTF_Init();
+    printf("Rodando programa...\n");
+
     /*CRIANDO JANELA*/
 
     // memoria
@@ -43,7 +20,7 @@ int main(int argc, char* args[]) {
     SDL_WM_SetCaption("Meu primeiro jogo SDL", NULL);
 
     // tamanho janela
-    tela = SDL_SetVideoMode(RX, RY, 32, SDL_OPENGL);
+    SDL_Surface* screen = SDL_SetVideoMode(RX, RY, 32, SDL_SWSURFACE|SDL_OPENGL);
 
     // cor
     glClearColor(1, 1, 1, 1);
@@ -70,6 +47,13 @@ int main(int argc, char* args[]) {
     bool executando = true;
 
     SDL_Event eventos;
+
+    //NUMEROS PROVISORIOS
+
+    texto_data texto;
+    unsigned int numero_recursos;
+    numero_recursos = importText("99999",200,0,0,0);
+    texto.imagem_prov = numero_recursos;
 
     // pegar textura
     unsigned int textura_grade;
@@ -115,6 +99,8 @@ int main(int argc, char* args[]) {
         ) {
 
         printf("FALHA AO CARREGAR IMAGEM\n");
+        SDL_FreeSurface(screen);
+        TTF_Quit();
         SDL_Quit();
         return -1;
     }
@@ -137,6 +123,7 @@ int main(int argc, char* args[]) {
     textura_minerio = loadTexture("imagens/minerio.png");
     textura_comida = loadTexture("imagens/comida.png");
     textura_raio = loadTexture("imagens/raio.png");
+
 
     imagens.textura_grade = textura_grade;
     imagens.textura_fundo = textura_fundo;
@@ -164,6 +151,7 @@ int main(int argc, char* args[]) {
     // i = 35, j = 1, dimensao = 4, vida = 20, time = 0
     if (cria_base(mapa, 35, 1, 4, 20, 0) == -1) {
         printf("FALHA AO CRIAR BASE 1\n");
+        SDL_FreeSurface(screen);
         TTF_Quit();
         SDL_Quit();
         return -1; 
@@ -171,6 +159,7 @@ int main(int argc, char* args[]) {
     //1, 35, 4, 20, 1
     if (cria_base(mapa, 1, 35, 4, 20, 1) == -1) {
         printf("FALHA AO CRIAR BASE 2\n");
+        SDL_FreeSurface(screen);
         TTF_Quit();
         SDL_Quit();
         return -1; 
@@ -179,8 +168,6 @@ int main(int argc, char* args[]) {
     int mouse_x = -1;
     int mouse_y = -1;
     mouse_data mouse;
-
-    char* string = "FUNCIONA PLS";
 
     while (executando) {
         // eventos
@@ -210,15 +197,15 @@ int main(int argc, char* args[]) {
         mouse.x = mouse_x;
         mouse.y = mouse_y;
 
-        //carrega_interface(mapa, imagens, mouse);
-        drawText(tela, string, 20, 500, 500, 0, 255, 0);
+        carrega_interface(mapa, imagens, mouse, texto);
 
-        // animacao
+        SDL_Flip(screen);
         SDL_GL_SwapBuffers();
     }
 
     printf("Fechado com sucesso!\n");
 
+    SDL_FreeSurface(screen);
     TTF_Quit();
     SDL_Quit();
 

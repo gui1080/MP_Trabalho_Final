@@ -3,12 +3,12 @@ GOOGLE_TEST_INCLUDE = /usr/local/include
 
 IDIR =../include
 CC=gcc
-CCPLUS=g++	
-CFLAGS=-I $(IDIR)
+CCPLUS=g++
+CFLAGS=-I $(IDIR) -I $(GL_INCLUDE)
 G_FLAGS=-I $(IDIR) -I $(GOOGLE_TEST_INCLUDE)
 LD_FLAGS=-I $(IDIR) -L /usr/local/lib -l $(GOOGLE_TEST_LIB) -l pthread
-FT_FLAGS=-I $(IDIR) -g -ftest-coverage -fprofile-arcs
-SDL_FLAGS=-I $(IDIR) -l SDLmain -l SDL -l GL -l SDL_image -l SDL_ttf
+FT_FLAGS= -g -ftest-coverage -fprofile-arcs
+SDL_FLAGS=-l SDLmain -l SDL -l GL -l SDL_image -l SDL_ttf
 
 ODIR=obj
 LDIR =../lib
@@ -30,10 +30,10 @@ $(ODIR)/%.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS) $(FT_FLAGS)
 
 $(ODIR)/%.o: %.cpp $(DEPS)
-	$(CCPLUS) -c -o $@ $< $(G_FLAGS) $(SDL_FLAGS) $(FT_FLAGS) 
+	$(CCPLUS) -c -o $@ $< $(G_FLAGS) $(SDL_FLAGS) $(FT_FLAGS)
 
 jogo: $(OBJ)
-	$(CCPLUS) -o $@ $^ $(CFLAGS) $(LIBS) $(LD_FLAGS) $(SDL_FLAGS) $(FT_FLAGS)
+	$(CCPLUS) -o $@ $^ $(CFLAGS) $(LIBS) $(LD_FLAGS) $(SDL_FLAGS) $(FT_FLAGS) 
 
 testa_jogo: $(OBJT)
 	$(CCPLUS) -o $@ $^ $(LD_FLAGS) $(SDL_FLAGS) $(FT_FLAGS)

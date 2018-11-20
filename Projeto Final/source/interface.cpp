@@ -20,7 +20,33 @@ GLuint loadTexture(const std::string&fileName) {
     return object;
 }
 
-int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse) {
+GLuint importText(const std::string &text,int font_size,int red,int green,int blue){
+    SDL_Color font_color = {blue,green,red};
+    TTF_Font* font=TTF_OpenFont("arial.ttf",font_size);
+    SDL_Surface *image = TTF_RenderText_Blended(font,text.c_str(),font_color);
+    SDL_DisplayFormatAlpha(image);
+
+    unsigned object(0);
+
+    glGenTextures(1,&object);
+    glBindTexture(GL_TEXTURE_2D, object);
+    
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+    
+    glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA,image->w,image->h,0,GL_RGBA,GL_UNSIGNED_BYTE,image->pixels);
+
+    SDL_FreeSurface(image);
+    
+    TTF_CloseFont(font);
+    
+    return object;
+}
+
+int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse, texto_data texto) {
 
     //  cria matriz
     glPushMatrix();
@@ -33,11 +59,12 @@ int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
     //  CARREGA ESTRUTURAS E ICONES
     glEnable(GL_TEXTURE_2D);
 
-    carrega_display_recursos(imagens);
+    carrega_display_recursos(imagens, texto);
     carrega_mapa(mapa, imagens, mouse);
     carrega_base(mapa, imagens);
     carrega_uni_estatico(mapa, imagens);  
     carrega_uni_movel(mapa, imagens);
+    carrega_numeros_recurso (texto);
 
     // fecha matriz
     glPopMatrix();
@@ -73,8 +100,8 @@ int carrega_layout(){
 
     glBegin(GL_LINES);
 
-    glVertex2f(RY,RY-LARGURA_INFERIOR);
-    glVertex2f(RX,RY-LARGURA_INFERIOR);
+    glVertex2f(RY,RY-DIVISAO_INFERIOR);
+    glVertex2f(RX,RY-DIVISAO_INFERIOR);
 
     glEnd();
 
@@ -131,11 +158,68 @@ int carrega_mapa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagen
     return 0;
 }
 
-int carrega_display_recursos (imagens_data imagens) {
-    int dimensao_icone = 40; //  NÃO PODE SER MAIOR QUE A LARGURA
-    int tamanho_texto = 90; //  NÃO PODE SER MAIOR QUE RX-RY-dimensao_icone
-    int gap_vertical = (LARGURA_INFERIOR - dimensao_icone) / 2;
-    int gap_horizontal = ((RX-RY) - (3 * dimensao_icone) - (3 * tamanho_texto)) / 2;
+
+int carrega_numeros_recurso (texto_data texto) {
+     //  NÃO PODE SER MAIOR QUE A LARGURA
+     //  NÃO PODE SER MAIOR QUE RX-RY-DIMENSAO_ICONES
+    int gap_vertical = (DIVISAO_INFERIOR - DIMENSAO_ICONES) / 2;
+    int gap_horizontal = ((RX-RY) - (3 * DIMENSAO_ICONES) - (3 * TAMANHO_TEXTO_ICONES)) / 2;
+    int flag = 0;
+
+    int x = RY + 2*gap_horizontal + DIMENSAO_ICONES;
+    int y = RY - gap_vertical;
+
+    texto.tamanho = 100;
+    texto.area.a.y = y-DIMENSAO_ICONES;
+    texto.area.b.y = y-DIMENSAO_ICONES;
+    texto.area.c.y = y;
+    texto.area.d.y = y;
+
+
+    //ICONES
+
+    for (int i = 0; i < 3; i++) {
+        texto.area.a.x = x;
+        texto.area.b.x = x+TAMANHO_TEXTO_ICONES-2*gap_horizontal;
+        texto.area.c.x = x+TAMANHO_TEXTO_ICONES-2*gap_horizontal;
+        texto.area.d.x = x;
+        switch (flag) {
+            case 0:
+                texto.string = "99999";
+                texto.r = 128;
+                texto.g = 0;
+                texto.b = 0;
+                break;
+            case 1:
+                texto.string = "99999";
+                texto.r = 0;
+                texto.g = 0;
+                texto.b = 0;
+                break;
+            case 2:
+                texto.string = "99999";
+                texto.r = 0;
+                texto.g = 0;
+                texto.b = 128;
+                break;
+        }
+
+        carrega_texto(texto);
+
+        //PREPARANDO PROXIMO ICONE
+        x += DIMENSAO_ICONES + TAMANHO_TEXTO_ICONES;
+        flag++;
+    }
+
+
+    return 0;
+}
+
+int carrega_display_recursos (imagens_data imagens, texto_data texto) {
+    //  NÃO PODE SER MAIOR QUE A LARGURA
+     //  NÃO PODE SER MAIOR QUE RX-RY-DIMENSAO_ICONES
+    int gap_vertical = (DIVISAO_INFERIOR - DIMENSAO_ICONES) / 2;
+    int gap_horizontal = ((RX-RY) - (3 * DIMENSAO_ICONES) - (3 * TAMANHO_TEXTO_ICONES)) / 2;
     int flag = 0;
 
     int x = RY + gap_horizontal;
@@ -159,14 +243,14 @@ int carrega_display_recursos (imagens_data imagens) {
         glColor4ub(255, 255, 255, 255);
 
         glBegin(GL_QUADS);    
-        glTexCoord2d(0,0);  glVertex2f(x, y-dimensao_icone); // primeiro ponto
-        glTexCoord2d(1,0);  glVertex2f(x+dimensao_icone, y-dimensao_icone); // segundo ponto
-        glTexCoord2d(1,1);  glVertex2f(x+dimensao_icone, y);
+        glTexCoord2d(0,0);  glVertex2f(x, y-DIMENSAO_ICONES); // primeiro ponto
+        glTexCoord2d(1,0);  glVertex2f(x+DIMENSAO_ICONES, y-DIMENSAO_ICONES); // segundo ponto
+        glTexCoord2d(1,1);  glVertex2f(x+DIMENSAO_ICONES, y);
         glTexCoord2d(0,1);  glVertex2f(x, y);
         glEnd();
 
         //PREPARANDO PROXIMO ICONE
-        x += dimensao_icone + tamanho_texto;
+        x += DIMENSAO_ICONES + TAMANHO_TEXTO_ICONES;
         flag++;
     }
 
@@ -341,4 +425,24 @@ int carrega_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
     }
 
     return 0;
+}
+
+//CARREGA_TEXTO NÃO ESTÁ 100% FUNCIONAL
+
+int carrega_texto(texto_data texto) {
+
+    //unsigned int teste = importText(texto.string,texto.tamanho,texto.r,texto.g,texto.b);   
+
+    glColor4ub(255, 255, 255, 255);
+    glBindTexture(GL_TEXTURE_2D, texto.imagem_prov);
+
+    glBegin(GL_QUADS);
+    glTexCoord2d(0,0);  glVertex2f(texto.area.a.x, texto.area.a.y); // primeiro ponto
+    glTexCoord2d(1,0);  glVertex2f(texto.area.b.x, texto.area.b.y); // segundo ponto
+    glTexCoord2d(1,1);  glVertex2f(texto.area.c.x, texto.area.c.y);
+    glTexCoord2d(0,1);  glVertex2f(texto.area.d.x, texto.area.d.y);
+    glEnd();
+
+    //glDeleteTextures(1, &teste);
+
 }

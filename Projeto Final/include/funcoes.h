@@ -1,15 +1,18 @@
+#include <iostream>
+#include <stdio.h>
+#include <SDL/SDL_ttf.h>
 #include <SDL/SDL.h>
 #include "SDL/SDL_opengl.h"
-#include <stdio.h>
 #include "SDL/SDL_image.h"
-#include <SDL/SDL_ttf.h>
 #include "string"
 
 #define RX 1200
 #define RY 800
-#define LADO 20
 #define BLOCOS_LINHA 40
-#define LARGURA_INFERIOR 50
+#define LADO RY/BLOCOS_LINHA
+#define DIVISAO_INFERIOR 0.08 * RY
+#define DIMENSAO_ICONES 0.05 * RY
+#define TAMANHO_TEXTO_ICONES 2.2 * DIMENSAO_ICONES
 
 enum divisao {HUMANO = 1, MECANICO, ELETRICO};
 enum classe {GERADOR_DE_RECURSO = 1, GERADOR_DE_TROPA,
@@ -93,11 +96,33 @@ typedef struct Atributos_Data {
     int nivel;
 }atributos_data;
 
+typedef struct Coordenada {
+    int x;
+    int y;
+}coordenada;
+
+typedef struct Area_Texto {
+    coordenada a;
+    coordenada b;
+    coordenada c;
+    coordenada d;
+}area_texto;
+
+typedef struct Texto_Data {
+    char *string;
+    int r, g, b;
+    int tamanho;
+    area_texto area;
+    int imagem_prov;
+}texto_data;
+
 GLuint loadTexture(const std::string&fileName);
+
+GLuint importText(const std::string &text, int font_size, int red, int green, int blue);
 
 int cria_mapa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]);
 
-int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse);
+int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse, texto_data texto);
 
 int cria_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, int dim, int vida, int time);
 
@@ -111,7 +136,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
 
 int carrega_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens);
 
-int carrega_display_recursos (imagens_data imagens);
+int carrega_display_recursos (imagens_data imagens, texto_data texto);
 
 int carrega_mapa (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse);
 
@@ -120,4 +145,8 @@ int carrega_layout();
 int carrega_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens);
 
 int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atributos_data atributos);
+
+int carrega_texto(texto_data texto);
+
+int carrega_numeros_recurso (texto_data texto);
 

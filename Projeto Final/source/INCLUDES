@@ -1,3 +1,5 @@
-LISTA DE APTS
+IMPORTANTE: (PARA RENDERIZAR TEXTOS USANDO OPENGL)
 
-apt-get install libsdl-ttf2.0-dev
+1. sudo add-apt-repository ppa:glasen/freetype2
+
+2. sudo apt update && sudo apt install freetype2-demos
