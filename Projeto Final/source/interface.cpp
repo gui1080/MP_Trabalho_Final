@@ -139,6 +139,8 @@ int carrega_mapa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagen
                     printf("BASE\n");   
                 }else if (mapa[i][j].pUniImovel != NULL) {
                     printf("CONSTRUCAO\n");
+                } else if (mapa[i][j].pUniMovel != NULL) {
+                	printf("UNID. MOVEL\n");
                 } else {
                     printf("TERRENO\n");
                 }

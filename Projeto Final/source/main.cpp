@@ -165,6 +165,13 @@ int main() {
         return -1; 
     }
 
+    atributos_data dados_uni;
+    dados_uni.classe = 1;
+    dados_uni.divisao = 1;
+    dados_uni.time = 1;
+    dados_uni.nivel = 1;
+    cria_uni_movel(mapa, 5, 5, dados_uni);
+
     int mouse_x = -1;
     int mouse_y = -1;
     mouse_data mouse;
