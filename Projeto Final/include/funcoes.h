@@ -150,3 +150,5 @@ int carrega_texto(texto_data texto);
 
 int carrega_numeros_recurso (texto_data texto);
 
+//int mostra_menu(SDL_Surface* screen, TTF_Font* font);
+
