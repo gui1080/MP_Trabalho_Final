@@ -17,7 +17,7 @@ int main() {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
     // nome janela
-    SDL_WM_SetCaption("Meu primeiro jogo SDL", NULL);
+    SDL_WM_SetCaption("BOTTOM TEXT", NULL);
 
     // tamanho janela
     SDL_Surface* screen = SDL_SetVideoMode(RX, RY, 32, SDL_SWSURFACE|SDL_OPENGL);
@@ -52,7 +52,7 @@ int main() {
 
     texto_data texto;
     unsigned int numero_recursos;
-    numero_recursos = importText("99999",200,0,0,0);
+    numero_recursos = importText("99",200,0,0,0);
     texto.imagem_prov = numero_recursos;
 
     // pegar textura
@@ -175,7 +175,18 @@ int main() {
     int mouse_x = -1;
     int mouse_y = -1;
     mouse_data mouse;
-
+    /*
+    int menu = mostra_menu(screen, font); 
+    
+    if(menu == 1){
+        executando = false;
+    }
+    
+    um caso dentro da main:
+        while(SDL_PollEvent(&event))...
+            switch(event.key.keysym.sym)
+                case SDKL_ESCAPE: *muda executando pra false*
+    */
     while (executando) {
         // eventos
         while (SDL_PollEvent(&eventos)) {

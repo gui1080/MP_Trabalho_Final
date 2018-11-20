@@ -187,19 +187,19 @@ int carrega_numeros_recurso (texto_data texto) {
         texto.area.d.x = x;
         switch (flag) {
             case 0:
-                texto.string = "99999";
+                texto.string = "9";
                 texto.r = 128;
                 texto.g = 0;
                 texto.b = 0;
                 break;
             case 1:
-                texto.string = "99999";
+                texto.string = "9";
                 texto.r = 0;
                 texto.g = 0;
                 texto.b = 0;
                 break;
             case 2:
-                texto.string = "99999";
+                texto.string = "9";
                 texto.r = 0;
                 texto.g = 0;
                 texto.b = 128;
@@ -448,3 +448,86 @@ int carrega_texto(texto_data texto) {
     //glDeleteTextures(1, &teste);
 
 }
+
+/*
+int mostra_menu(SDL_Surface* screen, TTF_Font* font){
+    Uint32 time;
+    int x, y;
+    const int NUMMENU=2;
+    const char* labels[NUMMENU] = {"Continuar",  "Sair"};
+    SDL_Surface* menu[NUMMENU];
+    bool selected[NUMMENU] = {0, 0}
+    SDL_Color color[2] = {{255, 255, 255}, {255, 0, 0}};
+    
+    menu[0] = TTF_RenderText_Solid(font, labels[0], color[0]);
+    menu[1] = TTF_RenderText_Solid(font, labels[1], color[0]);
+    
+    pos[0].x = 300;
+    pos[0].y = 400;
+    pos[1].x = 900;
+    pos[1].y = 400;
+    
+    SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00));
+    
+    SDL_Event event;
+    while(1){
+        time = SDL_GetTicks();
+        while(SDL_PollEvent(&event)){
+            switch(event.type){
+                
+                case SDL_QUIT:
+                    SDL_FreeSurface(menu[0]);
+                    SDL_FreeSurface(menu[1]);
+                    return 1;
+                
+                case SDL_MOUSEMOTION:
+                    x = event.motion.x;
+                    y = event.motion.y;
+                    for(int i = 0; i<NUMMENU; i++){
+                        if((x>=pos[i].x) && (x<=pos[i].x + pos[i].w) && (y>pos[i].y) && (y<=pos[i].y + pos[i].h)){
+                            if(!selected){
+                                selected[i] = 1;
+                                SDLFreeSurface(menu[i]));
+                                menu[i] = TTF_RenderText_Solid(font, labels[i], color[1]);
+                            }
+                        }else{
+                                if(selected[i]){
+                                selected[i] = 0;
+                                SDLFreeSurface(menu[i]));
+                                menu[i] = TTF_RenderText_Solid(font, labels[i], color[0]);
+                                }
+                            }
+                        }
+                 // break;
+                case SDL_MOUSEBUTTONDOWN:
+                    x = event.button.x;
+                    y = event.button.y;
+                    for(i = 0; i<NUMMENU ; i++){
+                        if((x>=pos[i].x) && (x<=pos[i].x + pos[i].w) && (y>pos[i].y) && (y<=pos[i].y + pos[i].h)){
+                           SDL_FreeSurface(menu[0]);
+                            SDL_FreeSurface(menu[1]);
+                            return i;
+                        }
+                        break;
+                    }
+                case SDL_KEYDOWN:
+                    if(event.key.keyssym.sym = SDL_ESCAPE){
+                        SDL_FreeSurface(menu[0]);
+                        SDL_FreeSurface(menu[1]);
+                        return 0;
+                    }
+               }                                        
+           }
+           
+           for(int k = 0; i<NUMMENU; k++){
+                SDL_BlitSurface(menu[k], NULL, screen, &pos[k]);
+            }
+           SDL_Flip(screen);
+           if(1000/30 > (SDL_GetTicks()- time)){
+               SDL_Delay(1000/3-(SDL_GetTicks()- time));
+        }
+      }
+}
+
+*/
+    
