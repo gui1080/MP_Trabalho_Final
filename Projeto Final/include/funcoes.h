@@ -6,8 +6,8 @@
 #include "SDL/SDL_image.h"
 #include "string"
 
-#define RX 1200
-#define RY 800
+#define RX 900
+#define RY 600
 #define BLOCOS_LINHA 40
 #define DIVISAO_INFERIOR 0.08 * RY
 #define DIMENSAO_ICONES 0.05 * RY
@@ -152,3 +152,6 @@ int carrega_numeros_recurso (texto_data texto);
 
 //int mostra_menu(SDL_Surface* screen, TTF_Font* font);
 
+//int move_unis_mapa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse);
+
+//int move_unidade (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* unit, int i, int j);
