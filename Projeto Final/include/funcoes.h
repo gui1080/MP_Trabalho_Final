@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 #include <stdio.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL.h>
@@ -132,6 +133,10 @@ bool verifica_imagem(const std::string&fileName);
 
 bool verifica_espaco(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j);
 
+int verifica_selecao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse);
+
+int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse);
+
 int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atributos_data atributos);
 
 int carrega_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens);
@@ -150,8 +155,6 @@ int carrega_texto(texto_data texto);
 
 int carrega_numeros_recurso (texto_data texto);
 
-//int mostra_menu(SDL_Surface* screen, TTF_Font* font);
+int mostra_menu(SDL_Surface* screen, TTF_Font* font);
 
-//int move_unis_mapa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse);
-
-//int move_unidade (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* unit, int i, int j);
+int move_unidade (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* unit, int i, int j);

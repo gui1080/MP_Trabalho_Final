@@ -59,6 +59,10 @@ int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
     //  CARREGA ESTRUTURAS E ICONES
     glEnable(GL_TEXTURE_2D);
 
+    if (mouse.x != -1 && mouse.y != -1) {
+        verifica_unidades(mapa, mouse);
+    }
+
     carrega_display_recursos(imagens, texto);
     carrega_mapa(mapa, imagens, mouse);
     carrega_base(mapa, imagens);
