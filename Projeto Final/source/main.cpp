@@ -109,8 +109,7 @@ int main() {
         verifica_imagem("imagens/Rias2.png") == false ||
         verifica_imagem("imagens/minerio.png") == false ||
         verifica_imagem("imagens/raio.png") == false ||
-        verifica_imagem("imagens/comida.png") == false ||
-        verifica_imagem("imagens/barra_verde.png") == false
+        verifica_imagem("imagens/comida.png") == false
         ) {
 
         printf("FALHA AO CARREGAR IMAGEM\n");
@@ -138,7 +137,6 @@ int main() {
     textura_minerio = loadTexture("imagens/minerio.png");
     textura_comida = loadTexture("imagens/comida.png");
     textura_raio = loadTexture("imagens/raio.png");
-    textura_exp = loadTexture("imagens/barra_verde.png");
 
 
     imagens.textura_grade = textura_grade;
@@ -159,7 +157,6 @@ int main() {
     imagens.raio = textura_raio;
     imagens.comida = textura_comida;
     imagens.minerio = textura_minerio;
-    imagens.exp = textura_exp;
 
     //  Carrega mapa
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];

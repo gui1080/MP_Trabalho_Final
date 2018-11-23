@@ -10,8 +10,8 @@
 #define RX 1200
 #define RY 800
 #define BLOCOS_LINHA 40
-#define DIMENSAO_COMANDANTE 150
-#define TRANSLADA_COMANDANTE 20
+#define DIMENSAO_COMANDANTE 0.2 * RY
+#define TRANSLADA_COMANDANTE 0.02 * RX
 #define DIVISAO_INFERIOR 0.08 * RY
 #define DIMENSAO_ICONES 0.05 * RY
 #define TAMANHO_TEXTO_ICONES 2.2 * DIMENSAO_ICONES
@@ -86,7 +86,6 @@ typedef struct Imagens_Data {
     unsigned int minerio;
     unsigned int raio;
     unsigned int comida;
-    unsigned int exp;
 }imagens_data;
 
 typedef struct Mouse_Data {
