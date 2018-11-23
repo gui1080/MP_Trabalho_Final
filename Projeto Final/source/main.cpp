@@ -48,12 +48,24 @@ int main() {
 
     SDL_Event eventos;
 
-    //NUMEROS PROVISORIOS
+    //CARREGAMENTO DOS NUMEROS
 
     texto_data texto;
-    unsigned int numero_recursos;
-    numero_recursos = importText("99",200,0,0,0);
-    texto.imagem_prov = numero_recursos;
+
+    char result[50];
+    char zero[3] = "0";
+    int num = 0;
+
+    for (num = 0; num < 100; num++) {
+        sprintf(result, "%d", num);
+        if (num < 10) {
+            strcat(zero, result);
+            texto.numero_textura[num] = importText(zero,200,255,255,255);
+            zero[1] = '\0';
+        } else {
+            texto.numero_textura[num] = importText(result,200,255,255,255);
+        }
+    }
 
     // pegar textura
     unsigned int textura_grade;
@@ -76,6 +88,8 @@ int main() {
     unsigned int textura_minerio;
     unsigned int textura_raio;
     unsigned int textura_comida;
+
+    unsigned int textura_exp;    
     imagens_data imagens;
 
     if (verifica_imagem("imagens/grade.png") == false ||
@@ -95,7 +109,8 @@ int main() {
         verifica_imagem("imagens/Rias2.png") == false ||
         verifica_imagem("imagens/minerio.png") == false ||
         verifica_imagem("imagens/raio.png") == false ||
-        verifica_imagem("imagens/comida.png") == false
+        verifica_imagem("imagens/comida.png") == false ||
+        verifica_imagem("imagens/barra_verde.png") == false
         ) {
 
         printf("FALHA AO CARREGAR IMAGEM\n");
@@ -123,6 +138,7 @@ int main() {
     textura_minerio = loadTexture("imagens/minerio.png");
     textura_comida = loadTexture("imagens/comida.png");
     textura_raio = loadTexture("imagens/raio.png");
+    textura_exp = loadTexture("imagens/barra_verde.png");
 
 
     imagens.textura_grade = textura_grade;
@@ -143,6 +159,7 @@ int main() {
     imagens.raio = textura_raio;
     imagens.comida = textura_comida;
     imagens.minerio = textura_minerio;
+    imagens.exp = textura_exp;
 
     //  Carrega mapa
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];

@@ -69,6 +69,8 @@ int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
     carrega_uni_estatico(mapa, imagens);  
     carrega_uni_movel(mapa, imagens);
     carrega_numeros_recurso (texto);
+    carrega_barras(imagens);
+    carrega_comandante(imagens);
 
     // fecha matriz
     glPopMatrix();
@@ -107,6 +109,25 @@ int carrega_layout(){
     glVertex2f(RY,RY-DIVISAO_INFERIOR);
     glVertex2f(RX,RY-DIVISAO_INFERIOR);
 
+    glVertex2f(RY,RY-DIVISAO_INFERIOR-LARGURA_BARRAS);
+    glVertex2f(RX,RY-DIVISAO_INFERIOR-LARGURA_BARRAS);
+
+    glVertex2f(RY,RY-DIVISAO_INFERIOR-2*LARGURA_BARRAS);
+    glVertex2f(RX,RY-DIVISAO_INFERIOR-2*LARGURA_BARRAS);
+
+    /*
+    int dimensao = 150;
+    int TRANSLADA_COMANDANTE = 20;
+
+    glBegin(GL_QUADS);    
+
+    glVertex2f(RY+TRANSLADA_COMANDANTE, RY-DIVISAO_INFERIOR-2*LARGURA_BARRAS-dimensao); // primeiro ponto
+    glVertex2f(RY+TRANSLADA_COMANDANTE+dimensao, RY-DIVISAO_INFERIOR-2*LARGURA_BARRAS-dimensao); // segundo ponto
+    glVertex2f(RY+TRANSLADA_COMANDANTE+1, RY-DIVISAO_INFERIOR-2*LARGURA_BARRAS-dimensao);
+    glVertex2f(RY+TRANSLADA_COMANDANTE+1, RY-DIVISAO_INFERIOR-2*LARGURA_BARRAS);
+    glVertex2f(RY+TRANSLADA_COMANDANTE+dimensao+1, RY-DIVISAO_INFERIOR-2*LARGURA_BARRAS-dimensao);
+    glVertex2f(RY+TRANSLADA_COMANDANTE+dimensao+1, RY-DIVISAO_INFERIOR-2*LARGURA_BARRAS);
+*/
     glEnd();
 
     return 0;
@@ -181,7 +202,9 @@ int carrega_numeros_recurso (texto_data texto) {
     texto.area.c.y = y;
     texto.area.d.y = y;
 
-
+    int comida = 64;
+    int minerio = 3;
+    int energia = 78;
     //ICONES
 
     for (int i = 0; i < 3; i++) {
@@ -191,19 +214,22 @@ int carrega_numeros_recurso (texto_data texto) {
         texto.area.d.x = x;
         switch (flag) {
             case 0:
-                texto.string = "9";
+                glColor4ub(128, 0, 0, 255);
+                texto.numero = comida;
                 texto.r = 128;
                 texto.g = 0;
                 texto.b = 0;
                 break;
             case 1:
-                texto.string = "9";
+                glColor4ub(0, 0, 0, 255);
+                texto.numero = minerio;
                 texto.r = 0;
                 texto.g = 0;
                 texto.b = 0;
                 break;
             case 2:
-                texto.string = "9";
+                glColor4ub(0, 0, 128, 255);
+                texto.numero = energia;
                 texto.r = 0;
                 texto.g = 0;
                 texto.b = 128;
@@ -277,7 +303,7 @@ int carrega_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagen
                 if (mapa[i][j].pBase->i == i && mapa[i][j].pBase->j == j) {
 
                     if (mapa[i][j].pBase->time == 0) 
-                        glColor4ub(128, 128, 255, 255); 
+                        glColor4ub(255, 255, 255, 255); 
                     else 
                         glColor4ub(255, 128, 128, 255);
 
@@ -435,12 +461,9 @@ int carrega_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
 
 //CARREGA_TEXTO NÃO ESTÁ 100% FUNCIONAL
 
-int carrega_texto(texto_data texto) {
+int carrega_texto(texto_data texto) {   
 
-    //unsigned int teste = importText(texto.string,texto.tamanho,texto.r,texto.g,texto.b);   
-
-    glColor4ub(255, 255, 255, 255);
-    glBindTexture(GL_TEXTURE_2D, texto.imagem_prov);
+    glBindTexture(GL_TEXTURE_2D, texto.numero_textura[texto.numero]);
 
     glBegin(GL_QUADS);
     glTexCoord2d(0,0);  glVertex2f(texto.area.a.x, texto.area.a.y); // primeiro ponto
@@ -448,8 +471,46 @@ int carrega_texto(texto_data texto) {
     glTexCoord2d(1,1);  glVertex2f(texto.area.c.x, texto.area.c.y);
     glTexCoord2d(0,1);  glVertex2f(texto.area.d.x, texto.area.d.y);
     glEnd();
+}
 
-    //glDeleteTextures(1, &teste);
+int carrega_barras(imagens_data imagens) {
+
+    glDisable(GL_TEXTURE_2D);
+    glColor4ub(32, 200, 32, 255);
+
+    int exp_neg = 60;
+    int vida_neg = 30;
+
+    glBegin(GL_QUADS);
+    glTexCoord2d(0,0);  glVertex2f(RY+1, RY-DIVISAO_INFERIOR-LARGURA_BARRAS); // primeiro ponto
+    glTexCoord2d(1,0);  glVertex2f(RX-exp_neg, RY-DIVISAO_INFERIOR-LARGURA_BARRAS); // segundo ponto
+    glTexCoord2d(1,1);  glVertex2f(RX-exp_neg, RY-DIVISAO_INFERIOR-1);
+    glTexCoord2d(0,1);  glVertex2f(RY+1, RY-DIVISAO_INFERIOR-1);
+    glEnd();   
+
+    glColor4ub(204, 0, 0, 255);
+
+    glBegin(GL_QUADS);
+    glTexCoord2d(0,0);  glVertex2f(RY+1, RY-DIVISAO_INFERIOR-2*LARGURA_BARRAS); // primeiro ponto
+    glTexCoord2d(1,0);  glVertex2f(RX-vida_neg, RY-DIVISAO_INFERIOR-2*LARGURA_BARRAS); // segundo ponto
+    glTexCoord2d(1,1);  glVertex2f(RX-vida_neg, RY-DIVISAO_INFERIOR-LARGURA_BARRAS-1);
+    glTexCoord2d(0,1);  glVertex2f(RY+1, RY-DIVISAO_INFERIOR-LARGURA_BARRAS-1);
+    glEnd();
+    glEnable(GL_TEXTURE_2D);
+
+}
+
+int carrega_comandante(imagens_data imagens) {
+
+    glBindTexture(GL_TEXTURE_2D, imagens.mecanico_GER_REC);
+    glColor4ub(255, 255, 255, 255);
+
+    glBegin(GL_QUADS);
+    glTexCoord2d(0,0);  glVertex2f(RY+TRANSLADA_COMANDANTE+1, RY-DIVISAO_INFERIOR-2*LARGURA_BARRAS-DIMENSAO_COMANDANTE); // primeiro ponto
+    glTexCoord2d(1,0);  glVertex2f(RY+TRANSLADA_COMANDANTE+DIMENSAO_COMANDANTE, RY-DIVISAO_INFERIOR-2*LARGURA_BARRAS-DIMENSAO_COMANDANTE); // segundo ponto
+    glTexCoord2d(1,1);  glVertex2f(RY+TRANSLADA_COMANDANTE+DIMENSAO_COMANDANTE, RY-DIVISAO_INFERIOR-2*LARGURA_BARRAS-1);
+    glTexCoord2d(0,1);  glVertex2f(RY+TRANSLADA_COMANDANTE+1, RY-DIVISAO_INFERIOR-2*LARGURA_BARRAS-1);
+    glEnd();
 
 }
 

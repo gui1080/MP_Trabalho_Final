@@ -7,12 +7,15 @@
 #include "SDL/SDL_image.h"
 #include "string"
 
-#define RX 900
-#define RY 600
+#define RX 1200
+#define RY 800
 #define BLOCOS_LINHA 40
+#define DIMENSAO_COMANDANTE 150
+#define TRANSLADA_COMANDANTE 20
 #define DIVISAO_INFERIOR 0.08 * RY
 #define DIMENSAO_ICONES 0.05 * RY
 #define TAMANHO_TEXTO_ICONES 2.2 * DIMENSAO_ICONES
+#define LARGURA_BARRAS 0.015 * RY
 
 const int LADO = RY/BLOCOS_LINHA;
 enum divisao {HUMANO = 1, MECANICO, ELETRICO};
@@ -83,6 +86,7 @@ typedef struct Imagens_Data {
     unsigned int minerio;
     unsigned int raio;
     unsigned int comida;
+    unsigned int exp;
 }imagens_data;
 
 typedef struct Mouse_Data {
@@ -110,11 +114,11 @@ typedef struct Area_Texto {
 }area_texto;
 
 typedef struct Texto_Data {
-    char *string;
+    int numero;
     int r, g, b;
     int tamanho;
     area_texto area;
-    int imagem_prov;
+    unsigned int numero_textura[101];
 }texto_data;
 
 GLuint loadTexture(const std::string&fileName);
@@ -158,3 +162,7 @@ int carrega_numeros_recurso (texto_data texto);
 int mostra_menu(SDL_Surface* screen, TTF_Font* font);
 
 int move_unidade (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* unit, int i, int j);
+
+int carrega_barras(imagens_data imagens);
+
+int carrega_comandante(imagens_data imagens);
