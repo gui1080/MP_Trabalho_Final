@@ -58,7 +58,7 @@ int verifica_selecao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mous
     return 0;
 }
 
-int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, player_data *player) {
+int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, player_data *player, atributos_data atributos) {
     if (verifica_selecao(mapa, mouse) == 1) {
         
         SDL_Event evento;
@@ -77,7 +77,14 @@ int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mou
                 cell_j = evento.button.x/LADO;
 
                 if (verifica_espaco(mapa, cell_i, cell_j) && (aux->i != cell_i || aux->j != cell_j)) {
-                    move_unidade(mapa, aux, cell_i, cell_j);
+                    if(aux->divisao == OPERARIO){
+                        construction(mapa, atributos, cell_i, cell_j, aux, player);
+                        move_unidade(mapa, aux, cell_i - 1, cell_j - 1);  
+                        break;
+                    } else{
+                     move_unidade(mapa, aux, cell_i, cell_j);   
+                    }
+                    
                 }
                 if (mapa[cell_i][cell_j].pUniMovel != NULL && (aux->i != cell_i || aux->j != cell_j)) {
                     printf("INICIAR COMBATE\n");

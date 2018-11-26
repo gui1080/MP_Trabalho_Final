@@ -86,6 +86,7 @@ int main() {
     texto.nome_textura[CAVALEIROS] = importText("Cavaleiro Estelar",200,255,255,255);
     texto.nome_textura[CHORIS] = importText("Choris",200,255,255,255);
     texto.nome_textura[BASE] = importText("Base",200,255,255,255);
+    texto.nome_textura[OPERARIO] = importText("Operario",200,255,255,255);
 
     // pegar textura
     unsigned int textura_grade;
@@ -104,18 +105,22 @@ int main() {
     unsigned int eletrico_GER_TROP;
     unsigned int eletrico_DEF_OFS;
     unsigned int eletrico_DEF_PAS;
+    unsigned int operario;
 
     unsigned int textura_minerio;
     unsigned int textura_raio;
     unsigned int textura_comida;
 
-    unsigned int textura_exp;    
+    unsigned int textura_exp;
+
+
+
     imagens_data imagens;
     player_data player1;
 
-    player1.comida = 10;
-    player1.minerio = 10;
-    player1.eletricidade = 10;
+    player1.comida = 40;
+    player1.minerio = 40;
+    player1.eletricidade = 40;
     player1.xp = 0;
 
     player_data *player = &player1;
@@ -138,7 +143,8 @@ int main() {
         verifica_imagem("imagens/Rias2.png") == false ||
         verifica_imagem("imagens/minerio.png") == false ||
         verifica_imagem("imagens/raio.png") == false ||
-        verifica_imagem("imagens/comida.png") == false
+        verifica_imagem("imagens/comida.png") == false ||
+        verifica_imagem("imagens/Kuru.png") == false
         ) {
 
         printf("FALHA AO CARREGAR IMAGEM\n");
@@ -166,6 +172,7 @@ int main() {
     textura_minerio = loadTexture("imagens/minerio.png");
     textura_comida = loadTexture("imagens/comida.png");
     textura_raio = loadTexture("imagens/raio.png");
+    operario = loadTexture("imagens/Kuru.png");
 
 
     imagens.textura_grade = textura_grade;
@@ -186,6 +193,7 @@ int main() {
     imagens.raio = textura_raio;
     imagens.comida = textura_comida;
     imagens.minerio = textura_minerio;
+    imagens.operario = operario;
 
     //  Carrega mapa
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
@@ -213,19 +221,23 @@ int main() {
     dados_uni.divisao = HUMANO;
     dados_uni.time = 1;
     dados_uni.nivel = 1;
-    cria_uni_movel(mapa, 5, 5, dados_uni);
+    cria_uni_movel(mapa, 5, 5, dados_uni, player);
     dados_uni.nivel = 2;
-    cria_uni_movel(mapa,10,10, dados_uni);
+    cria_uni_movel(mapa,10,10, dados_uni, player);
     dados_uni.divisao = ELETRICO;
-    cria_uni_movel(mapa,15,15, dados_uni);
+    cria_uni_movel(mapa,15,15, dados_uni, player);
     dados_uni.nivel = 3;
-    cria_uni_movel(mapa,20,20, dados_uni);
+    cria_uni_movel(mapa,20,20, dados_uni, player);
 
-    cria_uni_estatico(mapa, 30, 30, dados_uni);
+    cria_uni_estatico(mapa, 30, 30, dados_uni, player);
     dados_uni.divisao = MECANICO;
-    cria_uni_estatico(mapa, 25, 10, dados_uni);
+    cria_uni_estatico(mapa, 25, 10, dados_uni, player);
     dados_uni.classe = GERADOR_DE_TROPA;
-    cria_uni_estatico(mapa, 10, 25, dados_uni);
+    cria_uni_estatico(mapa, 10, 25, dados_uni, player);
+
+    dados_uni.divisao = OPERARIO;
+    cria_uni_movel(mapa,2,2, dados_uni, player);
+    dados_uni.divisao = MECANICO;
 
     int mouse_x = -1;
     int mouse_y = -1;
@@ -277,7 +289,7 @@ int main() {
         mouse.x = mouse_x;
         mouse.y = mouse_y;
 
-        carrega_interface(mapa, imagens, mouse, texto, player);
+        carrega_interface(mapa, imagens, mouse, texto, player, dados_uni);
 
         SDL_Flip(screen);
         SDL_GL_SwapBuffers();

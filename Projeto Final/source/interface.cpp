@@ -46,7 +46,7 @@ GLuint importText(const std::string &text,int font_size,int red,int green,int bl
     return object;
 }
 
-int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse, texto_data texto, player_data *player) {
+int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse, texto_data texto, player_data *player, atributos_data atributos) {
 
     //  cria matriz
     glPushMatrix();
@@ -61,7 +61,7 @@ int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
     glEnable(GL_TEXTURE_2D);
 
     if (mouse.x != -1 && mouse.y != -1) {
-        verifica_unidades(mapa, mouse, player);
+        verifica_unidades(mapa, mouse, player, atributos);
     }
 
     carrega_display_recursos(imagens, texto);
@@ -445,6 +445,11 @@ int escolhe_imagem_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_dat
                 break;
             }
         break;
+        case OPERARIO:
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.operario);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[OPERARIO]);
+        break;
+
     }  
 }
 

@@ -18,7 +18,7 @@
 #define LARGURA_BARRAS 0.015 * RY
 
 const int LADO = RY/BLOCOS_LINHA;
-enum divisao {HUMANO = 0, MECANICO, ELETRICO};
+enum divisao {HUMANO = 0, MECANICO, ELETRICO, OPERARIO};
 enum classe {GERADOR_DE_RECURSO = 3, GERADOR_DE_TROPA,
                 DEFESA_OFENSIVA, DEFESA_PASSIVA};
 enum unidades_e_base {REPLICANTE = 7, EXTERMINADOR, HATSUNE, WALL,
@@ -46,6 +46,9 @@ typedef struct Unidade_Movel {
     int dim;
     int i;
     int j;
+    int custo_minerio;
+    int custo_comida;
+    int custo_eletricidade;
 }unidade_movel;
 
 typedef struct Unidade_Estatica {
@@ -60,6 +63,9 @@ typedef struct Unidade_Estatica {
     int dim;
     int i;
     int j;
+    int custo_minerio;
+    int custo_comida;
+    int custo_eletricidade;
 }unidade_estatica;
 
 typedef struct Base_Principal {
@@ -98,6 +104,7 @@ typedef struct Imagens_Data {
     unsigned int minerio;
     unsigned int raio;
     unsigned int comida;
+    unsigned int operario;
 }imagens_data;
 
 typedef struct Mouse_Data {
@@ -125,7 +132,7 @@ GLuint importText(const std::string &text, int font_size, int red, int green, in
 
 int cria_mapa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]);
 
-int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse, texto_data texto, player_data *player);
+int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse, texto_data texto, player_data *player, atributos_data atributos);
 
 int cria_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, int dim, int vida, int time);
 
@@ -137,9 +144,9 @@ bool verifica_espaco(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j);
 
 int verifica_selecao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse);
 
-int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, player_data *player);
+int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, player_data *player, atributos_data atributos);
 
-int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atributos_data atributos);
+int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atributos_data atributos, player_data *player);
 
 int carrega_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens);
 
@@ -151,7 +158,7 @@ int carrega_layout();
 
 int carrega_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, texto_data texto);
 
-int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atributos_data atributos);
+int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atributos_data atributos, player_data *player);
 
 int carrega_numeros_recurso (texto_data texto, player_data *player);
 
@@ -174,5 +181,7 @@ int escolhe_imagem_estatica(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_
 int escolhe_imagem_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, texto_data texto, int i, int j, int opcao);
 
 int escolhe_texto_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], texto_data texto, int i, int j);
+
+int construction(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, int cell_i, int cell_j, unidade_movel* unit, player_data *player);
 
 //define_mov_rang(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux);

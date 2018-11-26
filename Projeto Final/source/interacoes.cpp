@@ -39,7 +39,7 @@ int combate(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unid
     }
     printf("Ataque: %d\n", ataque);
 
-    if(aux->divisao == 1 && aux->nivel == 2){
+    if(aux->divisao == HUMANO && aux->nivel == 2){
 
     aux2->vida = aux2->vida - ataque;	
 
@@ -58,7 +58,7 @@ int combate(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unid
     	printf("Unidade morta\n");
     	player->xp = player->xp + (aux2->nivel)*2;
 
-    	if(aux->divisao == 1 && aux->nivel == 1){
+    	if(aux->divisao == HUMANO && aux->nivel == 1){
     		player->minerio = player->minerio + (aux2->nivel)*2;
     	}
 
@@ -103,7 +103,7 @@ int destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, u
     }
     printf("Ataque: %d\n", ataque);
 
-    if(aux->divisao == 1 && aux->nivel == 2){
+    if(aux->divisao == HUMANO && aux->nivel == 2){
 
     aux2->vida = aux2->vida - ataque;	
 

@@ -39,7 +39,7 @@ int cria_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, int dim,
     return 0;
 }
 
-int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atributos_data atributos) {
+int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atributos_data atributos, player_data *player) {
     unidade_estatica *Unidade = (unidade_estatica*)malloc(sizeof(unidade_estatica));
     Unidade->i = i;
     Unidade->j = j; 
@@ -62,6 +62,9 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
             Unidade->ataque = 0;
             Unidade->defesa = 5;
             Unidade->alcance = 0;
+            Unidade->custo_minerio = 2;
+            Unidade->custo_comida = 3;
+            Unidade->custo_eletricidade = 1;
             break;
         case GERADOR_DE_TROPA:
             Unidade->dim = 3;
@@ -69,6 +72,9 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
             Unidade->ataque = 0;
             Unidade->defesa = 5;
             Unidade->alcance = 0;
+            Unidade->custo_minerio = 2;
+            Unidade->custo_comida = 3;
+            Unidade->custo_eletricidade = 1;
             break;
         case DEFESA_OFENSIVA:
             Unidade->dim = 2;
@@ -76,6 +82,9 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
             Unidade->ataque = 3;
             Unidade->defesa = 5;
             Unidade->alcance = 2;
+            Unidade->custo_minerio = 2;
+            Unidade->custo_comida = 3;
+            Unidade->custo_eletricidade = 1;
             break;
         case DEFESA_PASSIVA:
             Unidade->dim = 1;
@@ -83,8 +92,23 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
             Unidade->ataque = 0;
             Unidade->defesa = 5;
             Unidade->alcance = 0;
+            Unidade->custo_minerio = 2;
+            Unidade->custo_comida = 3;
+            Unidade->custo_eletricidade = 1;
             break;
     }
+
+    if(player->comida < Unidade->custo_comida ||
+        player->minerio < Unidade->custo_minerio ||
+        player->eletricidade < Unidade->custo_eletricidade){
+        printf("Quantidade de recursos insuficientes\n");
+    return 0;
+    }
+
+    player->comida = player->comida - Unidade->custo_comida;
+    player->minerio = player->minerio - Unidade->custo_minerio;
+    player->eletricidade = player->eletricidade - Unidade->custo_eletricidade;
+
 
     for (int p = i; p <= (i + Unidade->dim-1); p++) {
         for (int q = j; q <= (j + Unidade->dim-1); q++) {
@@ -97,7 +121,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
     return 0;
 }
 
-int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atributos_data atributos) {
+int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atributos_data atributos, player_data *player) {
     unidade_movel *Unidade = (unidade_movel*)malloc(sizeof(unidade_movel));
     Unidade->i = i;
     Unidade->j = j; 
@@ -115,6 +139,9 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->defesa = 1;
                     Unidade->alcance = 4;
                     Unidade->velocidade = 5;
+                    Unidade->custo_minerio = 2;
+                    Unidade->custo_comida = 3;
+                    Unidade->custo_eletricidade = 1;
                     break;
                 case 2:
                     Unidade->vida = 5;
@@ -122,6 +149,9 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->defesa = 2;
                     Unidade->alcance = 1;
                     Unidade->velocidade = 6;
+                    Unidade->custo_minerio = 2;
+                    Unidade->custo_comida = 3;
+                    Unidade->custo_eletricidade = 1;
                     break;
                 case 3:
                     Unidade->vida = 6;
@@ -129,6 +159,9 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->defesa = 1;
                     Unidade->alcance = 1;
                     Unidade->velocidade = 10;
+                    Unidade->custo_minerio = 2;
+                    Unidade->custo_comida = 3;
+                    Unidade->custo_eletricidade = 1;
                     break;
                 }
             break;
@@ -140,6 +173,9 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->defesa = 2;
                     Unidade->alcance = 1;
                     Unidade->velocidade = 6;
+                    Unidade->custo_minerio = 2;
+                    Unidade->custo_comida = 3;
+                    Unidade->custo_eletricidade = 1;
                     break;
                 case 2:
                     Unidade->vida = 4;
@@ -147,6 +183,9 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->defesa = 1;
                     Unidade->alcance = 1;
                     Unidade->velocidade = 5;
+                    Unidade->custo_minerio = 2;
+                    Unidade->custo_comida = 3;
+                    Unidade->custo_eletricidade = 1;
                     break;
                 case 3:
                     Unidade->vida = 10;
@@ -154,6 +193,10 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->defesa = 3;
                     Unidade->alcance = 2;
                     Unidade->velocidade = 3;
+                    Unidade->custo_minerio = 2;
+                    Unidade->custo_comida = 3;
+                    Unidade->custo_eletricidade = 1;
+
                     break;
                 }
             break;
@@ -165,6 +208,9 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->defesa = 1;
                     Unidade->alcance = 3;
                     Unidade->velocidade = 8;
+                    Unidade->custo_minerio = 2;
+                    Unidade->custo_comida = 3;
+                    Unidade->custo_eletricidade = 1;
                     break;
                 case 2:
                     Unidade->vida = 7;
@@ -172,6 +218,9 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->defesa = 2;
                     Unidade->alcance = 2;
                     Unidade->velocidade = 4;
+                    Unidade->custo_minerio = 2;
+                    Unidade->custo_comida = 3;
+                    Unidade->custo_eletricidade = 1;
                     break;
                 case 3:
                     Unidade->vida = 5;
@@ -179,10 +228,36 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->defesa = 1;
                     Unidade->alcance = 1;
                     Unidade->velocidade = 6;
+                    Unidade->custo_minerio = 2;
+                    Unidade->custo_comida = 3;
+                    Unidade->custo_eletricidade = 1;
                     break;
                 }
-            break;    
+                break;
+        case OPERARIO:
+                    Unidade->vida = 5;
+                    Unidade->ataque = 0;
+                    Unidade->defesa = 0;
+                    Unidade->alcance = 0;
+                    Unidade->velocidade = 10;
+                    Unidade->custo_minerio = 0;
+                    Unidade->custo_comida = 0;
+                    Unidade->custo_eletricidade = 0;
+                break;
+                
     }
+
+    if(player->comida < Unidade->custo_comida ||
+        player->minerio < Unidade->custo_minerio ||
+        player->eletricidade < Unidade->custo_eletricidade){
+        printf("Quantidade de recursos insuficientes\n");
+    return 0;
+    }
+    player->comida = player->comida - Unidade->custo_comida;
+    player->minerio = player->minerio - Unidade->custo_minerio;
+    player->eletricidade = player->eletricidade - Unidade->custo_eletricidade;
+
+
     for (int p = i; p <= (i + Unidade->dim-1); p++) {
         for (int q = j; q <= (j + Unidade->dim-1); q++) {
             if (verifica_espaco(mapa, p, q) == 1)
@@ -191,5 +266,43 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                 return -1;
         }
     }
+    return 0;
+}
+
+int construction(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, int cell_i, int cell_j, unidade_movel* unit, player_data *player){
+   printf("Deseja construir algo?(S/N)\n");
+    char optionSN;
+    int option; 
+    scanf("%c", &optionSN);
+    if( optionSN == 'N' || optionSN == 'n'){
+        return 0;
+    }
+    if( optionSN != 'S' && optionSN != 's'){
+        printf("caractere invalido\n");
+        return 0;
+    }
+
+    printf("O que deseja construir?\n"); 
+    printf("1 - GERADOR_DE_RECURSO\n");
+    printf("2 - GERADOR DE TROPA\n");
+    printf("3 - DEFESA OFENSIVA\n");
+    printf("4 - DEFESA_PASSIVA\n");
+    scanf("%d", &option);
+    if(option == 1){
+        atributos.classe = GERADOR_DE_RECURSO;  
+    }
+    if(option == 2){
+          atributos.classe = GERADOR_DE_TROPA;
+    }
+    if(option == 3){
+          atributos.classe = DEFESA_OFENSIVA;
+    }if(option == 4){
+          atributos.classe = DEFESA_PASSIVA;
+    }
+
+    cria_uni_estatico(mapa, cell_i, cell_j, atributos, player);
+    optionSN = 'N';
+//    move_unidade(mapa, unit, cell_i+3, cell_j+3);
+  
     return 0;
 }
