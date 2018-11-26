@@ -7,8 +7,8 @@
 #include "SDL/SDL_image.h"
 #include "string"
 
-#define RX 1200
-#define RY 800
+#define RX 900
+#define RY 600
 #define BLOCOS_LINHA 40
 #define DIMENSAO_COMANDANTE 0.2 * RY
 #define TRANSLADA_COMANDANTE 0.02 * RX
@@ -18,9 +18,21 @@
 #define LARGURA_BARRAS 0.015 * RY
 
 const int LADO = RY/BLOCOS_LINHA;
-enum divisao {HUMANO = 1, MECANICO, ELETRICO};
-enum classe {GERADOR_DE_RECURSO = 1, GERADOR_DE_TROPA,
-            DEFESA_OFENSIVA, DEFESA_PASSIVA};
+enum divisao {HUMANO = 0, MECANICO, ELETRICO};
+enum classe {GERADOR_DE_RECURSO = 3, GERADOR_DE_TROPA,
+                DEFESA_OFENSIVA, DEFESA_PASSIVA};
+enum unidades_e_base {REPLICANTE = 7, EXTERMINADOR, HATSUNE, WALL,
+                    DROIDES, IRON, MERCENARIOS, CAVALEIROS,
+                    CHORIS, BASE};
+
+typedef struct Player_Data {
+
+int comida;
+int minerio;
+int eletricidade;
+int xp;
+
+}player_data;
 
 typedef struct Unidade_Movel {
     int vida;
@@ -52,10 +64,10 @@ typedef struct Unidade_Estatica {
 
 typedef struct Base_Principal {
     int vida;
-    int i;
-    int j;
     int time;
     int dim;
+    int i;
+    int j;
 }base_principal;
 
 typedef struct Cell_Mapa {
@@ -91,6 +103,8 @@ typedef struct Imagens_Data {
 typedef struct Mouse_Data {
     int x;
     int y;
+    int x_mem;
+    int y_mem;
 }mouse_data;
 
 typedef struct Atributos_Data {
@@ -100,24 +114,9 @@ typedef struct Atributos_Data {
     int nivel;
 }atributos_data;
 
-typedef struct Coordenada {
-    int x;
-    int y;
-}coordenada;
-
-typedef struct Area_Texto {
-    coordenada a;
-    coordenada b;
-    coordenada c;
-    coordenada d;
-}area_texto;
-
 typedef struct Texto_Data {
-    int numero;
-    int r, g, b;
-    int tamanho;
-    area_texto area;
     unsigned int numero_textura[101];
+    unsigned int nome_textura[20];
 }texto_data;
 
 GLuint loadTexture(const std::string&fileName);
@@ -126,7 +125,7 @@ GLuint importText(const std::string &text, int font_size, int red, int green, in
 
 int cria_mapa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]);
 
-int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse, texto_data texto);
+int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse, texto_data texto, player_data *player);
 
 int cria_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, int dim, int vida, int time);
 
@@ -138,7 +137,7 @@ bool verifica_espaco(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j);
 
 int verifica_selecao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse);
 
-int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse);
+int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, player_data *player);
 
 int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atributos_data atributos);
 
@@ -150,18 +149,30 @@ int carrega_mapa (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data image
 
 int carrega_layout();
 
-int carrega_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens);
+int carrega_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, texto_data texto);
 
 int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atributos_data atributos);
 
-int carrega_texto(texto_data texto);
-
-int carrega_numeros_recurso (texto_data texto);
+int carrega_numeros_recurso (texto_data texto, player_data *player);
 
 int mostra_menu(SDL_Surface* screen, TTF_Font* font);
-
+    
 int move_unidade (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* unit, int i, int j);
 
 int carrega_barras(imagens_data imagens);
 
+int combate(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unidade_movel *aux2, player_data *player);
+
+int destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unidade_estatica *aux2, player_data *player);
+
 int carrega_comandante(imagens_data imagens);
+
+int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, imagens_data imagens, texto_data texto);
+
+int escolhe_imagem_estatica(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, int i, int j);
+
+int escolhe_imagem_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, texto_data texto, int i, int j, int opcao);
+
+int escolhe_texto_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], texto_data texto, int i, int j);
+
+//define_mov_rang(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux);

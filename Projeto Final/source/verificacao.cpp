@@ -25,15 +25,27 @@ bool verifica_espaco(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j) {
             mapa[i][j].pBase == NULL) {
         return true;
     }
-
+    /*
+    if(x >= 0 && x <= RY && y >= 0 && y <= RY 
+        && mapa[i][j].pUniMovel != NULL){
+            //printf("Unidade encontrada\n");
+            return false;
+    }
+    */
+     else{
     printf("Posicao x = %d y = %d cheia ou invalida!\n", x, y);
     return false;
+
+    }
+
+    //printf("Posicao x = %d y = %d cheia ou invalida!\n", x, y);
+    //return false;
 }
 
 int verifica_selecao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse) {
 
-    int i = mouse.y/LADO;
-    int j = mouse.x/LADO;
+    int i = mouse.y_mem/LADO;
+    int j = mouse.x_mem/LADO;
 
     if (mapa[i][j].pUniMovel != NULL) {
         return 1;
@@ -46,7 +58,7 @@ int verifica_selecao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mous
     return 0;
 }
 
-int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse) {
+int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, player_data *player) {
     if (verifica_selecao(mapa, mouse) == 1) {
         
         SDL_Event evento;
@@ -66,6 +78,19 @@ int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mou
 
                 if (verifica_espaco(mapa, cell_i, cell_j) && (aux->i != cell_i || aux->j != cell_j)) {
                     move_unidade(mapa, aux, cell_i, cell_j);
+                }
+                if (mapa[cell_i][cell_j].pUniMovel != NULL && (aux->i != cell_i || aux->j != cell_j)) {
+                    printf("INICIAR COMBATE\n");
+                    unidade_movel* aux2 = mapa[cell_i][cell_j].pUniMovel;
+                    printf("%d %d\n", cell_i, cell_j);
+                    combate(mapa, aux, aux2, player);
+
+                }
+                if (mapa[cell_i][cell_j].pUniImovel != NULL && (aux->i != cell_i || aux->j != cell_j)) {
+                    printf("INICIAR ATAQUE\n");
+                    unidade_estatica* aux2 = mapa[cell_i][cell_j].pUniImovel;
+                    printf("%d %d\n", cell_i, cell_j);
+                    destruicao(mapa, aux, aux2, player);
                 }
             }
         }

@@ -67,6 +67,26 @@ int main() {
         }
     }
 
+    //CARREGAMENTO DOS NOMES DAS UNIDADES
+
+    texto.nome_textura[HUMANO] = importText("Humano",200,255,255,255);
+    texto.nome_textura[MECANICO] = importText("Mecanico",200,255,255,255);
+    texto.nome_textura[ELETRICO] = importText("Eletrico",200,255,255,255);
+    texto.nome_textura[GERADOR_DE_RECURSO] = importText("Gerador de Recurso",200,255,255,255);
+    texto.nome_textura[GERADOR_DE_TROPA] = importText("Gerador de Tropa",200,255,255,255);
+    texto.nome_textura[DEFESA_PASSIVA] = importText("Muralha",200,255,255,255);
+    texto.nome_textura[DEFESA_OFENSIVA] = importText("Torre",200,255,255,255);
+    texto.nome_textura[REPLICANTE] = importText("Replicante",200,255,255,255);
+    texto.nome_textura[EXTERMINADOR] = importText("Exterminador",200,255,255,255);
+    texto.nome_textura[HATSUNE] = importText("Hatsune Miku",200,255,255,255);
+    texto.nome_textura[WALL] = importText("Wall-E",200,255,255,255);
+    texto.nome_textura[DROIDES] = importText("Droide a vapor",200,255,255,255);
+    texto.nome_textura[IRON] = importText("Iron Giant",200,255,255,255);
+    texto.nome_textura[MERCENARIOS] = importText("Mercenario",200,255,255,255);
+    texto.nome_textura[CAVALEIROS] = importText("Cavaleiro Estelar",200,255,255,255);
+    texto.nome_textura[CHORIS] = importText("Choris",200,255,255,255);
+    texto.nome_textura[BASE] = importText("Base",200,255,255,255);
+
     // pegar textura
     unsigned int textura_grade;
     unsigned int textura_fundo;
@@ -91,6 +111,15 @@ int main() {
 
     unsigned int textura_exp;    
     imagens_data imagens;
+    player_data player1;
+
+    player1.comida = 10;
+    player1.minerio = 10;
+    player1.eletricidade = 10;
+    player1.xp = 0;
+
+    player_data *player = &player1;
+
 
     if (verifica_imagem("imagens/grade.png") == false ||
         verifica_imagem("imagens/sand.png") == false ||
@@ -180,15 +209,29 @@ int main() {
     }
 
     atributos_data dados_uni;
-    dados_uni.classe = 1;
-    dados_uni.divisao = 1;
+    dados_uni.classe = GERADOR_DE_RECURSO;
+    dados_uni.divisao = HUMANO;
     dados_uni.time = 1;
     dados_uni.nivel = 1;
     cria_uni_movel(mapa, 5, 5, dados_uni);
+    dados_uni.nivel = 2;
+    cria_uni_movel(mapa,10,10, dados_uni);
+    dados_uni.divisao = ELETRICO;
+    cria_uni_movel(mapa,15,15, dados_uni);
+    dados_uni.nivel = 3;
+    cria_uni_movel(mapa,20,20, dados_uni);
+
+    cria_uni_estatico(mapa, 30, 30, dados_uni);
+    dados_uni.divisao = MECANICO;
+    cria_uni_estatico(mapa, 25, 10, dados_uni);
+    dados_uni.classe = GERADOR_DE_TROPA;
+    cria_uni_estatico(mapa, 10, 25, dados_uni);
 
     int mouse_x = -1;
     int mouse_y = -1;
     mouse_data mouse;
+    mouse.x_mem = 200;
+    mouse.y_mem = 200;
     /*
     int menu = mostra_menu(screen, font); 
     
@@ -215,8 +258,13 @@ int main() {
                 if (eventos.button.button == SDL_BUTTON_LEFT) {
                     mouse_x = eventos.button.x;
                     mouse_y = eventos.button.y;
-                    printf("x = %d y = %d\n", mouse_x, mouse_y);
-                    printf("i = %d j = %d\n", mouse_y/LADO, mouse_x/LADO);
+                    if (mouse_x/20 < 40 && mouse_x/20 >= 0 &&
+                        mouse_y/20 < 40 && mouse_y/20 >= 0) {
+                        mouse.x_mem = mouse_x;
+                        mouse.y_mem = mouse_y;
+                    }
+                    //printf("x = %d y = %d\n", mouse_x, mouse_y);
+                    //printf("i = %d j = %d\n", mouse_y/LADO, mouse_x/LADO);
                 }
             } else if (eventos.type == SDL_MOUSEBUTTONUP) {
                     mouse_x = -1;
@@ -229,7 +277,7 @@ int main() {
         mouse.x = mouse_x;
         mouse.y = mouse_y;
 
-        carrega_interface(mapa, imagens, mouse, texto);
+        carrega_interface(mapa, imagens, mouse, texto, player);
 
         SDL_Flip(screen);
         SDL_GL_SwapBuffers();
