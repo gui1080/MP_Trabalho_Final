@@ -89,6 +89,7 @@ typedef struct Imagens_Data {
     unsigned int textura_grade; 
     unsigned int textura_fundo;
     unsigned int textura_base;
+    unsigned int textura_menu_principal;
     unsigned int humano_GER_REC;
     unsigned int humano_GER_TROP;
     unsigned int humano_DEF_OFS;

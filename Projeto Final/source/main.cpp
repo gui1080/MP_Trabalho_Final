@@ -44,7 +44,8 @@ int main() {
 
     /*FIM DA CRIAÇÃO*/
 
-    bool executando = true;
+    bool executando = false;
+    bool menu = true;
 
     SDL_Event eventos;
 
@@ -92,6 +93,7 @@ int main() {
     unsigned int textura_grade;
     unsigned int textura_fundo;
     unsigned int textura_base;
+    unsigned int menu_principal;
 
     unsigned int humano_GER_REC;
     unsigned int humano_GER_TROP;
@@ -144,7 +146,8 @@ int main() {
         verifica_imagem("imagens/minerio.png") == false ||
         verifica_imagem("imagens/raio.png") == false ||
         verifica_imagem("imagens/comida.png") == false ||
-        verifica_imagem("imagens/Kuru.png") == false
+        verifica_imagem("imagens/Kuru.png") == false ||
+        verifica_imagem("imagens/menu_principal.png") == false
         ) {
 
         printf("FALHA AO CARREGAR IMAGEM\n");
@@ -156,6 +159,7 @@ int main() {
 
     textura_grade = loadTexture("imagens/grade.png");
     textura_fundo = loadTexture("imagens/sand.png");
+    menu_principal = loadTexture("imagens/menu_principal.png");
     textura_base = loadTexture("imagens/base.png");
     humano_GER_REC = loadTexture("imagens/Akeno.png");
     humano_GER_TROP = loadTexture("imagens/albedo.png");
@@ -178,6 +182,7 @@ int main() {
     imagens.textura_grade = textura_grade;
     imagens.textura_fundo = textura_fundo;
     imagens.textura_base = textura_base;
+    imagens.textura_menu_principal = menu_principal;
     imagens.humano_GER_REC = humano_GER_REC;
     imagens.humano_GER_TROP = humano_GER_TROP;
     imagens.humano_DEF_OFS = humano_DEF_OFS;
@@ -256,6 +261,64 @@ int main() {
             switch(event.key.keysym.sym)
                 case SDKL_ESCAPE: *muda executando pra false*
     */
+    while(menu){
+        while (SDL_PollEvent(&eventos)) {
+            // fecha com o x da janela ou com ESC
+            if (eventos.type == SDL_QUIT) {
+                menu = false;
+            } else if (eventos.type == SDL_KEYUP && eventos.key.keysym.sym == SDLK_ESCAPE) {
+                menu = false;
+                break;
+            } else if (eventos.type == SDL_KEYUP && eventos.key.keysym.sym == SDLK_j) {
+                menu = false;
+                executando = true;
+            } else if (eventos.type == SDL_KEYUP && eventos.key.keysym.sym == SDLK_s) {
+                menu = false;
+                executando = true;
+            } else if (eventos.type == SDL_KEYUP && eventos.key.keysym.sym == SDLK_f) {
+                menu = false;
+                break;
+            }
+            
+        }
+        /*
+         * !!!INSTRUCOES!!!!
+         * F OU ESC - SAIR
+         * S - LOAD GAME
+         * J - NOVO JOGO
+         */
+
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        mouse.x = mouse_x;
+        mouse.y = mouse_y;
+
+        //
+        glPushMatrix();
+        glOrtho(0, 800, 1200, 0, -1, 1);
+        glEnable(GL_TEXTURE_2D);
+        
+        glBindTexture(GL_TEXTURE_2D, imagens.textura_menu_principal);
+        
+        glColor4ub(255, 255, 255, 255);
+        
+        glBegin(GL_QUADS);
+        
+        glTexCoord2d(0,0);  glVertex2f(0, 0);  
+        glTexCoord2d(1,0);  glVertex2f(800, 0);
+        glTexCoord2d(1,1);  glVertex2f(800, 1200);
+        glTexCoord2d(0,1);  glVertex2f(0, 1200);
+        
+        glEnd();
+        
+        glPopMatrix();
+        //glDisable(GL_TEXTURE_2D);
+        //
+        
+        SDL_Flip(screen);
+        SDL_GL_SwapBuffers();
+    }
+    
     while (executando) {
         // eventos
         while (SDL_PollEvent(&eventos)) {
