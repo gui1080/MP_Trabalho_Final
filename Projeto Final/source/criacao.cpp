@@ -65,6 +65,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
             Unidade->custo_minerio = 2;
             Unidade->custo_comida = 3;
             Unidade->custo_eletricidade = 1;
+            Unidade->producao = 5;
             break;
         case GERADOR_DE_TROPA:
             Unidade->dim = 3;
@@ -75,6 +76,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
             Unidade->custo_minerio = 2;
             Unidade->custo_comida = 3;
             Unidade->custo_eletricidade = 1;
+            Unidade->producao = 0;
             break;
         case DEFESA_OFENSIVA:
             Unidade->dim = 2;
@@ -85,6 +87,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
             Unidade->custo_minerio = 2;
             Unidade->custo_comida = 3;
             Unidade->custo_eletricidade = 1;
+            Unidade->producao = 0;
             break;
         case DEFESA_PASSIVA:
             Unidade->dim = 1;
@@ -95,6 +98,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
             Unidade->custo_minerio = 2;
             Unidade->custo_comida = 3;
             Unidade->custo_eletricidade = 1;
+            Unidade->producao = 0;
             break;
     }
 

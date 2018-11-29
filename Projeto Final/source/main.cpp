@@ -124,6 +124,7 @@ int main() {
     player1.minerio = 40;
     player1.eletricidade = 40;
     player1.xp = 0;
+    player1.nivel = 1;
 
     player_data *player = &player1;
 
@@ -231,14 +232,21 @@ int main() {
     cria_uni_movel(mapa,10,10, dados_uni, player);
     dados_uni.divisao = ELETRICO;
     cria_uni_movel(mapa,15,15, dados_uni, player);
-    dados_uni.nivel = 3;
+    dados_uni.nivel = 1;
     cria_uni_movel(mapa,20,20, dados_uni, player);
 
     cria_uni_estatico(mapa, 30, 30, dados_uni, player);
     dados_uni.divisao = MECANICO;
+    dados_uni.nivel = 2;
     cria_uni_estatico(mapa, 25, 10, dados_uni, player);
-    dados_uni.classe = GERADOR_DE_TROPA;
+    dados_uni.divisao = HUMANO;
+    dados_uni.nivel = 3;
     cria_uni_estatico(mapa, 10, 25, dados_uni, player);
+    cria_uni_movel(mapa,7,7, dados_uni, player);
+    cria_uni_movel(mapa,9,9, dados_uni, player);
+    cria_uni_movel(mapa,12,12, dados_uni, player);
+    cria_uni_movel(mapa,2,12, dados_uni, player);
+    cria_uni_movel(mapa,2,14, dados_uni, player);
 
     dados_uni.divisao = OPERARIO;
     cria_uni_movel(mapa,2,2, dados_uni, player);
@@ -249,6 +257,9 @@ int main() {
     mouse_data mouse;
     mouse.x_mem = 200;
     mouse.y_mem = 200;
+
+    Atualizar_recursos(mapa, player);
+    Atualizar_recursos(mapa, player);
     /*
     int menu = mostra_menu(screen, font); 
     

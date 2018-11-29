@@ -31,6 +31,7 @@ int comida;
 int minerio;
 int eletricidade;
 int xp;
+int nivel;
 
 }player_data;
 
@@ -66,6 +67,7 @@ typedef struct Unidade_Estatica {
     int custo_minerio;
     int custo_comida;
     int custo_eletricidade;
+    int producao;
 }unidade_estatica;
 
 typedef struct Base_Principal {
@@ -184,5 +186,9 @@ int escolhe_imagem_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_dat
 int escolhe_texto_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], texto_data texto, int i, int j);
 
 int construction(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, int cell_i, int cell_j, unidade_movel* unit, player_data *player);
+
+void Atualizar_recursos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], player_data *player);
+
+int player_level(player_data *player);
 
 //define_mov_rang(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux);
