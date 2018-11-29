@@ -118,17 +118,25 @@ int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mou
                 }
                     
             }
-            if (mapa[cell_i][cell_j].pUniMovel != NULL && (aux->i != cell_i || aux->j != cell_j)) {
-                printf("INICIAR COMBATE\n");
-                unidade_movel* aux2 = mapa[cell_i][cell_j].pUniMovel;
-                printf("%d %d\n", cell_i, cell_j);
-                combate(mapa, aux, aux2, player);
-            }
-            if (mapa[cell_i][cell_j].pUniImovel != NULL && (aux->i != cell_i || aux->j != cell_j)) {
-                printf("INICIAR ATAQUE\n");
-                unidade_estatica* aux2 = mapa[cell_i][cell_j].pUniImovel;
-                printf("%d %d\n", cell_i, cell_j);
-                destruicao(mapa, aux, aux2, player);
+            if (verifica_alcance(aux, cell_i, cell_j)) {
+                if (mapa[cell_i][cell_j].pUniMovel != NULL
+                    && (aux->i != cell_i || aux->j != cell_j)
+                    && verifica_oposicao(mapa, aux, cell_i, cell_j)) {
+
+                    printf("INICIAR COMBATE\n");
+                    unidade_movel* aux2 = mapa[cell_i][cell_j].pUniMovel;
+                    printf("%d %d\n", cell_i, cell_j);
+                    combate(mapa, aux, aux2, player);
+                }
+                if (mapa[cell_i][cell_j].pUniImovel != NULL
+                    && (aux->i != cell_i || aux->j != cell_j)
+                    && verifica_oposicao(mapa, aux, cell_i, cell_j)) {
+
+                    printf("INICIAR ATAQUE\n");
+                    unidade_estatica* aux2 = mapa[cell_i][cell_j].pUniImovel;
+                    printf("%d %d\n", cell_i, cell_j);
+                    destruicao(mapa, aux, aux2, player);
+                }
             }
         }
     }
@@ -146,9 +154,31 @@ int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mou
     return 0;
 }
 
-bool verifica_velocidade(unidade_movel* aux, int cell_i, int cell_j) {
-    if (cell_i <= aux->i + aux->velocidade && cell_i >= aux->i - aux->velocidade
-        && cell_j <= aux->j + aux->velocidade && cell_j >= aux->j - aux->velocidade) {
+bool verifica_velocidade (unidade_movel* aux, int cell_i, int cell_j) {
+    if (cell_i <= min(aux->i + aux->velocidade, 39) && cell_i >= max(aux->i - aux->velocidade, 0)
+        && cell_j <= min(aux->j + aux->velocidade, 39) && cell_j >= max(aux->j - aux->velocidade, 0)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool verifica_alcance (unidade_movel* aux, int cell_i, int cell_j) {
+    if (cell_i <= min(aux->i + aux->alcance, 39) && cell_i >= max(aux->i - aux->alcance, 0)
+        && cell_j <= min(aux->j + aux->alcance, 39) && cell_j >= max(aux->j - aux->alcance, 0)) {
+        return true;
+    } else {
+        return false;
+    } 
+}
+
+bool verifica_oposicao (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA],
+                        unidade_movel* aux, int i, int j) {
+    if (mapa[i][j].pUniMovel != NULL
+        && mapa[i][j].pUniMovel->time != aux->time) {
+        return true;
+    } else if (mapa[i][j].pUniImovel != NULL
+        && mapa[i][j].pUniImovel->time != aux->time) {
         return true;
     } else {
         return false;

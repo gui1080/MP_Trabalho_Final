@@ -214,7 +214,7 @@ int main() {
     cria_mapa(mapa);
 
     // i = 35, j = 1, dimensao = 4, vida = 20, time = 0
-    if (cria_base(mapa, 35, 1, 4, 20, 0) == -1) {
+    if (cria_base(mapa, 35, 1, 4, 20, ALIADO) == -1) {
         printf("FALHA AO CRIAR BASE 1\n");
         SDL_FreeSurface(screen);
         TTF_Quit();
@@ -222,7 +222,7 @@ int main() {
         return -1; 
     }
     //1, 35, 4, 20, 1
-    if (cria_base(mapa, 1, 35, 4, 20, 1) == -1) {
+    if (cria_base(mapa, 1, 35, 4, 20, INIMIGO) == -1) {
         printf("FALHA AO CRIAR BASE 2\n");
         SDL_FreeSurface(screen);
         TTF_Quit();
@@ -233,12 +233,14 @@ int main() {
     atributos_data dados_uni;
     dados_uni.classe = GERADOR_DE_RECURSO;
     dados_uni.divisao = HUMANO;
-    dados_uni.time = 1;
+    dados_uni.time = INIMIGO;
     dados_uni.nivel = 1;
     cria_uni_movel(mapa, 5, 5, dados_uni, player);
     dados_uni.nivel = 1;
+    dados_uni.time = ALIADO;
     cria_uni_movel(mapa,10,10, dados_uni, player);
     dados_uni.divisao = ELETRICO;
+    dados_uni.time = INIMIGO;
     cria_uni_movel(mapa,15,15, dados_uni, player);
     dados_uni.nivel = 1;
     cria_uni_movel(mapa,20,20, dados_uni, player);
@@ -249,16 +251,19 @@ int main() {
     dados_uni.divisao = HUMANO;
     cria_uni_estatico(mapa, 25, 10, dados_uni, player);
     dados_uni.divisao = MECANICO;
+    dados_uni.time = ALIADO;
     cria_uni_estatico(mapa, 10, 25, dados_uni, player);
     dados_uni.divisao = ELETRICO;
     cria_uni_estatico(mapa, 20, 12, dados_uni, player);
 
     cria_uni_movel(mapa,7,7, dados_uni, player);
     cria_uni_movel(mapa,9,9, dados_uni, player);
+    dados_uni.time = INIMIGO;
     cria_uni_movel(mapa,12,12, dados_uni, player);
     cria_uni_movel(mapa,2,12, dados_uni, player);
     cria_uni_movel(mapa,2,14, dados_uni, player);
 
+    dados_uni.time = ALIADO;
     dados_uni.divisao = OPERARIO;
     cria_uni_movel(mapa,2,2, dados_uni, player);
     dados_uni.divisao = MECANICO;

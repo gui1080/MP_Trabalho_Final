@@ -282,7 +282,7 @@ int carrega_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagen
             if (mapa[i][j].pBase != NULL) {
                 if (mapa[i][j].pBase->i == i && mapa[i][j].pBase->j == j) {
 
-                    if (mapa[i][j].pBase->time == 0) 
+                    if (mapa[i][j].pBase->time == ALIADO) 
                         glColor4ub(255, 255, 255, 255); 
                     else 
                         glColor4ub(255, 128, 128, 255);
@@ -306,7 +306,7 @@ int carrega_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_dat
         for (int j = 0; j < BLOCOS_LINHA; j++) {
             if (mapa[i][j].pUniImovel != NULL) {
                 if (mapa[i][j].pUniImovel->i == i && mapa[i][j].pUniImovel->j == j) {
-                    if (mapa[i][j].pUniImovel->time == 0) 
+                    if (mapa[i][j].pUniImovel->time == ALIADO) 
                         glColor4ub(255, 255, 255, 255); 
                     else 
                         glColor4ub(255, 255, 255, 255);
@@ -386,7 +386,7 @@ int carrega_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
         for (int j = 0; j < BLOCOS_LINHA; j++) {
             if (mapa[i][j].pUniMovel != NULL) {
                 if (mapa[i][j].pUniMovel->i == i && mapa[i][j].pUniMovel->j == j) {
-                    if (mapa[i][j].pUniMovel->time == 0) glColor4ub(255, 255, 255, 255); 
+                    if (mapa[i][j].pUniMovel->time == ALIADO) glColor4ub(255, 255, 255, 255); 
                     else glColor4ub(255, 255, 255, 255);
 
                     escolhe_imagem_movel(mapa, imagens, texto, i, j, 0);
@@ -610,25 +610,39 @@ int colore_espacos_validos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_m
     for (int i = max(aux->i - aux->velocidade, 0); i <= min(aux->i + aux->velocidade, 39); i++) {
         for (int j = max(aux->j - aux->velocidade, 0); j <= min(aux->j + aux->velocidade, 39); j++) {
 
-            if (mapa[i][j].pUniMovel != NULL) {
-                // colore para inimigos e deixa branco para aliados
-                glColor4ub(255, 0, 0, 64);
-            } else if (mapa[i][j].pUniImovel != NULL) {
-                // colore para inimigos e deixa branco para aliados
-                glColor4ub(255, 0, 0, 64);
-            } else if (mapa[i][j].pBase != NULL) {
-                // colore para inimigos e deixa branco para aliados
-                glColor4ub(255, 0, 0, 64);
-            } else if(i >= max(aux->i - aux->alcance, 0) && i <=  min(aux->i + aux->alcance, 39)
-                && j >= max(aux->j - aux->alcance, 0) && j <= min(aux->j + aux->alcance, 39) ){
-                glColor4ub(0, 0, 255, 64);
+            glColor4ub(128, 128, 128, 100);
+
+            if (mapa[i][j].pUniMovel == NULL &&
+                mapa[i][j].pUniImovel == NULL &&
+                mapa[i][j].pBase == NULL) {
+                // colore de verde
+                glColor4ub(0, 255, 0, 64);
+                if(verifica_alcance(aux, i, j)){
+                    glColor4ub(0, 0, 255, 64);
+                }
             }
 
-            else { // caso tudo == NULL
-                // colore de verde
-                //printf("Coloriu verde\n");
-                glColor4ub(0, 255, 0, 64);
+            if (mapa[i][j].pUniMovel != NULL) {
+                // colore para inimigos e deixa branco para aliados
+                if (mapa[i][j].pUniMovel->time == INIMIGO && verifica_alcance(aux, i, j)) {
+                    glColor4ub(255, 0, 0, 64);
+                }
             }
+
+            if (mapa[i][j].pUniImovel != NULL) {
+                // colore para inimigos e deixa branco para aliados
+                if (mapa[i][j].pUniImovel->time == INIMIGO && verifica_alcance(aux, i, j)) {
+                    glColor4ub(255, 0, 0, 64);
+                }
+            }
+
+            if (mapa[i][j].pBase != NULL) {
+                // colore para inimigos e deixa branco para aliados
+                if (mapa[i][j].pBase->time == INIMIGO && verifica_alcance(aux, i, j)) {
+                    glColor4ub(255, 0, 0, 64);
+                }
+            }
+
             glBegin(GL_QUADS);
             glVertex2f(LADO*j, LADO*i);
             glVertex2f(LADO*(j+1), LADO*i);
