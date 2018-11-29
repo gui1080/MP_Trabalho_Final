@@ -7,6 +7,7 @@
  *
  */
 
+
 #include "funcoes.h"
 
 GLuint loadTexture(const std::string&fileName) {
@@ -69,10 +70,6 @@ int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
     //  CARREGA ESTRUTURAS E ICONES
     glEnable(GL_TEXTURE_2D);
 
-    if (mouse.x != -1 && mouse.y != -1) {
-        verifica_unidades(mapa, mouse, player, atributos);
-    }
-
     carrega_display_recursos(imagens, texto);
     carrega_mapa(mapa, imagens, mouse);
     carrega_base(mapa, imagens);
@@ -86,6 +83,10 @@ int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
     glPopMatrix();
 
     glDisable(GL_TEXTURE_2D);
+
+    if (mouse.x != -1 && mouse.y != -1) {
+        verifica_unidades(mapa, mouse, player, atributos);
+    }
 
     return 0;
 }
@@ -598,5 +599,126 @@ int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, 
 
 }
 
+int colore_espacos_validos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux) {
+
+    //  cria matriz
+    glPushMatrix();
+
+    // dimensoes da matriz
+    glOrtho(0, RX, RY, 0, -1, 1); 
+
+    for (int i = max(aux->i - aux->velocidade, 0); i <= min(aux->i + aux->velocidade, 39); i++) {
+        for (int j = max(aux->j - aux->velocidade, 0); j <= min(aux->j + aux->velocidade, 39); j++) {
+
+            if (mapa[i][j].pUniMovel != NULL) {
+                // colore para inimigos e deixa branco para aliados
+                glColor4ub(255, 0, 0, 64);
+            } else if (mapa[i][j].pUniImovel != NULL) {
+                // colore para inimigos e deixa branco para aliados
+                glColor4ub(255, 0, 0, 64);
+            } else if (mapa[i][j].pBase != NULL) {
+                // colore para inimigos e deixa branco para aliados
+                glColor4ub(255, 0, 0, 64);
+            } else { // caso tudo == NULL
+                // colore de verde
+                //printf("Coloriu verde\n");
+                glColor4ub(0, 255, 0, 64);
+            }
+            glBegin(GL_QUADS);
+            glVertex2f(LADO*j, LADO*i);
+            glVertex2f(LADO*(j+1), LADO*i);
+            glVertex2f(LADO*(j+1), LADO*(i+1));
+            glVertex2f(LADO*j, LADO*(i+1));
+            glEnd();
+        }
+    }
+
+    // fecha matriz
+    glPopMatrix();
+
+    return 0;
+}
+
+/*
+int mostra_menu(SDL_Surface* screen, TTF_Font* font){
+    Uint32 time;
+    int x, y;
+    const int NUMMENU=2;
+    const char* labels[NUMMENU] = {"Continuar",  "Sair"};
+    SDL_Surface* menu[NUMMENU];
+    bool selected[NUMMENU] = {0, 0}
+    SDL_Color color[2] = {{255, 255, 255}, {255, 0, 0}};
+    
+    menu[0] = TTF_RenderText_Solid(font, labels[0], color[0]);
+    menu[1] = TTF_RenderText_Solid(font, labels[1], color[0]);
+    
+    pos[0].x = 300;
+    pos[0].y = 400;
+    pos[1].x = 900;
+    pos[1].y = 400;
+    
+    SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00));
+    
+    SDL_Event event;
+    while(1){
+        time = SDL_GetTicks();
+        while(SDL_PollEvent(&event)){
+            switch(event.type){
+                
+                case SDL_QUIT:
+                    SDL_FreeSurface(menu[0]);
+                    SDL_FreeSurface(menu[1]);
+                    return 1;
+                
+                case SDL_MOUSEMOTION:
+                    x = event.motion.x;
+                    y = event.motion.y;
+                    for(int i = 0; i<NUMMENU; i++){
+                        if((x>=pos[i].x) && (x<=pos[i].x + pos[i].w) && (y>pos[i].y) && (y<=pos[i].y + pos[i].h)){
+                            if(!selected){
+                                selected[i] = 1;
+                                SDLFreeSurface(menu[i]));
+                                menu[i] = TTF_RenderText_Solid(font, labels[i], color[1]);
+                            }
+                        }else{
+                                if(selected[i]){
+                                selected[i] = 0;
+                                SDLFreeSurface(menu[i]));
+                                menu[i] = TTF_RenderText_Solid(font, labels[i], color[0]);
+                                }
+                            }
+                        }
+                 // break;
+                case SDL_MOUSEBUTTONDOWN:
+                    x = event.button.x;
+                    y = event.button.y;
+                    for(i = 0; i<NUMMENU ; i++){
+                        if((x>=pos[i].x) && (x<=pos[i].x + pos[i].w) && (y>pos[i].y) && (y<=pos[i].y + pos[i].h)){
+                           SDL_FreeSurface(menu[0]);
+                            SDL_FreeSurface(menu[1]);
+                            return i;
+                        }
+                        break;
+                    }
+                case SDL_KEYDOWN:
+                    if(event.key.keyssym.sym = SDL_ESCAPE){
+                        SDL_FreeSurface(menu[0]);
+                        SDL_FreeSurface(menu[1]);
+                        return 0;
+                    }
+               }                                        
+           }
+           
+           for(int k = 0; i<NUMMENU; k++){
+                SDL_BlitSurface(menu[k], NULL, screen, &pos[k]);
+            }
+           SDL_Flip(screen);
+           if(1000/30 > (SDL_GetTicks()- time)){
+               SDL_Delay(1000/3-(SDL_GetTicks()- time));
+        }
+      }
+}
+
+*/
 
 

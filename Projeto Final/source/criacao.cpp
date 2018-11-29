@@ -1,11 +1,12 @@
 /**
  * @file criacao.cpp
  *
- * @brief Arquivo com as funções relacionadas à crioação de elementos do jogo
+ * @brief Arquivo com as funções relacionadas à criação de elementos do jogo
  *
  * @author Grupo 2
  *
  */
+
 
 #include "funcoes.h"
 
