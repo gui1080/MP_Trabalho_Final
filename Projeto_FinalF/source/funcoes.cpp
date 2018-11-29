@@ -1,3 +1,12 @@
+/**
+ * @file funcoes.cpp
+ *
+ * @brief Arquivo com a criação das funções gerais do jogo
+ *
+ * @author Grupo 2
+ *
+ */
+
 #include "funcoes.h"
 
 int cria_mapa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]) {
