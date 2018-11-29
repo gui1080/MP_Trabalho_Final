@@ -1,3 +1,12 @@
+/**
+ * @file main.cpp
+ *
+ * @brief Arquivo principal da execução do jogo
+ *
+ * @author Grupo 2
+ *
+ */
+
 #include "funcoes.h"
 
 int main() {
