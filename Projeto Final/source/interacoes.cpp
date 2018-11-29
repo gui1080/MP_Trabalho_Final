@@ -7,6 +7,7 @@
  *
  */
 
+
 #include "funcoes.h"
 
 int move_unidade (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* unit, int i, int j) {
