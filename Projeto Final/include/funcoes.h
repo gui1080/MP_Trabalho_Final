@@ -33,15 +33,15 @@ enum classe {GERADOR_DE_RECURSO = 3, GERADOR_DE_TROPA,
 enum unidades_e_base {REPLICANTE = 7, EXTERMINADOR, HATSUNE, WALL,
                     DROIDES, IRON, MERCENARIOS, CAVALEIROS,
                     CHORIS, BASE};
+enum time {ALIADO = 0, INIMIGO};
 
 typedef struct Player_Data {
 
-int comida;
-int minerio;
-int eletricidade;
-int xp;
-int nivel;
-
+    int comida;
+    int minerio;
+    int eletricidade;
+    int xp;
+    int nivel;
 }player_data;
 
 typedef struct Unidade_Movel {
@@ -286,6 +286,10 @@ int verifica_selecao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mous
 int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, player_data *player, atributos_data atributos);
 
 bool verifica_velocidade(unidade_movel* aux, int cell_i, int cell_j);
+
+bool verifica_alcance (unidade_movel* aux, int cell_i, int cell_j);
+
+bool verifica_oposicao (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux, int i, int j);
 
 /**
  * @brief Cria unidade estática.
