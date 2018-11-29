@@ -139,6 +139,10 @@ typedef struct Texto_Data {
 }texto_data;
 
 
+int min(int a, int b);
+
+int max(int a, int b);
+
 /**
  * @brief Carrega Texturas.
  * Função que carrega as texturas atribuídas.
