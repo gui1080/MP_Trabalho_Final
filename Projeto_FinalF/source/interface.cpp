@@ -1,3 +1,12 @@
+/**
+ * @file interface.cpp
+ *
+ * @brief Arquivo com a aplicação das funções da interface do jogo
+ *
+ * @author Grupo 2
+ *
+ */
+
 #include "funcoes.h"
 
 GLuint loadTexture(const std::string&fileName) {
