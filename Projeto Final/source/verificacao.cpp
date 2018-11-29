@@ -1,3 +1,12 @@
+/**
+ * @file verificacao.cpp
+ *
+ * @brief Arquivo com as funções de verificação de atos no jogo
+ *
+ * @author Grupo 2
+ *
+ */
+
 #include <stdlib.h>
 #include "funcoes.h"
 
