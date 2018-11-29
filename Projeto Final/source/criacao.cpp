@@ -1,3 +1,12 @@
+/**
+ * @file criacao.cpp
+ *
+ * @brief Arquivo com as funções relacionadas à crioação de elementos do jogo
+ *
+ * @author Grupo 2
+ *
+ */
+
 #include "funcoes.h"
 
 int cria_mapa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]) {
