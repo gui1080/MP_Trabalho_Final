@@ -89,18 +89,23 @@ int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mou
                 if (mapa[cell_i][cell_j].pUniMovel != NULL && (aux->i != cell_i || aux->j != cell_j)) {
                     printf("INICIAR COMBATE\n");
                     unidade_movel* aux2 = mapa[cell_i][cell_j].pUniMovel;
-                    printf("%d %d\n", cell_i, cell_j);
                     combate(mapa, aux, aux2, player);
 
                 }
                 if (mapa[cell_i][cell_j].pUniImovel != NULL && (aux->i != cell_i || aux->j != cell_j)) {
                     printf("INICIAR ATAQUE\n");
                     unidade_estatica* aux2 = mapa[cell_i][cell_j].pUniImovel;
-                    printf("%d %d\n", cell_i, cell_j);
                     destruicao(mapa, aux, aux2, player);
                 }
             }
         }
+    }
+    if(verifica_selecao(mapa, mouse) == 2){
+        int cell_i = mouse.y/LADO;
+        int cell_j = mouse.x/LADO;
+        unidade_estatica* aux = mapa[cell_i][cell_j].pUniImovel;
+        evolution(aux, player);
+        //Atualizar_recursos(mapa, player);
     }
     return 0;
 }

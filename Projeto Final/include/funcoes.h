@@ -192,3 +192,5 @@ void Atualizar_recursos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], player_data 
 int player_level(player_data *player);
 
 //define_mov_rang(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux);
+
+int evolution(unidade_estatica *aux, player_data *player);

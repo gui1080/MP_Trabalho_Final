@@ -115,8 +115,6 @@ int main() {
 
     unsigned int textura_exp;
 
-
-
     imagens_data imagens;
     player_data player1;
 
@@ -228,20 +226,23 @@ int main() {
     dados_uni.time = 1;
     dados_uni.nivel = 1;
     cria_uni_movel(mapa, 5, 5, dados_uni, player);
-    dados_uni.nivel = 2;
+    dados_uni.nivel = 1;
     cria_uni_movel(mapa,10,10, dados_uni, player);
     dados_uni.divisao = ELETRICO;
     cria_uni_movel(mapa,15,15, dados_uni, player);
     dados_uni.nivel = 1;
     cria_uni_movel(mapa,20,20, dados_uni, player);
 
-    cria_uni_estatico(mapa, 30, 30, dados_uni, player);
-    dados_uni.divisao = MECANICO;
-    dados_uni.nivel = 2;
-    cria_uni_estatico(mapa, 25, 10, dados_uni, player);
+    //cria_uni_estatico(mapa, 30, 30, dados_uni, player);
+    dados_uni.nivel = 1;
+
     dados_uni.divisao = HUMANO;
-    dados_uni.nivel = 3;
+    cria_uni_estatico(mapa, 25, 10, dados_uni, player);
+    dados_uni.divisao = MECANICO;
     cria_uni_estatico(mapa, 10, 25, dados_uni, player);
+    dados_uni.divisao = ELETRICO;
+    cria_uni_estatico(mapa, 20, 12, dados_uni, player);
+
     cria_uni_movel(mapa,7,7, dados_uni, player);
     cria_uni_movel(mapa,9,9, dados_uni, player);
     cria_uni_movel(mapa,12,12, dados_uni, player);
@@ -258,7 +259,6 @@ int main() {
     mouse.x_mem = 200;
     mouse.y_mem = 200;
 
-    Atualizar_recursos(mapa, player);
     Atualizar_recursos(mapa, player);
     /*
     int menu = mostra_menu(screen, font); 
