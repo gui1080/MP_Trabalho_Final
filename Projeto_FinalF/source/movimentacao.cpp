@@ -1,3 +1,12 @@
+/**
+ * @file movimentacao.cpp
+ *
+ * @brief Arquivo com as funções de movimentação no jogo
+ *
+ * @author Grupo 2
+ *
+ */
+
 #include "funcoes.h"
 #include <unistd.h>
 
