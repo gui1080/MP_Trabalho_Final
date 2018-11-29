@@ -1,6 +1,18 @@
+/**
+ * @file testa_main.cpp
+ *
+ * @brief Arquivo com testes das funções do jogo
+ *
+ * @author Grupo 2
+ *
+ */
+
 #include <gtest/gtest.h>
 #include "funcoes.h"
 
+TEST(Testa, gtest_instalado) {
+    ASSERT_EQ(42, (40 + 2));
+}
 
 TEST(Testa, cria_mapa) {
 	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
