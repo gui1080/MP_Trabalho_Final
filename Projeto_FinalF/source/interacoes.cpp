@@ -1,7 +1,7 @@
 /**
  * @file interacoes.cpp
  *
- * @brief Arquivo com a declaração das funções de interação do jogo
+ * @brief Arquivo com a aplicação das funções de interação do jogo
  *
  * @author Grupo 2
  *
