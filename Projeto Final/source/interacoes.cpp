@@ -1,3 +1,12 @@
+/**
+ * @file interacoes.cpp
+ *
+ * @brief Arquivo com a aplicação das funções da interação entre elementos do jogo
+ *
+ * @author Grupo 2
+ *
+ */
+
 #include "funcoes.h"
 
 int move_unidade (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* unit, int i, int j) {
