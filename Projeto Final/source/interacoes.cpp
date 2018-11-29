@@ -135,7 +135,7 @@ int destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, u
     if(aux2->vida <= 0){
 
 
-    	for (int p = aux2->j; p < (aux2->i + aux2->dim); p++) {
+    	for (int p = aux2->i; p < (aux2->i + aux2->dim); p++) {
         for (int q = aux2->j; q < (aux2->j + aux2->dim); q++) {
             mapa[p][q].pUniImovel = NULL;
         }
@@ -237,3 +237,41 @@ printf("Construção Aprimorada com sucesso\n\n");
 
 }
 
+int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atributos_data atributos, player_data *player){
+        int x;
+        int y;
+        int i = mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->i;
+        int j = mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->j;
+        int dim = mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->dim;
+        int aux1 = i - 1;
+        int aux2 = j - 1;
+        int aux3 = i + (dim + 1);
+        int aux4 = j + (dim + 1);
+        atributos.nivel = 2;
+
+if(mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->divisao == HUMANO){
+    atributos.divisao = HUMANO;
+}
+if(mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->divisao == MECANICO){
+    atributos.divisao = MECANICO;
+}
+if(mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->divisao == ELETRICO){
+    atributos.divisao = ELETRICO;
+}
+
+while(1){
+    for(x = aux1; x <  aux3; x++){
+            for(y = aux2; y < aux4; y++){
+                if(mapa[x][y].pUniImovel == NULL && mapa[x][y].pUniMovel == NULL){
+                    cria_uni_movel(mapa, x, y, atributos, player);
+                    return 0;
+                }
+            }
+        }
+        aux1--;
+        aux2--;
+        aux3++;
+        aux4++;
+    }
+        
+} 

@@ -619,7 +619,12 @@ int colore_espacos_validos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_m
             } else if (mapa[i][j].pBase != NULL) {
                 // colore para inimigos e deixa branco para aliados
                 glColor4ub(255, 0, 0, 64);
-            } else { // caso tudo == NULL
+            } else if(i >= max(aux->i - aux->alcance, 0) && i <=  min(aux->i + aux->alcance, 39)
+                && j >= max(aux->j - aux->alcance, 0) && j <= min(aux->j + aux->alcance, 39) ){
+                glColor4ub(0, 0, 255, 64);
+            }
+
+            else { // caso tudo == NULL
                 // colore de verde
                 //printf("Coloriu verde\n");
                 glColor4ub(0, 255, 0, 64);
