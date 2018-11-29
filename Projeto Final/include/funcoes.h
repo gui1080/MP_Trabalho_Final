@@ -425,7 +425,7 @@ int carrega_barras(imagens_data imagens);
  *
  * @param unidade_movel *aux2 - Unidade envolvida no combate
  *
- * @param  player_data *player - Informações de jogador.  
+ * @param player_data *player - Informações de jogador.  
  *
  * @return 0 - Se o procedimento foi bem sucedido.
  */
@@ -438,9 +438,9 @@ int combate(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unid
  *
  * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo. 
  *
- * @param unidade_movel *aux - Unidade envolvida no combate
+ * @param unidade_movel *aux - Unidade envolvida no combate.
  *
- * @param unidade_estatica*aux2 - Unidade envolvida no combate
+ * @param unidade_estatica *aux2 - Unidade envolvida no combate.
  *
  * @param  player_data *player - Informações de jogador.  
  *
@@ -458,20 +458,126 @@ int destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, u
  */
 int carrega_comandante(imagens_data imagens);
 
+/**
+ * @brief Carrega a caixa.
+ * Função que carrega a caixa do jogador.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo. 
+ *
+ * @param mouse_data mouse - Informações de localização do mouse do usuário. 
+ *
+ * @param imagens_data imagens - Imagens carregadas. 
+ * 
+ * @param texto_data texto - Texto a ser carregado.  
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, imagens_data imagens, texto_data texto);
 
+/**
+ * @brief Escolhe imagem estática.
+ * Função que define a imagem de unidade estática desejada.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo. 
+ *
+ * @param imagens_data imagens - Imagens carregadas. 
+ *
+ * @param int i - Auxiliar de coordenada da posição. 
+ *
+ * @param int j - Auxiliar de coordenada da posição. 
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 int escolhe_imagem_estatica(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, int i, int j);
 
+/**
+ * @brief Escolhe imagem móvel.
+ * Função que define a imagem de unidade móvel desejada.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo. 
+ *
+ * @param imagens_data imagens - Imagens carregadas. 
+ *
+ * @param texto_data texto - Texto a ser carregado.
+ *
+ * @param int i - Auxiliar de coordenada da posição. 
+ *
+ * @param int j - Auxiliar de coordenada da posição. 
+ *
+ * @param int opcao - Auxiliar que define caso de execução
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 int escolhe_imagem_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, texto_data texto, int i, int j, int opcao);
 
+/**
+ * @brief Escolhe texto.
+ * Função que define o texto a ser exibido.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo. 
+ *
+ * @param texto_data texto - Texto a ser carregado. 
+ *
+ * @param int i - Auxiliar de coordenada da posição. 
+ *
+ * @param int j - Auxiliar de coordenada da posição. 
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 int escolhe_texto_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], texto_data texto, int i, int j);
 
+/**
+ * @brief Construção.
+ * Função que constrói determinada unidade.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo. 
+ *
+ * @param  atributos_data atributos - Atributos do jogador.
+ *
+ * @param int cell_i - Auxiliar de coordenada da posição. 
+ *
+ * @param int cell_j - Auxiliar de coordenada da posição. 
+ *
+ * @param unidade_movel* unit -Unidade movel emvolvida na construção .
+ *
+ * @param player_data *player - Informações de jogador.      
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 int construction(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, int cell_i, int cell_j, unidade_movel* unit, player_data *player);
 
+/**
+ * @brief Atualização de recursos.
+ * Função que recursos de determinado jogador.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo. 
+ *
+ * @param  player_data *player - Informações de jogador.
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 void Atualizar_recursos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], player_data *player);
 
+/**
+ * @brief Definição de nível.
+ * Função que define nível de determinado jogador.
+ *
+ * @param  player_data *player - Informações de jogador.
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 int player_level(player_data *player);
 
 //define_mov_rang(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux);
 
+/**
+ * @brief Evolui construções.
+ * Função que evolui determinada construção.
+ *
+ * @param unidade_estatica aux2 - Unidade envolvida na evolução.
+ *
+ * @param  player_data *player - Informações de jogador.  
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 int evolution(unidade_estatica *aux, player_data *player);
