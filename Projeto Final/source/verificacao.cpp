@@ -63,8 +63,10 @@ int verifica_selecao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mous
 
     if (mapa[i][j].pUniMovel != NULL) {
         return 1;
+
     } else if (mapa[i][j].pUniImovel != NULL) {
         return 2;
+
     } else if (mapa[i][j].pBase != NULL) {
         return 3;
     }
@@ -82,66 +84,55 @@ int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mou
         int cell_j = mouse.x/LADO;
         unidade_movel* aux = mapa[cell_i][cell_j].pUniMovel;
 
-        colore_espacos_validos(mapa, aux);
-        SDL_PollEvent(&evento);
+        while (!stop) {
+            while (SDL_PollEvent(&evento)) {
 
-        while (stop == false) {
-            if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_x) {
-                stop = true;
-                continue;
-            }
-            
-            SDL_PollEvent(&evento);
+                if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
+                    cell_i = evento.button.y/LADO;
+                    cell_j = evento.button.x/LADO;
 
-            if (evento.type == SDL_MOUSEBUTTONUP && evento.button.button == SDL_BUTTON_LEFT) {
-                stop = true;
-                continue;
-            }
-
-            if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
-                cell_i = evento.button.y/LADO;
-                cell_j = evento.button.x/LADO;
-
-                if (verifica_velocidade(aux, cell_i, cell_j)) {
-                    if (verifica_espaco(mapa, cell_i, cell_j) && (aux->i != cell_i || aux->j != cell_j)) {
-                        if (aux->divisao == OPERARIO) {
-                            construction(mapa, atributos, cell_i, cell_j, aux, player);
-                            cell_i--;
-                            cell_j--;
+                    if (verifica_velocidade(aux, cell_i, cell_j)) {
+                        if (verifica_espaco(mapa, cell_i, cell_j) && (aux->i != cell_i || aux->j != cell_j)) {
+                            if (aux->divisao == OPERARIO) {
+                                construction(mapa, atributos, cell_i, cell_j, aux, player);
+                                cell_i--;
+                                cell_j--;
+                            }
+                            move_unidade(mapa, aux, cell_i, cell_j);  
                         }
-                        move_unidade(mapa, aux, cell_i, cell_j);  
+                    } else {
+                        printf("Essa unidade nao alcanca toda essa distancia!\n");
                     }
-                    stop = true;
-                } else {
-                    printf("Essa unidade nao alcanca toda essa distancia!\n");
-                    stop = true;
-                }
-                    
-            }
-            if (verifica_alcance(aux, cell_i, cell_j)) {
-                if (mapa[cell_i][cell_j].pUniMovel != NULL
-                    && (aux->i != cell_i || aux->j != cell_j)
-                    && verifica_oposicao(mapa, aux, cell_i, cell_j)) {
 
-                    printf("INICIAR COMBATE\n");
-                    unidade_movel* aux2 = mapa[cell_i][cell_j].pUniMovel;
-                    printf("%d %d\n", cell_i, cell_j);
-                    combate(mapa, aux, aux2, player);
-                }
-                if (mapa[cell_i][cell_j].pUniImovel != NULL
-                    && (aux->i != cell_i || aux->j != cell_j)
-                    && verifica_oposicao(mapa, aux, cell_i, cell_j)) {
+                    if (verifica_alcance(aux, cell_i, cell_j)) {
+                        if (mapa[cell_i][cell_j].pUniMovel != NULL
+                            && (aux->i != cell_i || aux->j != cell_j)
+                            && verifica_oposicao(mapa, aux, cell_i, cell_j)) {
 
-                    printf("INICIAR ATAQUE\n");
-                    unidade_estatica* aux2 = mapa[cell_i][cell_j].pUniImovel;
-                    printf("%d %d\n", cell_i, cell_j);
-                    destruicao(mapa, aux, aux2, player);
+                            printf("INICIAR COMBATE\n");
+                            unidade_movel* aux2 = mapa[cell_i][cell_j].pUniMovel;
+                            printf("%d %d\n", cell_i, cell_j);
+                            combate(mapa, aux, aux2, player);
+                        }
+                        if (mapa[cell_i][cell_j].pUniImovel != NULL
+                            && (aux->i != cell_i || aux->j != cell_j)
+                            && verifica_oposicao(mapa, aux, cell_i, cell_j)) {
+
+                            printf("INICIAR ATAQUE\n");
+                            unidade_estatica* aux2 = mapa[cell_i][cell_j].pUniImovel;
+                            printf("%d %d\n", cell_i, cell_j);
+                            destruicao(mapa, aux, aux2, player);
+                        }
+                    }
+                    stop = true;   
+                }
+
+                if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_x) {
+                    stop = true;
                 }
             }
         }
-    }
-
-    if (verifica_selecao(mapa, mouse) == 2) { //caso unidade estatica
+    } else if (verifica_selecao(mapa, mouse) == 2) { //caso unidade estatica
 
         int cell_i = mouse.y/LADO;
         int cell_j = mouse.x/LADO;
@@ -176,10 +167,19 @@ bool verifica_oposicao (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA],
                         unidade_movel* aux, int i, int j) {
     if (mapa[i][j].pUniMovel != NULL
         && mapa[i][j].pUniMovel->time != aux->time) {
+
         return true;
+
     } else if (mapa[i][j].pUniImovel != NULL
         && mapa[i][j].pUniImovel->time != aux->time) {
+
         return true;
+
+    } else if (mapa[i][j].pBase != NULL
+        && mapa[i][j].pBase->time != aux->time) {
+
+        return true;
+
     } else {
         return false;
     }

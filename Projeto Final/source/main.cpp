@@ -395,8 +395,18 @@ int main() {
         mouse.y = mouse_y;
         if (turno_de_quem == ALIADO) {
         	carrega_interface(mapa, imagens, mouse, texto, player, dados_uni);
+
+            if (verifica_selecao(mapa, mouse) != 0) {
+                colore_espacos_validos(mapa, mapa[mouse.y/LADO][mouse.x/LADO].pUniMovel);
+            }
+
         	SDL_Flip(screen);
         	SDL_GL_SwapBuffers();
+            
+            if (verifica_selecao(mapa, mouse) != 0) {
+                verifica_unidades(mapa, mouse, player, dados_uni);
+            }
+
     	}
     	else if (turno_de_quem == INIMIGO) {
             //CPU(mapa, imagens, mouse, texto, player_CPU, dados_uni);
