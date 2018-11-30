@@ -84,6 +84,10 @@ int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
 
     glDisable(GL_TEXTURE_2D);
 
+    if (verifica_selecao(mapa, mouse) != 0) {
+        colore_espacos_validos(mapa, mapa[mouse.y/LADO][mouse.x/LADO].pUniMovel);
+    }
+
     return 0;
 }
 
