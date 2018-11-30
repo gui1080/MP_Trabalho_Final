@@ -262,7 +262,7 @@ int main() {
     cria_uni_estatico(mapa, 25, 10, dados_uni, player);
     dados_uni.divisao = MECANICO;
     dados_uni.time = ALIADO;
-    cria_uni_estatico(mapa, 10, 25, dados_uni, player);
+    //cria_uni_estatico(mapa, 10, 25, dados_uni, player);
     dados_uni.divisao = ELETRICO;
     cria_uni_estatico(mapa, 20, 12, dados_uni, player);
 
@@ -355,6 +355,7 @@ int main() {
         SDL_GL_SwapBuffers();
     }
     
+    int contador_turno = 0;
     int turno_de_quem = ALIADO;
     while (executando) {
         // eventos
@@ -386,6 +387,10 @@ int main() {
             if(eventos.type == SDL_KEYDOWN && (eventos.key.keysym.sym == SDLK_RETURN || SDL_KEYDOWN && eventos.key.keysym.sym == SDLK_KP_ENTER)){
                 turno_de_quem = INIMIGO;
                 printf("Vez do CPU\n");
+                //Atualizacoes do turno:
+            	/*Atualizar_recursos(mapa, player);
+                gera_tropa(mapa, mouse, dados_uni, player);*/
+                contador_turno++;
             }
         }
         // LIMPA O BUFFER
@@ -405,9 +410,13 @@ int main() {
 
     	}
     	else if (turno_de_quem == INIMIGO) {
-            //CPU(mapa, imagens, mouse, texto, player_CPU, dados_uni);
+            CPU(mapa, imagens, mouse, texto, player_CPU, dados_uni, contador_turno);
+            //Atualizacoes do turno:
+            /*gera_tropa(mapa, mouse, dados_uni, player_CPU);*/
+            Atualizar_recursos(mapa, player_CPU);
             turno_de_quem = ALIADO;
             printf("sua vez\n");
+            contador_turno++;
         }
     }
 

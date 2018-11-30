@@ -10,6 +10,8 @@
 #include <iostream>
 #include <unistd.h>
 #include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL.h>
 #include "SDL/SDL_opengl.h"
@@ -594,4 +596,13 @@ int player_level(player_data *player);
  */
 int evolution(unidade_estatica *aux, player_data *player);
 
+/**
+ * @file cpu.cpp
+ *
+ * @brief Inteligencia artificial da CPU para simular o oponente
+ *
+ * @author Grupo 2
+ *
+ */
+void CPU(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse, texto_data texto, player_data *player_CPU, atributos_data atributos, int contador_turno);
 int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atributos_data atributos, player_data *player);
