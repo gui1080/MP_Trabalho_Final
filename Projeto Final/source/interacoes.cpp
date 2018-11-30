@@ -38,45 +38,47 @@ int combate(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unid
     printf("Velocidade: %d\n\n", aux2->velocidade);
 
     int ataque = aux->ataque;
-    if((aux->divisao == HUMANO && aux2->divisao == MECANICO)
+    if ((aux->divisao == HUMANO && aux2->divisao == MECANICO)
     	|| (aux->divisao == MECANICO && aux2->divisao == ELETRICO)
-    	|| (aux->divisao == ELETRICO && aux2->divisao == HUMANO)){
+    	|| (aux->divisao == ELETRICO && aux2->divisao == HUMANO)) {
+
     	ataque = aux->ataque + 2;
-    }else if((aux->divisao == MECANICO && aux2->divisao == HUMANO)
+
+    } else if ((aux->divisao == MECANICO && aux2->divisao == HUMANO)
     	|| (aux->divisao == ELETRICO && aux2->divisao == MECANICO)
-    	|| (aux->divisao == HUMANO && aux2->divisao == ELETRICO)){
+    	|| (aux->divisao == HUMANO && aux2->divisao == ELETRICO)) {
+
     	ataque = aux->ataque - 2;
     }
+
     printf("Ataque: %d\n\n", ataque);
 
-    if( aux->nivel == 2){
+    if (aux->nivel == 2){
 
-    aux2->vida = aux2->vida - ataque;	
+        aux2->vida = aux2->vida - ataque;	
 
-    }else{
-
-	if(aux2->defesa < ataque){
-	aux2->vida = aux2->vida - (ataque - aux2->defesa);		
-    } 
-
+    } else if (aux2->defesa < ataque) {
+	   aux2->vida = aux2->vida - (ataque - aux2->defesa);		
     }
   
     if(aux2->vida <= 0){
 
-    mapa[aux2->i][aux2->j].pUniMovel = NULL;
-
-    	printf("Unidade morta\n\n");
+        mapa[aux2->i][aux2->j].pUniMovel = NULL;
     	player->xp = player->xp + (aux2->nivel)*2;
         player_level(player);
 
-    	if(aux->divisao == HUMANO && aux->nivel == 1){
-    		player->comida = player->comida + (aux2->nivel)*2;
-    	}
-        if(aux->divisao == MECANICO && aux->nivel == 1){
-            player->minerio = player->minerio + (aux2->nivel)*2;
-        }
-        if(aux->divisao == ELETRICO && aux->nivel == 1){
-            player->eletricidade = player->eletricidade + (aux2->nivel)*2;
+        printf("Unidade morta\n\n");
+
+        if (aux->nivel == 1) {
+        	if(aux->divisao == HUMANO){
+        		player->comida = player->comida + (aux2->nivel)*2;
+        	}
+            if(aux->divisao == MECANICO){
+                player->minerio = player->minerio + (aux2->nivel)*2;
+            }
+            if(aux->divisao == ELETRICO){
+                player->eletricidade = player->eletricidade + (aux2->nivel)*2;
+            }
         }
 
     	printf("XP do player:%d\n", player->xp);
@@ -109,48 +111,45 @@ int destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, u
     printf("Dim: %d\n\n", aux2->dim);
 
     int ataque = aux->ataque;
+
     if((aux->divisao == HUMANO && aux2->divisao == MECANICO)
     	|| (aux->divisao == MECANICO && aux2->divisao == ELETRICO)
-    	|| (aux->divisao == ELETRICO && aux2->divisao == HUMANO)){
+    	|| (aux->divisao == ELETRICO && aux2->divisao == HUMANO)) {
+
     	ataque = aux->ataque + 2;
+
     }else if((aux->divisao == MECANICO && aux2->divisao == HUMANO)
     	|| (aux->divisao == ELETRICO && aux2->divisao == MECANICO)
-    	|| (aux->divisao == HUMANO && aux2->divisao == ELETRICO)){
+    	|| (aux->divisao == HUMANO && aux2->divisao == ELETRICO)) {
+
     	ataque = aux->ataque - 2;
     }
     printf("Ataque Total: %d\n", ataque);
 
-    if(aux->divisao == HUMANO && aux->nivel == 2){
+    if (aux->divisao == HUMANO && aux->nivel == 2) {
 
-    aux2->vida = aux2->vida - ataque;	
+        aux2->vida = aux2->vida - ataque;	
 
-    }else{
-
-    if(aux2->defesa < ataque){
-	aux2->vida = aux2->vida - (ataque - aux2->defesa);		
-    } 
-
+    } else if (aux2->defesa < ataque) {
+	   aux2->vida = aux2->vida - (ataque - aux2->defesa);		
     }
   
-    if(aux2->vida <= 0){
+    if (aux2->vida <= 0) {
 
 
     	for (int p = aux2->i; p < (aux2->i + aux2->dim); p++) {
-        for (int q = aux2->j; q < (aux2->j + aux2->dim); q++) {
-            mapa[p][q].pUniImovel = NULL;
-        }
+            for (int q = aux2->j; q < (aux2->j + aux2->dim); q++) {
+                mapa[p][q].pUniImovel = NULL;
+            }
     	}
 
     	mapa[aux2->i][aux2->j].pUniImovel = NULL;
     	mapa[aux2->i][aux2->j+1].pUniImovel = NULL;
 
-
-
     	printf("Construção destruida\n");
     	player->xp = player->xp + (aux2->classe)*2;
         player_level(player);
         printf("nivel do player: %d\n", player->nivel);
-
     	printf("XP do player:%d\n", player->xp);
 
     } else{
@@ -166,101 +165,104 @@ void Atualizar_recursos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], player_data 
     for (int i = 0; i < BLOCOS_LINHA; i++) {
         for (int j = 0; j < BLOCOS_LINHA; j++) {
             if (mapa[i][j].pUniImovel != NULL &&  mapa[i][j].pUniImovel->classe == GERADOR_DE_RECURSO) {
-            if (mapa[i][j].pUniImovel->i == i && mapa[i][j].pUniImovel->j == j){
-               if(mapa[i][j].pUniImovel->divisao == HUMANO){
+                if (mapa[i][j].pUniImovel->i == i && mapa[i][j].pUniImovel->j == j){
+                   if (mapa[i][j].pUniImovel->divisao == HUMANO) {
 
-                printf("comida do jogador: %d\n", player->comida);
-                printf("produção: %d\n", mapa[i][j].pUniImovel->producao);
-                printf("nivel da unidade de produção: %d\n", mapa[i][j].pUniImovel->nivel);
-                player->comida = player->comida + (mapa[i][j].pUniImovel->producao*mapa[i][j].pUniImovel->nivel);
-                printf("comida do jogador após produção: %d\n\n", player->comida);
+                    printf("comida do jogador: %d\n", player->comida);
+                    printf("produção: %d\n", mapa[i][j].pUniImovel->producao);
+                    printf("nivel da unidade de produção: %d\n", mapa[i][j].pUniImovel->nivel);
+                    player->comida = player->comida + (mapa[i][j].pUniImovel->producao*mapa[i][j].pUniImovel->nivel);
+                    printf("comida do jogador após produção: %d\n\n", player->comida);
 
-               }
-               if(mapa[i][j].pUniImovel->divisao == MECANICO){
+                   }
+                   if (mapa[i][j].pUniImovel->divisao == MECANICO) {
 
-                printf("minerio do jogador: %d\n", player->minerio);
-                printf("produção: %d\n", mapa[i][j].pUniImovel->producao);
-                printf("nivel da unidade de produção: %d\n", mapa[i][j].pUniImovel->nivel);
-                player->minerio = player->minerio + (mapa[i][j].pUniImovel->producao*mapa[i][j].pUniImovel->nivel);
-                printf("minerio do jogador após produção: %d\n\n", player->minerio);
+                    printf("minerio do jogador: %d\n", player->minerio);
+                    printf("produção: %d\n", mapa[i][j].pUniImovel->producao);
+                    printf("nivel da unidade de produção: %d\n", mapa[i][j].pUniImovel->nivel);
+                    player->minerio = player->minerio + (mapa[i][j].pUniImovel->producao*mapa[i][j].pUniImovel->nivel);
+                    printf("minerio do jogador após produção: %d\n\n", player->minerio);
 
-               }
-               if(mapa[i][j].pUniImovel->divisao == ELETRICO){
+                   }
+                   if (mapa[i][j].pUniImovel->divisao == ELETRICO) {
 
-                printf("eletricidade do jogador: %d\n", player->eletricidade);
-                printf("produção: %d\n", mapa[i][j].pUniImovel->producao);
-                printf("nivel da unidade de produção: %d\n", mapa[i][j].pUniImovel->nivel);
-                player->eletricidade = player->eletricidade + (mapa[i][j].pUniImovel->producao*mapa[i][j].pUniImovel->nivel);
-                printf("eletricidade do jogador após produção: %d\n\n\n", player->eletricidade);
+                    printf("eletricidade do jogador: %d\n", player->eletricidade);
+                    printf("produção: %d\n", mapa[i][j].pUniImovel->producao);
+                    printf("nivel da unidade de produção: %d\n", mapa[i][j].pUniImovel->nivel);
+                    player->eletricidade = player->eletricidade + (mapa[i][j].pUniImovel->producao*mapa[i][j].pUniImovel->nivel);
+                    printf("eletricidade do jogador após produção: %d\n\n\n", player->eletricidade);
 
-               }
+                   }
+                }
+            }
         }
     }
-}
-}
 }
 
 int player_level(player_data *player){
 
-int level_up = 50;
+    int level_up = 50;
 
-if(player->xp >= level_up && player->nivel == 1){
+    if (player->xp >= level_up && player->nivel == 1) {
 
-    player->nivel = 2;
-    player->xp = 0;
+        player->nivel = 2;
+        player->xp = 0;
 
-} else if(player->xp >= level_up && player->nivel == 2){
+    } else if (player->xp >= level_up && player->nivel == 2) {
 
-    player->nivel = 3;
-    player->xp = 0;
-}
+        player->nivel = 3;
+        player->xp = 0;
+    }
+    return 0;
 } 
 
-int evolution(unidade_estatica *aux, player_data *player){
+int evolution(unidade_estatica *aux, player_data *player) {
 
-if(aux->nivel == 3){
-    printf("Nivel Máximo alcançado\n\n");
-    return 0;
-}
-
-if(player->comida < (aux->custo_comida*3) ||
-        player->minerio < (aux->custo_minerio*3) ||
-        player->eletricidade < (aux->custo_eletricidade*3)){
-        printf("Quantidade de recursos insuficientes\n\n");
-    return 0;
+    if(aux->nivel == 3){
+        printf("Nivel Máximo alcançado\n\n");
+        return 0;
     }
 
-aux->nivel = aux->nivel + 1;
-aux->vida = aux->vida + 10;    
+    if (player->comida < (aux->custo_comida*3) ||
+        player->minerio < (aux->custo_minerio*3) ||
+        player->eletricidade < (aux->custo_eletricidade*3)) {
 
-printf("Construção Aprimorada com sucesso\n\n");
+        printf("Quantidade de recursos insuficientes\n\n");
+        return 0;
+    }
+
+    aux->nivel = aux->nivel + 1;
+    aux->vida = aux->vida + 10;    
+
+    printf("Construção Aprimorada com sucesso\n\n");
+    return 0;
 
 }
 
 int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atributos_data atributos, player_data *player){
-        int x;
-        int y;
-        int i = mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->i;
-        int j = mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->j;
-        int dim = mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->dim;
-        int aux1 = i - 1;
-        int aux2 = j - 1;
-        int aux3 = i + (dim + 1);
-        int aux4 = j + (dim + 1);
-        atributos.nivel = 2;
+    int x;
+    int y;
+    int i = mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->i;
+    int j = mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->j;
+    int dim = mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->dim;
+    int aux1 = i - 1;
+    int aux2 = j - 1;
+    int aux3 = i + (dim + 1);
+    int aux4 = j + (dim + 1);
+    atributos.nivel = 2;
 
-if(mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->divisao == HUMANO){
-    atributos.divisao = HUMANO;
-}
-if(mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->divisao == MECANICO){
-    atributos.divisao = MECANICO;
-}
-if(mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->divisao == ELETRICO){
-    atributos.divisao = ELETRICO;
-}
+    if(mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->divisao == HUMANO){
+        atributos.divisao = HUMANO;
+    }
+    if(mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->divisao == MECANICO){
+        atributos.divisao = MECANICO;
+    }
+    if(mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->divisao == ELETRICO){
+        atributos.divisao = ELETRICO;
+    }
 
-while(1){
-    for(x = aux1; x <  aux3; x++){
+    while (1) {
+        for(x = aux1; x <  aux3; x++){
             for(y = aux2; y < aux4; y++){
                 if(mapa[x][y].pUniImovel == NULL && mapa[x][y].pUniMovel == NULL){
                     cria_uni_movel(mapa, x, y, atributos, player);

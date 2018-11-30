@@ -69,6 +69,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
     */
     
     switch (atributos.classe) {
+
         case GERADOR_DE_RECURSO:
             Unidade->dim = 3;
             Unidade->vida = 10;
@@ -80,6 +81,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
             Unidade->custo_eletricidade = 1;
             Unidade->producao = 5;
             break;
+
         case GERADOR_DE_TROPA:
             Unidade->dim = 3;
             Unidade->vida = 10;
@@ -91,6 +93,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
             Unidade->custo_eletricidade = 1;
             Unidade->producao = 0;
             break;
+
         case DEFESA_OFENSIVA:
             Unidade->dim = 2;
             Unidade->vida = 10;
@@ -102,6 +105,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
             Unidade->custo_eletricidade = 1;
             Unidade->producao = 0;
             break;
+
         case DEFESA_PASSIVA:
             Unidade->dim = 1;
             Unidade->vida = 10;
@@ -119,7 +123,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
         player->minerio < Unidade->custo_minerio ||
         player->eletricidade < Unidade->custo_eletricidade){
         printf("Quantidade de recursos insuficientes\n");
-    return 0;
+        return 0;
     }
 
     player->comida = player->comida - Unidade->custo_comida;
@@ -151,8 +155,10 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
     Unidade->dim = 1;
 
     switch (Unidade->divisao) {
+
         case HUMANO:
             switch (Unidade->nivel) {
+
                 case 1:
                     Unidade->vida = 3;
                     Unidade->ataque = 5;
@@ -163,6 +169,7 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->custo_comida = 3;
                     Unidade->custo_eletricidade = 1;
                     break;
+
                 case 2:
                     Unidade->vida = 5;
                     Unidade->ataque = 6;
@@ -173,6 +180,7 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->custo_comida = 3;
                     Unidade->custo_eletricidade = 1;
                     break;
+
                 case 3:
                     Unidade->vida = 6;
                     Unidade->ataque = 6;
@@ -185,8 +193,10 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     break;
                 }
             break;
+
         case MECANICO:
             switch (Unidade->nivel) {
+
                 case 1:
                     Unidade->vida = 8;
                     Unidade->ataque = 2;
@@ -197,6 +207,7 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->custo_comida = 3;
                     Unidade->custo_eletricidade = 1;
                     break;
+
                 case 2:
                     Unidade->vida = 4;
                     Unidade->ataque = 4;
@@ -207,6 +218,7 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->custo_comida = 3;
                     Unidade->custo_eletricidade = 1;
                     break;
+
                 case 3:
                     Unidade->vida = 10;
                     Unidade->ataque = 10;
@@ -216,12 +228,13 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->custo_minerio = 2;
                     Unidade->custo_comida = 3;
                     Unidade->custo_eletricidade = 1;
-
                     break;
                 }
             break;
+
         case ELETRICO:
             switch (Unidade->nivel) {
+
                 case 1:
                     Unidade->vida = 4;
                     Unidade->ataque = 3;
@@ -232,6 +245,7 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->custo_comida = 3;
                     Unidade->custo_eletricidade = 1;
                     break;
+
                 case 2:
                     Unidade->vida = 7;
                     Unidade->ataque = 5;
@@ -242,6 +256,7 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     Unidade->custo_comida = 3;
                     Unidade->custo_eletricidade = 1;
                     break;
+
                 case 3:
                     Unidade->vida = 5;
                     Unidade->ataque = 8;
@@ -254,25 +269,26 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
                     break;
                 }
                 break;
+
         case OPERARIO:
-                    Unidade->vida = 5;
-                    Unidade->ataque = 0;
-                    Unidade->defesa = 0;
-                    Unidade->alcance = 0;
-                    Unidade->velocidade = 10;
-                    Unidade->custo_minerio = 0;
-                    Unidade->custo_comida = 0;
-                    Unidade->custo_eletricidade = 0;
-                break;
-                
+            Unidade->vida = 5;
+            Unidade->ataque = 0;
+            Unidade->defesa = 0;
+            Unidade->alcance = 0;
+            Unidade->velocidade = 10;
+            Unidade->custo_minerio = 0;
+            Unidade->custo_comida = 0;
+            Unidade->custo_eletricidade = 0;
+            break;  
     }
 
     if(player->comida < Unidade->custo_comida ||
         player->minerio < Unidade->custo_minerio ||
         player->eletricidade < Unidade->custo_eletricidade){
         printf("Quantidade de recursos insuficientes\n");
-    return 0;
+        return 0;
     }
+
     player->comida = player->comida - Unidade->custo_comida;
     player->minerio = player->minerio - Unidade->custo_minerio;
     player->eletricidade = player->eletricidade - Unidade->custo_eletricidade;
@@ -293,11 +309,13 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
 }
 
 int construction(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, int cell_i, int cell_j, unidade_movel* unit, player_data *player){
-   printf("Deseja construir algo?(S/N)\n");
     char optionSN;
     int option; 
+
+    printf("Deseja construir algo?(S/N)\n");
     scanf("%c", &optionSN);
     getchar();
+
     if( optionSN == 'N' || optionSN == 'n'){
         return 0;
     }
@@ -311,18 +329,29 @@ int construction(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atri
     printf("2 - GERADOR DE TROPA\n");
     printf("3 - DEFESA OFENSIVA\n");
     printf("4 - DEFESA_PASSIVA\n");
+    printf("5 - CANCELAR\n");
     scanf("%d", &option);
     getchar();
-    if(option == 1){
-        atributos.classe = GERADOR_DE_RECURSO;  
-    }
-    if(option == 2){
-          atributos.classe = GERADOR_DE_TROPA;
-    }
-    if(option == 3){
-          atributos.classe = DEFESA_OFENSIVA;
-    }if(option == 4){
-          atributos.classe = DEFESA_PASSIVA;
+
+    switch (option) {
+        case 1:
+            atributos.classe = GERADOR_DE_RECURSO;
+            break;
+
+        case 2:
+            atributos.classe = GERADOR_DE_TROPA;
+            break;
+
+        case 3:
+            atributos.classe = DEFESA_OFENSIVA;
+            break;
+
+        case 4:
+            atributos.classe = DEFESA_PASSIVA;
+            break;
+
+        default:
+            return 0;
     }
 
     cria_uni_estatico(mapa, cell_i, cell_j, atributos, player);

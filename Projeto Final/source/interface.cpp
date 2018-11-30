@@ -85,7 +85,7 @@ int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
     glDisable(GL_TEXTURE_2D);
 
     if (verifica_selecao(mapa, mouse) != 0) {
-        colore_espacos_validos(mapa, mapa[mouse.y/LADO][mouse.x/LADO].pUniMovel);
+        colore_espacos_validos(mapa, mapa[mouse.y/LADO][mouse.x/LADO].pUniMovel, player);
     }
 
     return 0;
@@ -599,9 +599,9 @@ int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, 
 
 }
 
-int colore_espacos_validos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux) {
+int colore_espacos_validos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux, player_data* player) {
 
-    if (aux == NULL) {
+    if (aux == NULL || player->time != aux->time) {
         return 1;
     }
 

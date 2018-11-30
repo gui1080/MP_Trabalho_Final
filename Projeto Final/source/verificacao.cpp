@@ -84,6 +84,10 @@ int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mou
         int cell_j = mouse.x/LADO;
         unidade_movel* aux = mapa[cell_i][cell_j].pUniMovel;
 
+        if (player->time != aux->time) {
+            return 0;
+        }
+
         while (!stop) {
             while (SDL_PollEvent(&evento)) {
 
@@ -137,6 +141,10 @@ int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mou
         int cell_i = mouse.y/LADO;
         int cell_j = mouse.x/LADO;
         unidade_estatica* aux = mapa[cell_i][cell_j].pUniImovel;
+
+        if (player->time != aux->time) {
+            return 0;
+        }
 
         evolution(aux, player);
         //Atualizar_recursos(mapa, player);
