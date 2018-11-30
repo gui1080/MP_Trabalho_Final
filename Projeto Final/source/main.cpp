@@ -408,6 +408,8 @@ int main() {
 
             if (verifica_selecao(mapa, mouse) != 0) {
                 verifica_unidades(mapa, mouse, player, dados_uni);
+		    mouse.x_mem = -1;
+                    mouse.y_mem = -1;
             }
 
     	}
