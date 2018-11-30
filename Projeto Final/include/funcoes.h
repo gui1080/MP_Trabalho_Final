@@ -596,6 +596,8 @@ int player_level(player_data *player);
  */
 int evolution(unidade_estatica *aux, player_data *player);
 
+int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atributos_data atributos, player_data *player);
+
 /**
  * @file cpu.cpp
  *
