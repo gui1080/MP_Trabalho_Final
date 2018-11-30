@@ -30,6 +30,16 @@ int cria_mapa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]) {
     return 0;
 }
 
+void cria_player(player_data *player, int time) {
+    player->time = time;
+    player->comida = COMIDA_INICIAL;
+    player->minerio = MINERIO_INICIAL;
+    player->eletricidade = ELETRICIDADE_INICIAL;
+    player->xp = 0;
+    player->nivel = 1;
+    player->vida_base = VIDA_INICIAL_BASE;
+}
+
 int cria_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, int dim, int vida, int time) {
     base_principal *Base = (base_principal*)malloc(sizeof(base_principal));
     Base->i = i;
