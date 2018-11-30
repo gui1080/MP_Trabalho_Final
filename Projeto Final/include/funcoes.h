@@ -27,6 +27,10 @@
 #define DIMENSAO_ICONES 0.05 * RY
 #define TAMANHO_TEXTO_ICONES 2.2 * DIMENSAO_ICONES
 #define LARGURA_BARRAS 0.015 * RY
+#define VIDA_INICIAL_BASE 20
+#define COMIDA_INICIAL 40
+#define MINERIO_INICIAL 40
+#define ELETRICIDADE_INICIAL 40
 
 const int LADO = RY/BLOCOS_LINHA;
 enum divisao {HUMANO = 0, MECANICO, ELETRICO, OPERARIO};
@@ -44,9 +48,7 @@ typedef struct Player_Data {
     int eletricidade;
     int xp;
     int nivel;
-    int contador_unidades[3];
-	  int contador_estruturas[4][3];
-	  int vida_base;
+    int vida_base;
 }player_data;
 
 typedef struct Unidade_Movel {
