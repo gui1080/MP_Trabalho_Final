@@ -126,6 +126,7 @@ int main() {
     unsigned int textura_exp;
 
     imagens_data imagens;
+    //Jogador
     player_data player1;
 
     player1.comida = 40;
@@ -135,7 +136,16 @@ int main() {
     player1.nivel = 1;
 
     player_data *player = &player1;
+    //CPU
+	player_data player2;
 
+    player2.comida = 40;
+    player2.minerio = 40;
+    player2.eletricidade = 40;
+    player2.xp = 0;
+    player2.nivel = 1;
+
+    player_data *player_CPU = &player2;
 
     if (verifica_imagem("imagens/grade.png") == false ||
         verifica_imagem("imagens/sand.png") == false ||
@@ -345,6 +355,7 @@ int main() {
         SDL_GL_SwapBuffers();
     }
     
+    int turno_de_quem = ALIADO;
     while (executando) {
         // eventos
         while (SDL_PollEvent(&eventos)) {
@@ -371,17 +382,27 @@ int main() {
                     mouse_x = -1;
                     mouse_y = -1;
             }
+            // Para mudar de turno PRESS 'enter'
+            if(eventos.type == SDL_KEYDOWN && (eventos.key.keysym.sym == SDLK_RETURN || SDL_KEYDOWN && eventos.key.keysym.sym == SDLK_KP_ENTER)){
+                turno_de_quem = INIMIGO;
+                printf("Vez do CPU\n");
+            }
         }
         // LIMPA O BUFFER
         glClear(GL_COLOR_BUFFER_BIT);
 
         mouse.x = mouse_x;
         mouse.y = mouse_y;
-
-        carrega_interface(mapa, imagens, mouse, texto, player, dados_uni);
-
-        SDL_Flip(screen);
-        SDL_GL_SwapBuffers();
+        if (turno_de_quem == ALIADO) {
+        	carrega_interface(mapa, imagens, mouse, texto, player, dados_uni);
+        	SDL_Flip(screen);
+        	SDL_GL_SwapBuffers();
+    	}
+    	else if (turno_de_quem == INIMIGO) {
+            //CPU(mapa, imagens, mouse, texto, player_CPU, dados_uni);
+            turno_de_quem = ALIADO;
+            printf("sua vez\n");
+        }
     }
 
     printf("Fechado com sucesso!\n");
