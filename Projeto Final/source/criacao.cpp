@@ -297,6 +297,7 @@ int construction(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atri
     char optionSN;
     int option; 
     scanf("%c", &optionSN);
+    getchar();
     if( optionSN == 'N' || optionSN == 'n'){
         return 0;
     }
@@ -311,6 +312,7 @@ int construction(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atri
     printf("3 - DEFESA OFENSIVA\n");
     printf("4 - DEFESA_PASSIVA\n");
     scanf("%d", &option);
+    getchar();
     if(option == 1){
         atributos.classe = GERADOR_DE_RECURSO;  
     }
