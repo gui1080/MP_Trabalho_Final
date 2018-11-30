@@ -44,6 +44,9 @@ typedef struct Player_Data {
     int eletricidade;
     int xp;
     int nivel;
+    int contador_unidades[3];
+	  int contador_estruturas[4][3];
+	  int vida_base;
 }player_data;
 
 typedef struct Unidade_Movel {
