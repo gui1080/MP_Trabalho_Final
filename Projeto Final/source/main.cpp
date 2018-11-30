@@ -126,28 +126,13 @@ int main() {
     unsigned int textura_exp;
 
     imagens_data imagens;
-    //Jogador
-    player_data player1;
 	
-    player1.time = ALIADO;
-    player1.comida = 40;
-    player1.minerio = 40;
-    player1.eletricidade = 40;
-    player1.xp = 0;
-    player1.nivel = 1;
-
-    player_data *player = &player1;
-    //CPU
-	player_data player2;
-
-    player2.time = INIMIGO;
-    player2.comida = 40;
-    player2.minerio = 40;
-    player2.eletricidade = 40;
-    player2.xp = 0;
-    player2.nivel = 1;
-
-    player_data *player_CPU = &player2;
+    // JOGADOR
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+    // CPU
+    player_data *player_CPU = (player_data *)malloc(sizeof(player_data));
+    cria_player( player_CPU, INIMIGO);
 
     if (verifica_imagem("imagens/grade.png") == false ||
         verifica_imagem("imagens/sand.png") == false ||
