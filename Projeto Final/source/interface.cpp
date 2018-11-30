@@ -309,7 +309,7 @@ int carrega_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_dat
                     if (mapa[i][j].pUniImovel->time == ALIADO) 
                         glColor4ub(255, 255, 255, 255); 
                     else 
-                        glColor4ub(255, 255, 255, 255);
+                        glColor4ub(255, 179, 179, 255);
 
                         escolhe_imagem_estatica(mapa, imagens, i, j);               
                         
@@ -387,7 +387,7 @@ int carrega_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
             if (mapa[i][j].pUniMovel != NULL) {
                 if (mapa[i][j].pUniMovel->i == i && mapa[i][j].pUniMovel->j == j) {
                     if (mapa[i][j].pUniMovel->time == ALIADO) glColor4ub(255, 255, 255, 255); 
-                    else glColor4ub(255, 255, 255, 255);
+                    else glColor4ub(255, 179, 179, 255);
 
                     escolhe_imagem_movel(mapa, imagens, texto, i, j, 0);
 
