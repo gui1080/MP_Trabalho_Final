@@ -38,7 +38,7 @@ enum unidades_e_base {REPLICANTE = 7, EXTERMINADOR, HATSUNE, WALL,
 enum time {ALIADO = 0, INIMIGO};
 
 typedef struct Player_Data {
-
+    int time;
     int comida;
     int minerio;
     int eletricidade;
