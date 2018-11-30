@@ -40,10 +40,13 @@ int cria_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, int dim,
 
     for (int p = i; p <= (i + dim-1); p++) {
         for (int q = j; q <= (j + dim-1); q++) {
-            if (verifica_espaco(mapa, p, q) == true)
-                mapa[p][q].pBase = Base;
-            else
+            if (!verifica_espaco(mapa, p, q))
                 return -1;
+        }
+    }
+    for (int p = i; p <= (i + dim-1); p++) {
+        for (int q = j; q <= (j + dim-1); q++) {
+            mapa[p][q].pBase = Base;
         }
     }
     return 0;
@@ -126,10 +129,13 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
 
     for (int p = i; p <= (i + Unidade->dim-1); p++) {
         for (int q = j; q <= (j + Unidade->dim-1); q++) {
-            if (verifica_espaco(mapa, p, q) == true)
-                mapa[p][q].pUniImovel = Unidade;
-            else
+            if (!verifica_espaco(mapa, p, q))
                 return -1;
+        }
+    }
+    for (int p = i; p <= (i + Unidade->dim-1); p++) {
+        for (int q = j; q <= (j + Unidade->dim-1); q++) {
+            mapa[p][q].pUniImovel = Unidade;
         }
     }
     return 0;
@@ -274,10 +280,13 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
 
     for (int p = i; p <= (i + Unidade->dim-1); p++) {
         for (int q = j; q <= (j + Unidade->dim-1); q++) {
-            if (verifica_espaco(mapa, p, q) == 1)
-                mapa[p][q].pUniMovel = Unidade;
-            else
+            if (!verifica_espaco(mapa, p, q))
                 return -1;
+        }
+    }
+    for (int p = i; p <= (i + Unidade->dim-1); p++) {
+        for (int q = j; q <= (j + Unidade->dim-1); q++) {
+            mapa[p][q].pUniMovel = Unidade;
         }
     }
     return 0;
