@@ -628,7 +628,7 @@ int colore_espacos_validos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_m
 
             if (mapa[i][j].pUniMovel != NULL) {
                 // colore para inimigos e deixa branco para aliados
-                if (mapa[i][j].pUniMovel->time == INIMIGO) {
+                if (verifica_oposicao(mapa, aux, i, j)) {
                     glColor4ub(255, 255, 0, 128);
                     if (verifica_alcance(aux, i, j)) {
                         glColor4ub(255, 0, 0, 80);
@@ -638,7 +638,7 @@ int colore_espacos_validos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_m
 
             if (mapa[i][j].pUniImovel != NULL) {
                 // colore para inimigos e deixa branco para aliados
-                if (mapa[i][j].pUniImovel->time == INIMIGO) {
+                if (verifica_oposicao(mapa, aux, i, j)) {
                     glColor4ub(255, 255, 0, 128);
                     if (verifica_alcance(aux, i, j)) {
                         glColor4ub(255, 0, 0, 80);
@@ -648,7 +648,7 @@ int colore_espacos_validos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_m
 
             if (mapa[i][j].pBase != NULL) {
                 // colore para inimigos e deixa branco para aliados
-                if (mapa[i][j].pBase->time == INIMIGO) {
+                if (verifica_oposicao(mapa, aux, i, j)) {
                     glColor4ub(255, 255, 0, 128);
                     if (verifica_alcance(aux, i, j)) {
                         glColor4ub(255, 0, 0, 80);
