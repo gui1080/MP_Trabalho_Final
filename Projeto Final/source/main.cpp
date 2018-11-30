@@ -128,7 +128,8 @@ int main() {
     imagens_data imagens;
     //Jogador
     player_data player1;
-
+	
+    player1.time = ALIADO;
     player1.comida = 40;
     player1.minerio = 40;
     player1.eletricidade = 40;
@@ -139,6 +140,7 @@ int main() {
     //CPU
 	player_data player2;
 
+    player2.time = INIMIGO;
     player2.comida = 40;
     player2.minerio = 40;
     player2.eletricidade = 40;
