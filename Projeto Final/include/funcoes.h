@@ -360,7 +360,7 @@ int carrega_mapa (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data image
  */
 int carrega_layout();
 
-int colore_espacos_validos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux);
+int colore_espacos_validos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux, player_data* player);
 
 /**
  * @brief Carrega a unidade movel.
