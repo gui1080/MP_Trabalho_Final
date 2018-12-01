@@ -34,11 +34,12 @@
 
 const int LADO = RY/BLOCOS_LINHA;
 enum divisao {HUMANO = 0, MECANICO, ELETRICO, OPERARIO};
-enum classe {GERADOR_DE_RECURSO = 3, GERADOR_DE_TROPA,
+enum classe {GERADOR_DE_RECURSO = 4, GERADOR_DE_TROPA,
                 DEFESA_OFENSIVA, DEFESA_PASSIVA};
-enum unidades_e_base {REPLICANTE = 7, EXTERMINADOR, HATSUNE, WALL,
+enum unidades_e_base {REPLICANTE = 8, EXTERMINADOR, HATSUNE, WALL,
                     DROIDES, IRON, MERCENARIOS, CAVALEIROS,
-                    CHORIS, BASE};
+                    CHORIS, BASE, CUSTO};
+enum criacao {GERAR_OPERARIO = 19, CRIAR_GER_REC, CRIAR_GER_TRO, CRIAR_MUR};
 enum time {ALIADO = 0, INIMIGO};
 
 typedef struct Player_Data {
@@ -66,7 +67,7 @@ typedef struct Unidade_Movel {
     int custo_minerio;
     int custo_comida;
     int custo_eletricidade;
-	bool acao;
+    bool acao;
 }unidade_movel;
 
 typedef struct Unidade_Estatica {
@@ -85,7 +86,7 @@ typedef struct Unidade_Estatica {
     int custo_comida;
     int custo_eletricidade;
     int producao;
-	bool acao;
+    bool acao;
 }unidade_estatica;
 
 typedef struct Base_Principal {
@@ -126,6 +127,8 @@ typedef struct Imagens_Data {
     unsigned int raio;
     unsigned int comida;
     unsigned int operario;
+    unsigned int botao1;
+    unsigned int botao2;
 }imagens_data;
 
 typedef struct Mouse_Data {
@@ -133,6 +136,10 @@ typedef struct Mouse_Data {
     int y;
     int x_mem;
     int y_mem;
+    int x_agr;
+    int y_agr;
+    int x_botao;
+    int y_botao;
 }mouse_data;
 
 typedef struct Atributos_Data {
@@ -144,7 +151,7 @@ typedef struct Atributos_Data {
 
 typedef struct Texto_Data {
     unsigned int numero_textura[101];
-    unsigned int nome_textura[20];
+    unsigned int nome_textura[25];
 }texto_data;
 
 
@@ -208,7 +215,7 @@ int cria_mapa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]);
  *
  * @return 0 - Se o procedimento foi bem sucedido.
  */
-int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse, texto_data texto, player_data *player, atributos_data atributos);
+int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data *mouse, texto_data texto, player_data *player, atributos_data atributos);
 
 /**
  * @brief Carrega a base do jogador.
@@ -292,7 +299,7 @@ int verifica_selecao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mous
  *
  * @return 0 - Se tudo ocorre dentro do esperado.
  */
-int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, player_data *player, atributos_data atributos);
+int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse, player_data *player, atributos_data atributos, imagens_data imagens, texto_data texto);
 
 bool verifica_velocidade(unidade_movel* aux, int cell_i, int cell_j);
 
@@ -493,7 +500,7 @@ int carrega_comandante(imagens_data imagens);
  *
  * @return 0 - Se o procedimento foi bem sucedido.
  */
-int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, imagens_data imagens, texto_data texto);
+int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse, imagens_data imagens, texto_data texto);
 
 /**
  * @brief Escolhe imagem estática.
@@ -603,6 +610,8 @@ int player_level(player_data *player);
  */
 int evolution(unidade_estatica *aux, player_data *player);
 
+int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int local, int tipo);
+
 int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atributos_data atributos, player_data *player);
 
 /**
@@ -613,7 +622,9 @@ int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atr
  * @author Grupo 2
  *
  */
+
 void CPU(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse, texto_data texto, player_data *player_CPU, atributos_data atributos, int contador_turno);
 int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atributos_data atributos, player_data *player);
 void cria_player(player_data *player, int time);
+
 void restaurar_acoes(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]);

@@ -45,7 +45,7 @@ texto_data texto, player_data *player_CPU, atributos_data atributos, int contado
     }
     mouse.x_mem = -1;
     mouse.y_mem = -1;
-    carrega_interface(mapa, imagens, mouse, texto, player_CPU, atributos);
+    carrega_interface(mapa, imagens, &mouse, texto, player_CPU, atributos);
 }
 
 void criacoes_iniciais_1(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU) {

@@ -11,21 +11,21 @@
 #include "funcoes.h"
 
 int move_unidade (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* unit, int i, int j) {
-    if (unit -> acao == true) {
+	if (unit -> acao == true) {
         cell_mapa* anterior = &mapa[unit->i][unit->j];
-        unit->i = i;
-        unit->j = j;
-        anterior->pUniMovel = NULL;
-        mapa[i][j].pUniMovel = unit;
+    	unit->i = i;
+    	unit->j = j;
+    	anterior->pUniMovel = NULL;
+    	mapa[i][j].pUniMovel = unit;
         unit -> acao = false;
-        return 0;
     }
+	return 0;
 }
 
 int combate(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unidade_movel *aux2, player_data *player){
-    
-    printf("Status da unidade 1:\n");
-    printf("Divisao: %d\n", aux->divisao);
+ 	
+ 	printf("Status da unidade 1:\n");
+ 	printf("Divisao: %d\n", aux->divisao);
     printf("Vida: %d\n", aux->vida);
     printf("Ataque: %d\n", aux->ataque);
     printf("Defesa: %d\n", aux->defesa);
@@ -42,40 +42,40 @@ int combate(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unid
 
     int ataque = aux->ataque;
     if ((aux->divisao == HUMANO && aux2->divisao == MECANICO)
-        || (aux->divisao == MECANICO && aux2->divisao == ELETRICO)
-        || (aux->divisao == ELETRICO && aux2->divisao == HUMANO)) {
+    	|| (aux->divisao == MECANICO && aux2->divisao == ELETRICO)
+    	|| (aux->divisao == ELETRICO && aux2->divisao == HUMANO)) {
 
-        ataque = aux->ataque + 2;
+    	ataque = aux->ataque + 2;
 
     } else if ((aux->divisao == MECANICO && aux2->divisao == HUMANO)
-        || (aux->divisao == ELETRICO && aux2->divisao == MECANICO)
-        || (aux->divisao == HUMANO && aux2->divisao == ELETRICO)) {
+    	|| (aux->divisao == ELETRICO && aux2->divisao == MECANICO)
+    	|| (aux->divisao == HUMANO && aux2->divisao == ELETRICO)) {
 
-        ataque = aux->ataque - 2;
+    	ataque = aux->ataque - 2;
     }
 
     printf("Ataque: %d\n\n", ataque);
 
     if (aux->nivel == 2){
 
-        aux2->vida = aux2->vida - ataque;   
+        aux2->vida = aux2->vida - ataque;	
 
     } else if (aux2->defesa < ataque) {
-       aux2->vida = aux2->vida - (ataque - aux2->defesa);       
+	   aux2->vida = aux2->vida - (ataque - aux2->defesa);		
     }
   
     if(aux2->vida <= 0){
 
         mapa[aux2->i][aux2->j].pUniMovel = NULL;
-        player->xp = player->xp + (aux2->nivel)*2;
+    	player->xp = player->xp + (aux2->nivel)*2;
         player_level(player);
 
         printf("Unidade morta\n\n");
 
         if (aux->nivel == 1) {
-            if(aux->divisao == HUMANO){
-                player->comida = player->comida + (aux2->nivel)*2;
-            }
+        	if(aux->divisao == HUMANO){
+        		player->comida = player->comida + (aux2->nivel)*2;
+        	}
             if(aux->divisao == MECANICO){
                 player->minerio = player->minerio + (aux2->nivel)*2;
             }
@@ -84,20 +84,20 @@ int combate(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unid
             }
         }
 
-        printf("XP do player:%d\n", player->xp);
+    	printf("XP do player:%d\n", player->xp);
         printf("nivel do player: %d\n", player->nivel);
 
     } else{
-        printf("Nova vida do defensor: %d\n\n", aux2->vida);
+    	printf("Nova vida do defensor: %d\n\n", aux2->vida);
     }
     
     return 0;
  }
 
 int destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unidade_estatica *aux2, player_data *player){
-    
-    printf("Status da unidade 1:\n");
-    printf("Divisao: %d\n", aux->divisao);
+ 	
+ 	printf("Status da unidade 1:\n");
+ 	printf("Divisao: %d\n", aux->divisao);
     printf("Vida: %d\n", aux->vida);
     printf("Ataque: %d\n", aux->ataque);
     printf("Defesa: %d\n", aux->defesa);
@@ -116,47 +116,47 @@ int destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, u
     int ataque = aux->ataque;
 
     if((aux->divisao == HUMANO && aux2->divisao == MECANICO)
-        || (aux->divisao == MECANICO && aux2->divisao == ELETRICO)
-        || (aux->divisao == ELETRICO && aux2->divisao == HUMANO)) {
+    	|| (aux->divisao == MECANICO && aux2->divisao == ELETRICO)
+    	|| (aux->divisao == ELETRICO && aux2->divisao == HUMANO)) {
 
-        ataque = aux->ataque + 2;
+    	ataque = aux->ataque + 2;
 
     }else if((aux->divisao == MECANICO && aux2->divisao == HUMANO)
-        || (aux->divisao == ELETRICO && aux2->divisao == MECANICO)
-        || (aux->divisao == HUMANO && aux2->divisao == ELETRICO)) {
+    	|| (aux->divisao == ELETRICO && aux2->divisao == MECANICO)
+    	|| (aux->divisao == HUMANO && aux2->divisao == ELETRICO)) {
 
-        ataque = aux->ataque - 2;
+    	ataque = aux->ataque - 2;
     }
     printf("Ataque Total: %d\n", ataque);
 
     if (aux->divisao == HUMANO && aux->nivel == 2) {
 
-        aux2->vida = aux2->vida - ataque;   
+        aux2->vida = aux2->vida - ataque;	
 
     } else if (aux2->defesa < ataque) {
-       aux2->vida = aux2->vida - (ataque - aux2->defesa);       
+	   aux2->vida = aux2->vida - (ataque - aux2->defesa);		
     }
   
     if (aux2->vida <= 0) {
 
 
-        for (int p = aux2->i; p < (aux2->i + aux2->dim); p++) {
+    	for (int p = aux2->i; p < (aux2->i + aux2->dim); p++) {
             for (int q = aux2->j; q < (aux2->j + aux2->dim); q++) {
                 mapa[p][q].pUniImovel = NULL;
             }
-        }
+    	}
 
-        mapa[aux2->i][aux2->j].pUniImovel = NULL;
-        mapa[aux2->i][aux2->j+1].pUniImovel = NULL;
+    	mapa[aux2->i][aux2->j].pUniImovel = NULL;
+    	mapa[aux2->i][aux2->j+1].pUniImovel = NULL;
 
-        printf("Construção destruida\n");
-        player->xp = player->xp + (aux2->classe)*2;
+    	printf("Construção destruida\n");
+    	player->xp = player->xp + (aux2->classe)*2;
         player_level(player);
         printf("nivel do player: %d\n", player->nivel);
-        printf("XP do player:%d\n", player->xp);
+    	printf("XP do player:%d\n", player->xp);
 
     } else{
-        printf("Nova vida da construção: %d\n", aux2->vida);
+    	printf("Nova vida da construção: %d\n", aux2->vida);
 
     }
     
@@ -277,8 +277,7 @@ int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atr
         aux2--;
         aux3++;
         aux4++;
-    }
-        
+    }      
 } 
 
 void restaurar_acoes(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]) {
@@ -291,3 +290,4 @@ void restaurar_acoes(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]) {
         }
     }
 }
+

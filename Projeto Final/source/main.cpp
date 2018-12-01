@@ -83,6 +83,7 @@ int main() {
     texto.nome_textura[HUMANO] = importText("Humano",200,255,255,255);
     texto.nome_textura[MECANICO] = importText("Mecanico",200,255,255,255);
     texto.nome_textura[ELETRICO] = importText("Eletrico",200,255,255,255);
+    texto.nome_textura[OPERARIO] = importText("Operario",200,255,255,255);
     texto.nome_textura[GERADOR_DE_RECURSO] = importText("Gerador de Recurso",200,255,255,255);
     texto.nome_textura[GERADOR_DE_TROPA] = importText("Gerador de Tropa",200,255,255,255);
     texto.nome_textura[DEFESA_PASSIVA] = importText("Muralha",200,255,255,255);
@@ -97,7 +98,11 @@ int main() {
     texto.nome_textura[CAVALEIROS] = importText("Cavaleiro Estelar",200,255,255,255);
     texto.nome_textura[CHORIS] = importText("Choris",200,255,255,255);
     texto.nome_textura[BASE] = importText("Base",200,255,255,255);
-    texto.nome_textura[OPERARIO] = importText("Operario",200,255,255,255);
+    texto.nome_textura[CUSTO] = importText("Custo:",50,255,255,255);
+    texto.nome_textura[GERAR_OPERARIO] = importText("Gerar Operario",50,255,255,255);
+    texto.nome_textura[CRIAR_GER_REC] = importText("Criar Ger. de Rec.",50,255,255,255);
+    texto.nome_textura[CRIAR_GER_TRO] = importText("Criar Ger. de Tropa",50,255,255,255);
+    texto.nome_textura[CRIAR_MUR] = importText("   Criar Muralha   ",50,255,255,255);
 
     // pegar textura
     unsigned int textura_grade;
@@ -118,6 +123,9 @@ int main() {
     unsigned int eletrico_DEF_OFS;
     unsigned int eletrico_DEF_PAS;
     unsigned int operario;
+
+    unsigned int botao1;
+    unsigned int botao2;
 
     unsigned int textura_minerio;
     unsigned int textura_raio;
@@ -153,7 +161,9 @@ int main() {
         verifica_imagem("imagens/raio.png") == false ||
         verifica_imagem("imagens/comida.png") == false ||
         verifica_imagem("imagens/Kuru.png") == false ||
-        verifica_imagem("imagens/menu_principal.png") == false
+        verifica_imagem("imagens/menu_principal.png") == false ||
+        verifica_imagem("imagens/botao1.png") == false ||
+        verifica_imagem("imagens/botao2.png") == false
         ) {
 
         printf("FALHA AO CARREGAR IMAGEM\n");
@@ -183,7 +193,8 @@ int main() {
     textura_comida = loadTexture("imagens/comida.png");
     textura_raio = loadTexture("imagens/raio.png");
     operario = loadTexture("imagens/Kuru.png");
-
+    botao1 = loadTexture("imagens/botao1.png");
+    botao2 = loadTexture("imagens/botao2.png");
 
     imagens.textura_grade = textura_grade;
     imagens.textura_fundo = textura_fundo;
@@ -205,6 +216,8 @@ int main() {
     imagens.comida = textura_comida;
     imagens.minerio = textura_minerio;
     imagens.operario = operario;
+    imagens.botao1 = botao1;
+    imagens.botao2 = botao2;
 
     //  Carrega mapa
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
@@ -354,12 +367,19 @@ int main() {
                 executando = false;
             }
 
+            if (eventos.type == SDL_MOUSEMOTION) {
+                mouse.x_agr = eventos.motion.x;
+                mouse.y_agr = eventos.motion.y;
+            }
+
             if (eventos.type == SDL_MOUSEBUTTONDOWN) {
                 if (eventos.button.button == SDL_BUTTON_LEFT) {
                     mouse_x = eventos.button.x;
                     mouse_y = eventos.button.y;
-                    if (mouse_x/20 < 40 && mouse_x/20 >= 0 &&
-                        mouse_y/20 < 40 && mouse_y/20 >= 0) {
+                    mouse.x_botao = mouse_x;
+                    mouse.y_botao = mouse_y;
+                    if (mouse_x/LADO < BLOCOS_LINHA && mouse_x/LADO >= 0 &&
+                        mouse_y/LADO < BLOCOS_LINHA && mouse_y/LADO >= 0) {
                         mouse.x_mem = mouse_x;
                         mouse.y_mem = mouse_y;
                     }
@@ -374,7 +394,7 @@ int main() {
             if(eventos.type == SDL_KEYDOWN && (eventos.key.keysym.sym == SDLK_RETURN || SDL_KEYDOWN && eventos.key.keysym.sym == SDLK_KP_ENTER)){
                 turno_de_quem = INIMIGO;
                 printf("Vez do CPU\n");
-            	restaurar_acoes(mapa);
+                restaurar_acoes(mapa);
                 //Atualizacoes do turno:
             	/*Atualizar_recursos(mapa, player);*/
                 contador_turno++;
@@ -386,16 +406,18 @@ int main() {
         mouse.x = mouse_x;
         mouse.y = mouse_y;
         if (turno_de_quem == ALIADO) {
-        	carrega_interface(mapa, imagens, mouse, texto, player, dados_uni);
+        	carrega_interface(mapa, imagens, &mouse, texto, player, dados_uni);
 
         	SDL_Flip(screen);
         	SDL_GL_SwapBuffers();
 
+            
             if (verifica_selecao(mapa, mouse) != 0) {
-                verifica_unidades(mapa, mouse, player, dados_uni);
-                mouse.x_mem = -1;
-                mouse.y_mem = -1;
+                verifica_unidades(mapa, &mouse, player, dados_uni, imagens, texto);
+                mouse_x = -1;
+                mouse_y = -1;
             }
+
 
     	}
     	else if (turno_de_quem == INIMIGO) {

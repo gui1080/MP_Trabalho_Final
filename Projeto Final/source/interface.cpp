@@ -56,7 +56,7 @@ GLuint importText(const std::string &text,int font_size,int red,int green,int bl
     return object;
 }
 
-int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse, texto_data texto, player_data *player, atributos_data atributos) {
+int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data *mouse, texto_data texto, player_data *player, atributos_data atributos) {
 
     //  cria matriz
     glPushMatrix();
@@ -71,7 +71,7 @@ int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
     glEnable(GL_TEXTURE_2D);
 
     carrega_display_recursos(imagens, texto);
-    carrega_mapa(mapa, imagens, mouse);
+    carrega_mapa(mapa, imagens, *mouse);
     carrega_base(mapa, imagens);
     carrega_uni_estatico(mapa, imagens);  
     carrega_uni_movel(mapa, imagens, texto);
@@ -84,8 +84,8 @@ int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
 
     glDisable(GL_TEXTURE_2D);
 
-    if (verifica_selecao(mapa, mouse) != 0) {
-        colore_espacos_validos(mapa, mapa[mouse.y/LADO][mouse.x/LADO].pUniMovel, player);
+    if (verifica_selecao(mapa, *mouse) != 0) {
+        colore_espacos_validos(mapa, mapa[mouse->y/LADO][mouse->x/LADO].pUniMovel, player);
     }
 
     return 0;
@@ -504,9 +504,12 @@ int carrega_comandante(imagens_data imagens) {
 
 }
 
-int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, imagens_data imagens, texto_data texto) {
+int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse, imagens_data imagens, texto_data texto) {
 
-    int valor = verifica_selecao(mapa, mouse);
+    //printf("x_mem: %d\n", mouse.x_mem);
+    //printf("y_mem: %d\n", mouse.y_mem);
+
+    int valor = verifica_selecao(mapa, *mouse);
     if (valor == 0)
         return 0;    
 
@@ -556,8 +559,8 @@ int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, 
 
     glEnable(GL_TEXTURE_2D);
 
-    int i = mouse.y_mem/LADO;
-    int j = mouse.x_mem/LADO;
+    int i = mouse->y_mem/LADO;
+    int j = mouse->x_mem/LADO;
 
     switch (valor) {
         case 1:
@@ -595,7 +598,181 @@ int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, 
     glTexCoord2d(0,1);  glVertex2f(RY+gap_x+gap_imagem,comprimento+gap_y-gap_imagem);
     glEnd();    
 
+    //CARREGA BOTOES
+
+    if (valor == 1) {
+        if (mapa[i][j].pUniMovel->divisao == OPERARIO) {
+            carrega_botao(imagens, texto, mouse, 0, CRIAR_GER_REC);
+            carrega_botao(imagens, texto, mouse, 1, CRIAR_GER_TRO);
+            carrega_botao(imagens, texto, mouse, 2, CRIAR_MUR);       
+        }
+    }
+    if (valor == 3) carrega_botao(imagens, texto, mouse, 0, GERAR_OPERARIO);
+
     glDisable(GL_TEXTURE_2D);
+}
+
+int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int local, int tipo) {
+
+    int posicao_comeco;
+    int botao_largura = 0.06 * RY;
+    int dimensao_icones = 0.03 * RY;
+    int gap_y = 0.025 * RY;
+
+    posicao_comeco = 0.33 * RY;
+
+    for (int i = 0; i<local; i++) {
+        posicao_comeco += botao_largura+dimensao_icones+gap_y;        
+    }
+
+    int gap_x = 0.02 * RX;
+    posicao_comeco += gap_y;
+
+    glColor4ub(255, 255, 255, 255);
+
+    //BOTÃO
+
+    if (mouse->x_agr > RY+gap_x && mouse->x_agr < RX-gap_x && mouse->y_agr > posicao_comeco && mouse->y_agr < posicao_comeco+botao_largura) {
+        glBindTexture(GL_TEXTURE_2D, imagens.botao2);
+        if (mouse->x_botao > RY+gap_x && mouse->x_botao < RX-gap_x && mouse->y_botao > posicao_comeco && mouse->y_botao < posicao_comeco+botao_largura) {        
+            switch (tipo) {
+                case CRIAR_GER_REC:
+                    //funcao
+                    printf("gera recurso\n");
+                break;
+                case CRIAR_GER_TRO:
+                    //funcao
+                    printf("gera tropa\n");
+                break;
+                case CRIAR_MUR:
+                    //funcao
+                    printf("gera muralha\n");
+                break;
+                case GERAR_OPERARIO:
+                    //funcao
+                    printf("gera operario\n");
+                break;
+            }
+            printf("oi querida\n");
+            mouse->x_botao = -1;
+            mouse->y_botao = -1;
+        }
+    } else {
+        glBindTexture(GL_TEXTURE_2D, imagens.botao1);
+    }
+
+    glBegin(GL_QUADS);
+    glTexCoord2d(0,0);  glVertex2f(RY+gap_x,posicao_comeco);
+    glTexCoord2d(1,0);  glVertex2f(RX-gap_x,posicao_comeco);
+    glTexCoord2d(1,1);  glVertex2f(RX-gap_x,posicao_comeco+botao_largura);
+    glTexCoord2d(0,1);  glVertex2f(RY+gap_x,posicao_comeco+botao_largura);
+    glEnd();
+
+    glColor4ub(0, 0, 0, 255);
+
+    //TEXTO BOTÃO
+
+    int gap_texto = 0.2 * botao_largura;
+
+    glBindTexture(GL_TEXTURE_2D, texto.nome_textura[tipo]);
+
+    glBegin(GL_QUADS);
+    glTexCoord2d(0,0);  glVertex2f(RY+gap_x+2*gap_texto,posicao_comeco+gap_texto);
+    glTexCoord2d(1,0);  glVertex2f(RX-gap_x-2*gap_texto,posicao_comeco+gap_texto);
+    glTexCoord2d(1,1);  glVertex2f(RX-gap_x-2*gap_texto,posicao_comeco+botao_largura-gap_texto);
+    glTexCoord2d(0,1);  glVertex2f(RY+gap_x+2*gap_texto,posicao_comeco+botao_largura-gap_texto);
+    glEnd();
+
+    //TEXTO CUSTO
+
+    int gap_cust_x = 0.02 * RX;
+    int x = RY + gap_x + gap_cust_x;
+    int y = posicao_comeco + botao_largura;
+    int tam_texto_cust_x = 0.06 * RX;
+    int tam_texto_cust_y = dimensao_icones;
+
+    glColor4ub(48, 38, 128, 255);
+    
+    glBindTexture(GL_TEXTURE_2D, texto.nome_textura[CUSTO]);
+
+    glBegin(GL_QUADS);
+    glTexCoord2d(0,0);  glVertex2f(x,y);
+    glTexCoord2d(1,0);  glVertex2f(x+tam_texto_cust_x,y);
+    glTexCoord2d(1,1);  glVertex2f(x+tam_texto_cust_x,y + tam_texto_cust_y);
+    glTexCoord2d(0,1);  glVertex2f(x,y + tam_texto_cust_y);
+    glEnd();
+
+    //RECURSOS NECESSÁRIOS
+
+    int flag = 0;
+    int tamanho_texto_icones = 0.04 * RX;
+    int gap_inicio_rec = 0.5 * gap_cust_x;
+    x += tam_texto_cust_x + gap_inicio_rec;  
+
+    for (int i = 0; i < 3; i++) {
+        switch (flag) {
+            case 0:
+                glBindTexture(GL_TEXTURE_2D, imagens.comida);
+                break;
+            case 1:
+                glBindTexture(GL_TEXTURE_2D, imagens.minerio);
+                break;
+            case 2:
+                glBindTexture(GL_TEXTURE_2D, imagens.raio);
+                break;
+        }
+
+        glColor4ub(255, 255, 255, 255);
+
+        glBegin(GL_QUADS);    
+        glTexCoord2d(0,0);  glVertex2f(x, y); // primeiro ponto
+        glTexCoord2d(1,0);  glVertex2f(x+dimensao_icones, y); // segundo ponto
+        glTexCoord2d(1,1);  glVertex2f(x+dimensao_icones, y+tam_texto_cust_y);
+        glTexCoord2d(0,1);  glVertex2f(x, y+tam_texto_cust_y);
+        glEnd();
+
+        //PREPARANDO PROXIMO ICONE
+        x += dimensao_icones + tamanho_texto_icones;
+        flag++;
+    }
+
+    //CARREGA NUMEROS
+
+    int numero;
+    flag = 2;
+
+    int gap_texto_num = 0.005 * RX;
+    x -= tamanho_texto_icones;
+
+    for (int i = 0; i < 3; i++) {
+        switch (flag) {
+            case 0:
+                numero = 2;
+                glColor4ub(128, 0, 0, 255);
+            break;
+            case 1:
+                numero = 13;
+                glColor4ub(0, 0, 0, 255);
+            break;
+            case 2:
+                numero = 22;
+                glColor4ub(0, 0, 128, 255);
+            break;
+        }
+
+        glBindTexture(GL_TEXTURE_2D, texto.numero_textura[numero]);
+
+        glBegin(GL_QUADS);
+        glTexCoord2d(0,0);  glVertex2f(x+gap_texto_num, y); // primeiro ponto
+        glTexCoord2d(1,0);  glVertex2f(x+tamanho_texto_icones-2*gap_texto_num, y); // segundo ponto
+        glTexCoord2d(1,1);  glVertex2f(x+tamanho_texto_icones-2*gap_texto_num, y+dimensao_icones);
+        glTexCoord2d(0,1);  glVertex2f(x+gap_texto_num, y+dimensao_icones);
+        glEnd();
+
+        //PREPARANDO PROXIMO ICONE
+        x -= dimensao_icones + tamanho_texto_icones;
+        flag--;
+    }
 
 }
 
