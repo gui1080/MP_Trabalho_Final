@@ -39,7 +39,8 @@ enum classe {GERADOR_DE_RECURSO = 4, GERADOR_DE_TROPA,
 enum unidades_e_base {REPLICANTE = 8, EXTERMINADOR, HATSUNE, WALL,
                     DROIDES, IRON, MERCENARIOS, CAVALEIROS,
                     CHORIS, BASE, CUSTO};
-enum criacao {GERAR_OPERARIO = 19, CRIAR_GER_REC, CRIAR_GER_TRO, CRIAR_MUR};
+enum criacao {GERAR_OPERARIO = 19, CRIAR_GER_REC, CRIAR_GER_TRO, CRIAR_MUR, GERAR_TROPA};
+enum niveis {EVOLUIR = 24, NIVEL_MAXIMO, NIVEL_1, NIVEL_2, NIVEL_3};
 enum time {ALIADO = 0, INIMIGO};
 
 typedef struct Player_Data {
@@ -152,7 +153,7 @@ typedef struct Atributos_Data {
 
 typedef struct Texto_Data {
     unsigned int numero_textura[101];
-    unsigned int nome_textura[25];
+    unsigned int nome_textura[30];
 }texto_data;
 
 

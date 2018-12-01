@@ -69,7 +69,8 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
     Unidade->time = atributos.time;
     Unidade->classe = atributos.classe;
     Unidade->divisao = atributos.divisao;
-    Unidade->nivel = atributos.nivel;
+    //Unidade->nivel = atributos.nivel;
+    Unidade->nivel = 1;
     Unidade->acao = true;
 
     /*  

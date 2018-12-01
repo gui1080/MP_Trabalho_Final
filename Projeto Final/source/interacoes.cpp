@@ -210,7 +210,7 @@ void Atualizar_recursos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], player_data 
 
     for (int i = 0; i < BLOCOS_LINHA; i++) {
         for (int j = 0; j < BLOCOS_LINHA; j++) {
-            if (mapa[i][j].pUniImovel != NULL &&  mapa[i][j].pUniImovel->classe == GERADOR_DE_RECURSO) {
+            if (mapa[i][j].pUniImovel != NULL &&  mapa[i][j].pUniImovel->classe == GERADOR_DE_RECURSO && mapa[i][j].pUniImovel->time == player->time) {
                 if (mapa[i][j].pUniImovel->i == i && mapa[i][j].pUniImovel->j == j){
                    if (mapa[i][j].pUniImovel->divisao == HUMANO) {
 
@@ -279,6 +279,9 @@ int evolution(unidade_estatica *aux, player_data *player) {
 
     aux->nivel = aux->nivel + 1;
     aux->vida = aux->vida + 10;    
+    player->comida = player->comida - (aux->custo_comida*3); 
+    player->minerio = player->minerio - (aux->custo_minerio*3);
+    player->eletricidade = player->eletricidade - (aux->custo_eletricidade*3); 
 
     printf("Construção Aprimorada com sucesso\n\n");
     return 0;
@@ -323,7 +326,6 @@ int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse, at
     int aux2 = j - 1;
     int aux3 = i + (dim + 1);
     int aux4 = j + (dim + 1);
-    atributos.nivel = 2;
 
     if(mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniImovel->divisao == HUMANO){
         atributos.divisao = HUMANO;

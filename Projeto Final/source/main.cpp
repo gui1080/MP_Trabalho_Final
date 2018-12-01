@@ -103,6 +103,12 @@ int main() {
     texto.nome_textura[CRIAR_GER_REC] = importText("Criar Ger. de Rec.",50,255,255,255);
     texto.nome_textura[CRIAR_GER_TRO] = importText("Criar Ger. de Tropa",50,255,255,255);
     texto.nome_textura[CRIAR_MUR] = importText("   Criar Muralha   ",50,255,255,255);
+    texto.nome_textura[GERAR_TROPA] = importText("   Gerar Tropa   ",50,255,255,255);
+    texto.nome_textura[EVOLUIR] = importText("   Evoluir   ",50,255,255,255);
+    texto.nome_textura[NIVEL_MAXIMO] = importText("   NIVEL MAXIMO   ",50,255,255,255);
+    texto.nome_textura[NIVEL_1] = importText("   NIVEL 1   ",50,255,255,255);
+    texto.nome_textura[NIVEL_2] = importText("   NIVEL 2   ",50,255,255,255);
+    texto.nome_textura[NIVEL_3] = importText("   NIVEL 3   ",50,255,255,255);
 
     // pegar textura
     unsigned int textura_grade;
@@ -286,7 +292,7 @@ int main() {
     mouse->y_mem = 200;
     mouse->botao_mem = -1;
 
-    Atualizar_recursos(mapa, player);
+    //Atualizar_recursos(mapa, player);
     /*
     int menu = mostra_menu(screen, font); 
     
@@ -399,7 +405,7 @@ int main() {
                 printf("Vez do CPU\n");
                 restaurar_acoes(mapa);
                 //Atualizacoes do turno:
-            	/*Atualizar_recursos(mapa, player);*/
+            	Atualizar_recursos(mapa, player);
                 contador_turno++;
             }
         }

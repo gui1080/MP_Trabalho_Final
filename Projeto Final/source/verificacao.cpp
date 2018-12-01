@@ -178,7 +178,7 @@ int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mo
             return 0;
         }
 
-        evolution(aux, player);
+        //evolution(aux, player);
         //Atualizar_recursos(mapa, player);
     }
     return 0;

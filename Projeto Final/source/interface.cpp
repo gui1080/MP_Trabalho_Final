@@ -613,7 +613,44 @@ int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse,
             } 
         }
     }
-    
+
+    if (valor == 2) {
+        if(mouse->botao_mem == -1) {
+        if (mapa[i][j].pUniImovel->nivel < 3) {
+
+        carrega_botao(imagens, texto, mouse, 0, EVOLUIR, mapa, atributos, player);
+
+        } else {
+
+        carrega_botao(imagens, texto, mouse, 0, NIVEL_MAXIMO, mapa, atributos, player);
+
+        }
+
+        if (mapa[i][j].pUniImovel->classe == GERADOR_DE_TROPA) {
+
+                carrega_botao(imagens, texto, mouse, 1, GERAR_TROPA, mapa, atributos, player);
+   
+        } 
+
+    }  else {
+
+        carrega_botao(imagens, texto, mouse, 0, NIVEL_1, mapa, atributos, player);
+
+        if (mapa[i][j].pUniImovel->nivel >= 2){
+
+        carrega_botao(imagens, texto, mouse, 1, NIVEL_2, mapa, atributos, player);
+            
+        }
+
+        if (mapa[i][j].pUniImovel->nivel == 3){
+
+        carrega_botao(imagens, texto, mouse, 2, NIVEL_3, mapa, atributos, player);
+
+        }
+
+    }
+    }
+        
     if (valor == 3) carrega_botao(imagens, texto, mouse, 0, GERAR_OPERARIO, mapa, atributos, player);
 
     glDisable(GL_TEXTURE_2D);
@@ -644,18 +681,6 @@ int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int
         if (mouse->x_botao > RY+gap_x && mouse->x_botao < RX-gap_x && mouse->y_botao > posicao_comeco && mouse->y_botao < posicao_comeco+botao_largura) {        
             switch (tipo) {
 
-                    //funcao
-                /*
-                    printf("gera recurso\n");
-                    int x_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->i;
-                    int y_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->j;
-
-                    mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel = NULL;
-
-                    atributos.classe = GERADOR_DE_RECURSO;
-                    cria_uni_estatico(mapa, x_c, y_c, atributos, player);
-                    */
-
                     if (mouse->botao_mem == 0) {
                     case CRIAR_GER_REC:
                         mouse->botao_mem = 1;
@@ -666,46 +691,192 @@ int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int
                         printf("gera tropa\n");
                     break;
                     case CRIAR_MUR:
-                        //funcao
+
+
+                    if (mouse->botao_mem != 1){
+
                         printf("gera muralha\n");
+                    
+
+                        int x_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->i;
+                        int y_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->j;
+
+                        mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel = NULL;
+
+                        atributos.classe = DEFESA_PASSIVA;
+                        cria_uni_estatico(mapa, x_c, y_c, atributos, player);
+
+                        }
+                        //funcao
+
                     break;
                     case GERAR_OPERARIO:
                         //funcao
                         gera_operario(mapa, mouse, atributos, player);
                         printf("gera operario\n");
                     break;
+
+                    case EVOLUIR:
+
+                    if (mouse->botao_mem == 1){
+
+                        printf("Evoluiu\n");
+                        
+                        } else{
+
+                        unidade_estatica *aux = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniImovel;
+
+                        evolution(aux , player);
+
+                        }
+
+                    break;
+
+                    case GERAR_TROPA:
+                    mouse->botao_mem = 3;
+                    break;
+
                 } else {
                     printf("ok\n");
                     case HUMANO:
-                        if (mouse->botao_mem == 1)
+                        if (mouse->botao_mem == 1){
                             //funcao
                             printf("gera ger recurso tipo humano\n");
+    
+                        int x_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->i;
+                        int y_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->j;
+
+                        mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel = NULL;
+
+                        atributos.classe = GERADOR_DE_RECURSO;
+                        atributos.divisao = HUMANO;
+                        cria_uni_estatico(mapa, x_c, y_c, atributos, player);
+                        
+                        }
                         else{
                             //funcao
                             printf("gera ger tropa tipo humano\n");
+
+                        int x_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->i;
+                        int y_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->j;
+
+                        mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel = NULL;
+
+                        atributos.classe = GERADOR_DE_TROPA;
+                        atributos.divisao = HUMANO;
+                        cria_uni_estatico(mapa, x_c, y_c, atributos, player);
                         }
+
                     mouse->botao_mem = -1;
                     break;
                     case MECANICO:
-                        if (mouse->botao_mem == 1)
+                        if (mouse->botao_mem == 1){
                             //funcao
                             printf("gera ger recurso tipo mecanico\n");
+                        int x_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->i;
+                        int y_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->j;
+
+                        mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel = NULL;
+
+                        atributos.classe = GERADOR_DE_RECURSO;
+                        atributos.divisao = MECANICO;
+                        cria_uni_estatico(mapa, x_c, y_c, atributos, player);
+                        }
                         else{
                             //funcao
                             printf("gera ger tropa tipo mecanico\n");
+
+                        int x_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->i;
+                        int y_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->j;
+
+                        mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel = NULL;
+
+                        atributos.classe = GERADOR_DE_TROPA;
+                        atributos.divisao = MECANICO;
+                        cria_uni_estatico(mapa, x_c, y_c, atributos, player);
+
                         }
                     mouse->botao_mem = -1;
                     break;
                     case ELETRICO:
-                        if (mouse->botao_mem == 1)
+                        if (mouse->botao_mem == 1){
                             //funcao
                             printf("gera ger recurso tipo eletrico\n");
+                        int x_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->i;
+                        int y_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->j;
+
+                        mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel = NULL;
+
+                        atributos.classe = GERADOR_DE_RECURSO;
+                        atributos.divisao = ELETRICO;
+                        cria_uni_estatico(mapa, x_c, y_c, atributos, player);
+                        
+                        }
                         else{
                             //funcao
                             printf("gera ger tropa tipo eletrico\n");
+
+                        int x_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->i;
+                        int y_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->j;
+
+                        mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel = NULL;
+
+                        atributos.classe = GERADOR_DE_TROPA;
+                        atributos.divisao = ELETRICO;
+                        cria_uni_estatico(mapa, x_c, y_c, atributos, player);
+
                         }
                     mouse->botao_mem = -1;
                     break;
+
+                    case NIVEL_1:
+                        if (mouse->botao_mem == 3){
+                            //funcao
+                        printf("gera unidade nivel 1\n");
+
+                        unidade_estatica *aux = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniImovel;
+                        atributos.divisao = aux->divisao;
+                        atributos.nivel = 1;
+
+                        gera_tropa(mapa, mouse, atributos, player);
+
+                        
+                        }
+                    mouse->botao_mem = -1;
+                    break;
+
+                    case NIVEL_2:
+                        if (mouse->botao_mem == 3){
+                            //funcao
+                        printf("gera unidade nivel 1\n");
+
+                        unidade_estatica *aux = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniImovel;
+                        atributos.divisao = aux->divisao;
+                        atributos.nivel = 2;
+
+                        gera_tropa(mapa, mouse, atributos, player);
+
+                        
+                        }
+                    mouse->botao_mem = -1;
+                    break;
+
+                    case NIVEL_3:
+                        if (mouse->botao_mem == 3){
+                            //funcao
+                        printf("gera unidade nivel 1\n");
+
+                        unidade_estatica *aux = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniImovel;
+                        atributos.divisao = aux->divisao;
+                        atributos.nivel = 3;
+
+                        gera_tropa(mapa, mouse, atributos, player);
+
+                        
+                        }
+                    mouse->botao_mem = -1;
+                    break;
+
                 }
             }
             //printf("oi querida\n");
