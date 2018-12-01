@@ -342,7 +342,7 @@ int main() {
         SDL_GL_SwapBuffers();
     }
     
-    int contador_turno = 0;
+    int i, j, contador_turno = 0;
     int turno_de_quem = ALIADO;
     while (executando) {
         // eventos
@@ -374,9 +374,9 @@ int main() {
             if(eventos.type == SDL_KEYDOWN && (eventos.key.keysym.sym == SDLK_RETURN || SDL_KEYDOWN && eventos.key.keysym.sym == SDLK_KP_ENTER)){
                 turno_de_quem = INIMIGO;
                 printf("Vez do CPU\n");
+            	restaurar_acoes(mapa);
                 //Atualizacoes do turno:
-            	/*Atualizar_recursos(mapa, player);
-                gera_tropa(mapa, mouse, dados_uni, player);*/
+            	/*Atualizar_recursos(mapa, player);*/
                 contador_turno++;
             }
         }
@@ -403,6 +403,7 @@ int main() {
             //Atualizacoes do turno:
             /*gera_tropa(mapa, mouse, dados_uni, player_CPU);*/
             Atualizar_recursos(mapa, player_CPU);
+            restaurar_acoes(mapa);
             turno_de_quem = ALIADO;
             printf("sua vez\n");
             contador_turno++;

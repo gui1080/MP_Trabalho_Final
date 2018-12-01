@@ -70,6 +70,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
     Unidade->classe = atributos.classe;
     Unidade->divisao = atributos.divisao;
     Unidade->nivel = atributos.nivel;
+    Unidade->acao = true;
 
     /*  
         CLASSE 1: GERADOR DE RECURSO
@@ -163,6 +164,7 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
     Unidade->divisao = atributos.divisao;
     Unidade->nivel = atributos.nivel;
     Unidade->dim = 1;
+    Unidade->acao = true;
 
     switch (Unidade->divisao) {
 
