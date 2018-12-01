@@ -283,7 +283,7 @@ int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atr
 
 void restaurar_acoes(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]) {
     int i, j;
-    for (i = 0; i  BLOCOS_LINHA; i++) {
+    for (i = 0; i < BLOCOS_LINHA; i++) {
         for (j = 0; j < BLOCOS_LINHA; j++) {
             if (mapa[i][j].pUniMovel != NULL) {
                 mapa[i][j].pUniMovel->acao = true;
