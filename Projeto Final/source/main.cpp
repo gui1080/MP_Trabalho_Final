@@ -415,7 +415,7 @@ int main() {
         	SDL_GL_SwapBuffers();
 
             
-            if (verifica_selecao(mapa, *mouse) != 0) {
+        if (verifica_selecao(mapa, *mouse) != 0) {
                 verifica_unidades(mapa, mouse, player, dados_uni, imagens, texto);
                 mouse_x = -1;
                 mouse_y = -1;

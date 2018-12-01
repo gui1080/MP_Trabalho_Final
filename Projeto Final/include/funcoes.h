@@ -501,7 +501,7 @@ int carrega_comandante(imagens_data imagens);
  *
  * @return 0 - Se o procedimento foi bem sucedido.
  */
-int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse, imagens_data imagens, texto_data texto);
+int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse, imagens_data imagens, texto_data texto, atributos_data atributos, player_data *player);
 
 /**
  * @brief Escolhe imagem estática.
@@ -611,9 +611,11 @@ int player_level(player_data *player);
  */
 int evolution(unidade_estatica *aux, player_data *player);
 
-int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int local, int tipo);
+int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int local, int tipo, cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player);
 
-int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atributos_data atributos, player_data *player);
+int gera_operario(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse, atributos_data atributos, player_data *player);
+
+int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse, atributos_data atributos, player_data *player);
 
 /**
  * @file cpu.cpp
@@ -625,7 +627,9 @@ int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atr
  */
 
 void CPU(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse, texto_data texto, player_data *player_CPU, atributos_data atributos, int contador_turno);
-int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atributos_data atributos, player_data *player);
+//int gera_operario(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atributos_data atributos, player_data *player);
 void cria_player(player_data *player, int time);
 
 void restaurar_acoes(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]);
+
+int destruicao_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, base_principal *aux2, player_data *player);

@@ -65,7 +65,7 @@ int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
     glOrtho(0, RX, RY, 0, -1, 1); 
 
     carrega_layout();
-    carrega_caixa(mapa, mouse, imagens, texto);
+    carrega_caixa(mapa, mouse, imagens, texto, atributos, player);
 
     //  CARREGA ESTRUTURAS E ICONES
     glEnable(GL_TEXTURE_2D);
@@ -504,7 +504,7 @@ int carrega_comandante(imagens_data imagens) {
 
 }
 
-int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse, imagens_data imagens, texto_data texto) {
+int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse, imagens_data imagens, texto_data texto, atributos_data atributos, player_data *player) {
 
     //printf("x_mem: %d\n", mouse.x_mem);
     //printf("y_mem: %d\n", mouse.y_mem);
@@ -599,26 +599,27 @@ int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse,
     glEnd();    
 
     //CARREGA BOTOES
-
+    
     if (valor == 1) {
         if (mapa[i][j].pUniMovel->divisao == OPERARIO) {
-            if(mouse->botao_mem == -1) {
-                carrega_botao(imagens, texto, mouse, 0, CRIAR_GER_REC);
-                carrega_botao(imagens, texto, mouse, 1, CRIAR_GER_TRO);
-                carrega_botao(imagens, texto, mouse, 2, CRIAR_MUR);       
+             if(mouse->botao_mem == -1) {
+                carrega_botao(imagens, texto, mouse, 0, CRIAR_GER_REC, mapa, atributos, player);
+                carrega_botao(imagens, texto, mouse, 1, CRIAR_GER_TRO, mapa, atributos, player);
+                carrega_botao(imagens, texto, mouse, 2, CRIAR_MUR, mapa, atributos, player);      
             } else {
-                carrega_botao(imagens, texto, mouse, 0, HUMANO);
-                carrega_botao(imagens, texto, mouse, 1, MECANICO);
-                carrega_botao(imagens, texto, mouse, 2, ELETRICO);
-            }
+                carrega_botao(imagens, texto, mouse, 0, HUMANO, mapa, atributos, player);
+                carrega_botao(imagens, texto, mouse, 1, MECANICO, mapa, atributos, player);
+                carrega_botao(imagens, texto, mouse, 2, ELETRICO, mapa, atributos, player);
+            } 
         }
     }
-    if (valor == 3) carrega_botao(imagens, texto, mouse, 0, GERAR_OPERARIO);
+    
+    if (valor == 3) carrega_botao(imagens, texto, mouse, 0, GERAR_OPERARIO, mapa, atributos, player);
 
     glDisable(GL_TEXTURE_2D);
 }
 
-int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int local, int tipo) {
+int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int local, int tipo, cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player) {
 
     int posicao_comeco;
     int botao_largura = 0.06 * RY;
@@ -642,7 +643,20 @@ int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int
         glBindTexture(GL_TEXTURE_2D, imagens.botao2);
         if (mouse->x_botao > RY+gap_x && mouse->x_botao < RX-gap_x && mouse->y_botao > posicao_comeco && mouse->y_botao < posicao_comeco+botao_largura) {        
             switch (tipo) {
-                if (mouse->botao_mem == 0) {
+
+                    //funcao
+                /*
+                    printf("gera recurso\n");
+                    int x_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->i;
+                    int y_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->j;
+
+                    mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel = NULL;
+
+                    atributos.classe = GERADOR_DE_RECURSO;
+                    cria_uni_estatico(mapa, x_c, y_c, atributos, player);
+                    */
+
+                    if (mouse->botao_mem == 0) {
                     case CRIAR_GER_REC:
                         mouse->botao_mem = 1;
                         printf("gera recurso\n");
@@ -657,6 +671,7 @@ int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int
                     break;
                     case GERAR_OPERARIO:
                         //funcao
+                        gera_operario(mapa, mouse, atributos, player);
                         printf("gera operario\n");
                     break;
                 } else {
@@ -693,10 +708,9 @@ int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int
                     break;
                 }
             }
-            printf("oi querida\n");
+            //printf("oi querida\n");
             mouse->x_botao = -1;
             mouse->y_botao = -1;
-            printf("botao_mem: %d\n", mouse->botao_mem);
         }
     } else {
         glBindTexture(GL_TEXTURE_2D, imagens.botao1);
@@ -816,6 +830,7 @@ int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int
     }
 
 }
+
 
 int colore_espacos_validos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux, player_data* player) {
 

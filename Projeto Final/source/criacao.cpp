@@ -324,6 +324,7 @@ int construction(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atri
     char optionSN;
     int option; 
 
+    /*
     printf("Deseja construir algo?(S/N)\n");
     scanf("%c", &optionSN);
     getchar();
@@ -345,6 +346,7 @@ int construction(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atri
     scanf("%d", &option);
     getchar();
 
+*/
     switch (option) {
         case 1:
             atributos.classe = GERADOR_DE_RECURSO;

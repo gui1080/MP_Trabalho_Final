@@ -99,13 +99,16 @@ int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mo
         while (!stop) {
             while (SDL_PollEvent(&evento)) {
                 //carrega_interface(mapa, imagens, mouse, texto, player, atributos);
+                
                 /*
                 if (aux->divisao == OPERARIO) {
-                    carrega_botao(imagens, texto, mouse, 0, CRIAR_GER_REC);
+
+                    carrega_botao(imagens, texto, mouse, 0, CRIAR_GER_REC) == 2
                     carrega_botao(imagens, texto, mouse, 1, CRIAR_GER_TRO);
                     carrega_botao(imagens, texto, mouse, 2, CRIAR_MUR);
                 }
                 */
+                
                 if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
                     cell_i = evento.button.y/LADO;
                     cell_j = evento.button.x/LADO;
@@ -141,6 +144,15 @@ int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mo
                             unidade_estatica* aux2 = mapa[cell_i][cell_j].pUniImovel;
                             printf("%d %d\n", cell_i, cell_j);
                             destruicao(mapa, aux, aux2, player);
+                        }
+                        if (mapa[cell_i][cell_j].pBase != NULL
+                            && (aux->i != cell_i || aux->j != cell_j)
+                            && verifica_oposicao(mapa, aux, cell_i, cell_j)) {
+
+                            printf("INICIAR ATAQUE\n");
+                            base_principal* aux2 = mapa[cell_i][cell_j].pBase;
+                            printf("%d %d\n", cell_i, cell_j);
+                            destruicao_base(mapa, aux, aux2, player);
                         }
                     }
                     stop = true;

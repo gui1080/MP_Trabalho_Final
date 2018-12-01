@@ -163,6 +163,49 @@ int destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, u
     return 0;
  }
 
+
+int destruicao_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, base_principal *aux2, player_data *player){
+    
+    printf("Status da unidade 1:\n");
+    printf("Divisao: %d\n", aux->divisao);
+    printf("Vida: %d\n", aux->vida);
+    printf("Ataque: %d\n", aux->ataque);
+    printf("Defesa: %d\n", aux->defesa);
+    printf("Alcance: %d\n", aux->alcance);
+    printf("Velocidade: %d\n\n", aux->velocidade);
+
+    printf("Status da unidade 2 %d:\n", aux2->vida);
+
+    int ataque = aux->ataque;
+  
+    aux2->vida = aux2->vida - ataque;       
+
+    if (aux2->vida <= 0) {
+
+        for (int p = aux2->i; p < (aux2->i + aux2->dim); p++) {
+            for (int q = aux2->j; q < (aux2->j + aux2->dim); q++) {
+                mapa[p][q].pBase = NULL;
+            }
+        }
+
+        printf("Base destruida destruida\n");
+        if(aux2->time == INIMIGO){
+            printf("PARABÉNS, VOCÊ VENCEU\n\n");
+        }else{
+            printf("DERROTA\n\n");
+        }
+
+
+    } else{
+        printf("Nova vida da construção: %d\n", aux2->vida);
+
+    }
+    
+    return 0;
+ }
+
+
+
 void Atualizar_recursos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], player_data *player){
 
     for (int i = 0; i < BLOCOS_LINHA; i++) {
@@ -242,32 +285,60 @@ int evolution(unidade_estatica *aux, player_data *player) {
 
 }
 
-int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atributos_data atributos, player_data *player){
+int gera_operario(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse, atributos_data atributos, player_data *player){
     int x;
     int y;
-    int i = mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->i;
-    int j = mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->j;
-    int dim = mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->dim;
+    int i = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pBase->i;
+    int j = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pBase->j;
+    int dim = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pBase->dim;
+    int aux1 = i - 1;
+    int aux2 = j - 1;
+    int aux3 = i + (dim + 1);
+    int aux4 = j + (dim + 1);
+    atributos.divisao = OPERARIO;
+
+    while (1) {
+        for(x = aux1; x <  aux3; x++){
+            for(y = aux2; y < aux4; y++){
+                if(mapa[x][y].pUniImovel == NULL && mapa[x][y].pUniMovel == NULL && mapa[x][y].pBase == NULL ){
+                    cria_uni_movel(mapa, x, y, atributos, player);
+                    return 0;
+                }
+            }
+        }
+        aux1--;
+        aux2--;
+        aux3++;
+        aux4++;
+    }      
+} 
+
+int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse, atributos_data atributos, player_data *player){
+    int x;
+    int y;
+    int i = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniImovel->i;
+    int j = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniImovel->j;
+    int dim = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniImovel->dim;
     int aux1 = i - 1;
     int aux2 = j - 1;
     int aux3 = i + (dim + 1);
     int aux4 = j + (dim + 1);
     atributos.nivel = 2;
 
-    if(mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->divisao == HUMANO){
+    if(mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniImovel->divisao == HUMANO){
         atributos.divisao = HUMANO;
     }
-    if(mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->divisao == MECANICO){
+    if(mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniImovel->divisao == MECANICO){
         atributos.divisao = MECANICO;
     }
-    if(mapa[mouse.y/LADO][mouse.x/LADO].pUniImovel->divisao == ELETRICO){
+    if(mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniImovel->divisao == ELETRICO){
         atributos.divisao = ELETRICO;
     }
 
     while (1) {
         for(x = aux1; x <  aux3; x++){
             for(y = aux2; y < aux4; y++){
-                if(mapa[x][y].pUniImovel == NULL && mapa[x][y].pUniMovel == NULL){
+                if(mapa[x][y].pUniImovel == NULL && mapa[x][y].pUniMovel == NULL && mapa[x][y].pBase == NULL ){
                     cria_uni_movel(mapa, x, y, atributos, player);
                     return 0;
                 }
