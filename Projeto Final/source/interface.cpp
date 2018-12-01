@@ -602,9 +602,15 @@ int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse,
 
     if (valor == 1) {
         if (mapa[i][j].pUniMovel->divisao == OPERARIO) {
-            carrega_botao(imagens, texto, mouse, 0, CRIAR_GER_REC);
-            carrega_botao(imagens, texto, mouse, 1, CRIAR_GER_TRO);
-            carrega_botao(imagens, texto, mouse, 2, CRIAR_MUR);       
+            if(mouse->botao_mem == -1) {
+                carrega_botao(imagens, texto, mouse, 0, CRIAR_GER_REC);
+                carrega_botao(imagens, texto, mouse, 1, CRIAR_GER_TRO);
+                carrega_botao(imagens, texto, mouse, 2, CRIAR_MUR);       
+            } else {
+                carrega_botao(imagens, texto, mouse, 0, HUMANO);
+                carrega_botao(imagens, texto, mouse, 1, MECANICO);
+                carrega_botao(imagens, texto, mouse, 2, ELETRICO);
+            }
         }
     }
     if (valor == 3) carrega_botao(imagens, texto, mouse, 0, GERAR_OPERARIO);
@@ -636,26 +642,61 @@ int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int
         glBindTexture(GL_TEXTURE_2D, imagens.botao2);
         if (mouse->x_botao > RY+gap_x && mouse->x_botao < RX-gap_x && mouse->y_botao > posicao_comeco && mouse->y_botao < posicao_comeco+botao_largura) {        
             switch (tipo) {
-                case CRIAR_GER_REC:
-                    //funcao
-                    printf("gera recurso\n");
-                break;
-                case CRIAR_GER_TRO:
-                    //funcao
-                    printf("gera tropa\n");
-                break;
-                case CRIAR_MUR:
-                    //funcao
-                    printf("gera muralha\n");
-                break;
-                case GERAR_OPERARIO:
-                    //funcao
-                    printf("gera operario\n");
-                break;
+                if (mouse->botao_mem == 0) {
+                    case CRIAR_GER_REC:
+                        mouse->botao_mem = 1;
+                        printf("gera recurso\n");
+                    break;
+                    case CRIAR_GER_TRO:
+                        mouse->botao_mem = 2;
+                        printf("gera tropa\n");
+                    break;
+                    case CRIAR_MUR:
+                        //funcao
+                        printf("gera muralha\n");
+                    break;
+                    case GERAR_OPERARIO:
+                        //funcao
+                        printf("gera operario\n");
+                    break;
+                } else {
+                    printf("ok\n");
+                    case HUMANO:
+                        if (mouse->botao_mem == 1)
+                            //funcao
+                            printf("gera ger recurso tipo humano\n");
+                        else{
+                            //funcao
+                            printf("gera ger tropa tipo humano\n");
+                        }
+                    mouse->botao_mem = -1;
+                    break;
+                    case MECANICO:
+                        if (mouse->botao_mem == 1)
+                            //funcao
+                            printf("gera ger recurso tipo mecanico\n");
+                        else{
+                            //funcao
+                            printf("gera ger tropa tipo mecanico\n");
+                        }
+                    mouse->botao_mem = -1;
+                    break;
+                    case ELETRICO:
+                        if (mouse->botao_mem == 1)
+                            //funcao
+                            printf("gera ger recurso tipo eletrico\n");
+                        else{
+                            //funcao
+                            printf("gera ger tropa tipo eletrico\n");
+                        }
+                    mouse->botao_mem = -1;
+                    break;
+                }
             }
             printf("oi querida\n");
             mouse->x_botao = -1;
             mouse->y_botao = -1;
+            printf("botao_mem: %d\n", mouse->botao_mem);
         }
     } else {
         glBindTexture(GL_TEXTURE_2D, imagens.botao1);

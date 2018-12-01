@@ -140,6 +140,7 @@ typedef struct Mouse_Data {
     int y_agr;
     int x_botao;
     int y_botao;
+    int botao_mem;
 }mouse_data;
 
 typedef struct Atributos_Data {

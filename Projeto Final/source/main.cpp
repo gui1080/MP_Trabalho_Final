@@ -280,9 +280,11 @@ int main() {
 
     int mouse_x = -1;
     int mouse_y = -1;
-    mouse_data mouse;
-    mouse.x_mem = 200;
-    mouse.y_mem = 200;
+    mouse_data *mouse;
+    mouse = (mouse_data*)malloc(sizeof(mouse_data));
+    mouse->x_mem = 200;
+    mouse->y_mem = 200;
+    mouse->botao_mem = -1;
 
     Atualizar_recursos(mapa, player);
     /*
@@ -326,8 +328,8 @@ int main() {
 
         glClear(GL_COLOR_BUFFER_BIT);
 
-        mouse.x = mouse_x;
-        mouse.y = mouse_y;
+        mouse->x = mouse_x;
+        mouse->y = mouse_y;
 
         //
         glPushMatrix();
@@ -368,20 +370,20 @@ int main() {
             }
 
             if (eventos.type == SDL_MOUSEMOTION) {
-                mouse.x_agr = eventos.motion.x;
-                mouse.y_agr = eventos.motion.y;
+                mouse->x_agr = eventos.motion.x;
+                mouse->y_agr = eventos.motion.y;
             }
 
             if (eventos.type == SDL_MOUSEBUTTONDOWN) {
                 if (eventos.button.button == SDL_BUTTON_LEFT) {
                     mouse_x = eventos.button.x;
                     mouse_y = eventos.button.y;
-                    mouse.x_botao = mouse_x;
-                    mouse.y_botao = mouse_y;
+                    mouse->x_botao = mouse_x;
+                    mouse->y_botao = mouse_y;
                     if (mouse_x/LADO < BLOCOS_LINHA && mouse_x/LADO >= 0 &&
                         mouse_y/LADO < BLOCOS_LINHA && mouse_y/LADO >= 0) {
-                        mouse.x_mem = mouse_x;
-                        mouse.y_mem = mouse_y;
+                        mouse->x_mem = mouse_x;
+                        mouse->y_mem = mouse_y;
                     }
                     //printf("x = %d y = %d\n", mouse_x, mouse_y);
                     //printf("i = %d j = %d\n", mouse_y/LADO, mouse_x/LADO);
@@ -389,6 +391,7 @@ int main() {
             } else if (eventos.type == SDL_MOUSEBUTTONUP) {
                     mouse_x = -1;
                     mouse_y = -1;
+                    //mouse.botao_mem = -1;
             }
             // Para mudar de turno PRESS 'enter'
             if(eventos.type == SDL_KEYDOWN && (eventos.key.keysym.sym == SDLK_RETURN || SDL_KEYDOWN && eventos.key.keysym.sym == SDLK_KP_ENTER)){
@@ -403,17 +406,17 @@ int main() {
         // LIMPA O BUFFER
         glClear(GL_COLOR_BUFFER_BIT);
 
-        mouse.x = mouse_x;
-        mouse.y = mouse_y;
+        mouse->x = mouse_x;
+        mouse->y = mouse_y;
         if (turno_de_quem == ALIADO) {
-        	carrega_interface(mapa, imagens, &mouse, texto, player, dados_uni);
+        	carrega_interface(mapa, imagens, mouse, texto, player, dados_uni);
 
         	SDL_Flip(screen);
         	SDL_GL_SwapBuffers();
 
             
-            if (verifica_selecao(mapa, mouse) != 0) {
-                verifica_unidades(mapa, &mouse, player, dados_uni, imagens, texto);
+            if (verifica_selecao(mapa, *mouse) != 0) {
+                verifica_unidades(mapa, mouse, player, dados_uni, imagens, texto);
                 mouse_x = -1;
                 mouse_y = -1;
             }
@@ -421,7 +424,7 @@ int main() {
 
     	}
     	else if (turno_de_quem == INIMIGO) {
-            CPU(mapa, imagens, mouse, texto, player_CPU, dados_uni, contador_turno);
+            CPU(mapa, imagens, *mouse, texto, player_CPU, dados_uni, contador_turno);
             //Atualizacoes do turno:
             /*gera_tropa(mapa, mouse, dados_uni, player_CPU);*/
             Atualizar_recursos(mapa, player_CPU);
