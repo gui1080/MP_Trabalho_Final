@@ -66,6 +66,7 @@ typedef struct Unidade_Movel {
     int custo_minerio;
     int custo_comida;
     int custo_eletricidade;
+	bool acao;
 }unidade_movel;
 
 typedef struct Unidade_Estatica {
@@ -84,6 +85,7 @@ typedef struct Unidade_Estatica {
     int custo_comida;
     int custo_eletricidade;
     int producao;
+	bool acao;
 }unidade_estatica;
 
 typedef struct Base_Principal {
@@ -614,3 +616,4 @@ int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atr
 void CPU(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse, texto_data texto, player_data *player_CPU, atributos_data atributos, int contador_turno);
 int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atributos_data atributos, player_data *player);
 void cria_player(player_data *player, int time);
+void restaurar_acoes(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]);
