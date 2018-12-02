@@ -233,7 +233,7 @@ int main() {
     cria_mapa(mapa);
 
     // i = 35, j = 1, dimensao = 4, vida = 20, time = 0
-    if (cria_base(mapa, 35, 1, 4, 20, ALIADO) == -1) {
+    if (cria_base(mapa, 35, 1, 4, VIDA_INICIAL_BASE, ALIADO) == -1) {
         printf("FALHA AO CRIAR BASE 1\n");
         SDL_FreeSurface(screen);
         TTF_Quit();
@@ -241,7 +241,7 @@ int main() {
         return -1; 
     }
     //1, 35, 4, 20, 1
-    if (cria_base(mapa, 1, 35, 4, 20, INIMIGO) == -1) {
+    if (cria_base(mapa, 1, 35, 4, VIDA_INICIAL_BASE, INIMIGO) == -1) {
         printf("FALHA AO CRIAR BASE 2\n");
         SDL_FreeSurface(screen);
         TTF_Quit();
