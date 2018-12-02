@@ -411,9 +411,6 @@ int main() {
             if(eventos.type == SDL_KEYDOWN && (eventos.key.keysym.sym == SDLK_RETURN || SDL_KEYDOWN && eventos.key.keysym.sym == SDLK_KP_ENTER)){
                 turno_de_quem = INIMIGO;
                 printf("Vez do CPU\n");
-                restaurar_acoes(mapa);
-                //Atualizacoes do turno:
-            	Atualizar_recursos(mapa, player);
                 contador_turno++;
             }
         }
@@ -440,8 +437,8 @@ int main() {
     	else if (turno_de_quem == INIMIGO) {
             CPU(mapa, imagens, *mouse, texto, player_CPU, dados_uni, contador_turno);
             //Atualizacoes do turno:
-            /*gera_tropa(mapa, mouse, dados_uni, player_CPU);*/
             Atualizar_recursos(mapa, player_CPU);
+            Atualizar_recursos(mapa, player);
             restaurar_acoes(mapa);
             turno_de_quem = ALIADO;
             printf("sua vez\n");
