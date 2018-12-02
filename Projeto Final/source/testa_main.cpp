@@ -23,6 +23,64 @@ TEST(Testa, foto_existe) {
     ASSERT_EQ(true, verifica_imagem("imagens/grade.png"));
 }
 
+TEST(Testa, foto_n_existe) {
+    ASSERT_EQ(false, verifica_imagem("imagens/mochileiro_das_galaxias.png"));
+}
+
+TEST(Testa, carrega_numeros_recurso) {
+    
+    player_data player1;
+
+    player1.comida = 40;
+    player1.minerio = 40;
+    player1.eletricidade = 40;
+    player1.xp = 0;
+    player1.nivel = 1;
+    player_data *player = &player1;
+    
+    texto_data texto;
+
+    char result[50];
+    char zero[3] = "0";
+    int num = 0;
+
+    ASSERT_EQ(0, carrega_numeros_recurso(texto, player));
+    
+}
+
+TEST(Testa, comandante_falha) {
+        imagens_data imagens; 
+    
+        // pegar textura
+    unsigned int textura_grade;
+    unsigned int textura_fundo;
+    unsigned int textura_base;
+    unsigned int menu_principal;
+
+    unsigned int humano_GER_REC;
+    unsigned int humano_GER_TROP;
+    unsigned int humano_DEF_OFS;
+    unsigned int humano_DEF_PAS;
+    unsigned int mecanico_GER_REC;
+    unsigned int mecanico_GER_TROP;
+    unsigned int mecanico_DEF_OFS;
+    unsigned int mecanico_DEF_PAS;
+    unsigned int eletrico_GER_REC;
+    unsigned int eletrico_GER_TROP;
+    unsigned int eletrico_DEF_OFS;
+    unsigned int eletrico_DEF_PAS;
+    unsigned int operario;
+
+    unsigned int textura_minerio;
+    unsigned int textura_raio;
+    unsigned int textura_comida;
+
+    unsigned int textura_exp;
+
+
+    ASSERT_EQ(1, carrega_comandante(imagens));
+}
+
 
 TEST(Testa, espaco_verifica) {
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
@@ -53,88 +111,60 @@ TEST(Testa, minimo) {
     ASSERT_EQ(2, min(2, 8));
 }
 
-
 TEST(Testa, maximo) {
     
     ASSERT_EQ(8, max(2,8));
 }
 
 /*
+TEST(Testa, velocidade) {
+    cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+    int i = 56;
+    int j = 45;
+    unidade_movel* aux = mapa[i][j].pUniMovel;
+    
+    ASSERT_EQ(false, verifica_oposicao(mapa, aux, i, j));
+}
+
+/*
+
+TEST(Testa, combate) {
+    mouse_data *mouse;
+    
+   	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+    
+    player_data player1;
+
+    player1.comida = 40;
+    player1.minerio = 40;
+    player1.eletricidade = 40;
+    player1.xp = 0;
+    player1.nivel = 1;
+    player_data *player = &player1;
+    
+    
+  
+    SDL_Event evento;
+    
+    int cell_i = mouse->y/LADO;
+    int cell_j = mouse->x/LADO;
+    
+    cell_i = evento.button.y/LADO;
+    cell_j = evento.button.x/LADO;
+    
+    unidade_movel* aux = mapa[cell_i][cell_j].pUniMovel;
+    ASSERT_EQ(0, move_unidade(mapa, aux, cell_i, cell_j));
+}
+
+
 TEST(Testa, cria_interface) {
 	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
     cria_mapa(mapa);
   
     imagens_data imagens; 
-    
-        // pegar textura
-    unsigned int textura_grade;
-    unsigned int textura_fundo;
-    unsigned int textura_base;
-    unsigned int menu_principal;
 
-    unsigned int humano_GER_REC;
-    unsigned int humano_GER_TROP;
-    unsigned int humano_DEF_OFS;
-    unsigned int humano_DEF_PAS;
-    unsigned int mecanico_GER_REC;
-    unsigned int mecanico_GER_TROP;
-    unsigned int mecanico_DEF_OFS;
-    unsigned int mecanico_DEF_PAS;
-    unsigned int eletrico_GER_REC;
-    unsigned int eletrico_GER_TROP;
-    unsigned int eletrico_DEF_OFS;
-    unsigned int eletrico_DEF_PAS;
-    unsigned int operario;
-
-    unsigned int textura_minerio;
-    unsigned int textura_raio;
-    unsigned int textura_comida;
-
-    unsigned int textura_exp;
-    
-    textura_grade = loadTexture("imagens/grade.png");
-    textura_fundo = loadTexture("imagens/sand.png");
-    menu_principal = loadTexture("imagens/menu_principal.png");
-    textura_base = loadTexture("imagens/base.png");
-    humano_GER_REC = loadTexture("imagens/Akeno.png");
-    humano_GER_TROP = loadTexture("imagens/albedo.png");
-    humano_DEF_OFS = loadTexture("imagens/chitoge2.png");
-    humano_DEF_PAS = loadTexture("imagens/Dva.png");
-    mecanico_GER_REC = loadTexture("imagens/Eliza.png");
-    mecanico_GER_TROP = loadTexture("imagens/Emilia.png");
-    mecanico_DEF_OFS = loadTexture("imagens/Hatsune.png");
-    mecanico_DEF_PAS = loadTexture("imagens/Lucy.png");
-    eletrico_GER_REC = loadTexture("imagens/megumin.png");
-    eletrico_GER_TROP = loadTexture("imagens/Rias.png");
-    eletrico_DEF_OFS = loadTexture("imagens/Lucy4.png");
-    eletrico_DEF_PAS = loadTexture("imagens/Rias2.png");
-    textura_minerio = loadTexture("imagens/minerio.png");
-    textura_comida = loadTexture("imagens/comida.png");
-    textura_raio = loadTexture("imagens/raio.png");
-    operario = loadTexture("imagens/Kuru.png");
-
-
-    imagens.textura_grade = textura_grade;
-    imagens.textura_fundo = textura_fundo;
-    imagens.textura_base = textura_base;
-    imagens.textura_menu_principal = menu_principal;
-    imagens.humano_GER_REC = humano_GER_REC;
-    imagens.humano_GER_TROP = humano_GER_TROP;
-    imagens.humano_DEF_OFS = humano_DEF_OFS;
-    imagens.humano_DEF_PAS = humano_DEF_PAS;
-    imagens.mecanico_GER_REC = mecanico_GER_REC;
-    imagens.mecanico_GER_TROP = mecanico_GER_TROP;
-    imagens.mecanico_DEF_OFS = mecanico_DEF_OFS;
-    imagens.mecanico_DEF_PAS = mecanico_DEF_PAS;
-    imagens.eletrico_GER_REC = eletrico_GER_REC;
-    imagens.eletrico_GER_TROP = eletrico_GER_TROP;
-    imagens.eletrico_DEF_OFS = eletrico_DEF_OFS;
-    imagens.eletrico_DEF_PAS = eletrico_DEF_PAS;
-    imagens.raio = textura_raio;
-    imagens.comida = textura_comida;
-    imagens.minerio = textura_minerio;
-    imagens.operario = operario;
-    
     player_data player1;
 
     player1.comida = 40;
@@ -151,13 +181,11 @@ TEST(Testa, cria_interface) {
     dados_uni.nivel = 1;
     cria_uni_movel(mapa, 5, 5, dados_uni, player);
     
-    mouse_data mouse;
-   	
-   	imagens.textura_grade = textura_grade;
-    imagens.textura_fundo = textura_fundo;
+    mouse_data *mouse;
+
     texto_data texto;
-    mouse.x = 200;
-    mouse.y = 200;
+    mouse->x = 200;
+    mouse->y = 200;
 
     ASSERT_EQ(0, carrega_interface(mapa, imagens, mouse, texto, player, dados_uni));
 }
