@@ -64,52 +64,70 @@ int CPU(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA],player_data *player_CPU,int c
 void criacoes_iniciais_1(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU) {
     atributos.classe = GERADOR_DE_RECURSO;
     atributos.divisao = HUMANO;
-    atributos.time = INIMIGO;
+    atributos.time = player_CPU->time;
     atributos.nivel = 1;
     cria_uni_estatico(mapa, 1, 30, atributos, player_CPU);
+    if(player_CPU->time == ALIADO)
+        cria_uni_estatico(mapa, 30, 1, atributos, player_CPU);
     atributos.classe = GERADOR_DE_RECURSO;
     atributos.divisao = MECANICO;
-    atributos.time = INIMIGO;
+    atributos.time = player_CPU->time;
     atributos.nivel = 1;
     cria_uni_estatico(mapa, 6, 30, atributos, player_CPU);
+    if(player_CPU->time == ALIADO)
+        cria_uni_estatico(mapa, 30, 6, atributos, player_CPU);
     atributos.classe = GERADOR_DE_RECURSO;
     atributos.divisao = ELETRICO;
-    atributos.time = INIMIGO;
+    atributos.time = player_CPU->time;
     atributos.nivel = 1;
     cria_uni_estatico(mapa, 6, 35, atributos, player_CPU);
+    if(player_CPU->time == ALIADO)
+        cria_uni_estatico(mapa, 35, 6, atributos, player_CPU);
     atributos.classe = GERADOR_DE_TROPA;
     atributos.divisao = HUMANO;
-    atributos.time = INIMIGO;
+    atributos.time = player_CPU->time;
     atributos.nivel = 1;
     cria_uni_estatico(mapa, 2, 25, atributos, player_CPU);
+    if(player_CPU->time == ALIADO)
+        cria_uni_estatico(mapa, 25, 2, atributos, player_CPU);
     atributos.classe = GERADOR_DE_TROPA;
     atributos.divisao = MECANICO;
-    atributos.time = INIMIGO;
+    atributos.time = player_CPU->time;
     atributos.nivel = 1;
     cria_uni_estatico(mapa, 9, 26, atributos, player_CPU);
+    if(player_CPU->time == ALIADO)
+        cria_uni_estatico(mapa, 26, 9, atributos, player_CPU);
     atributos.classe = GERADOR_DE_TROPA;
     atributos.divisao = ELETRICO;
-    atributos.time = INIMIGO;
+    atributos.time = player_CPU->time;
     atributos.nivel = 1;
     cria_uni_estatico(mapa, 10, 35, atributos, player_CPU);
+    if(player_CPU->time == ALIADO)
+        cria_uni_estatico(mapa, 35, 10, atributos, player_CPU);
 }
 void criacoes_iniciais_2(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU) {
     
     atributos.classe = DEFESA_OFENSIVA;
     atributos.divisao = HUMANO;
-    atributos.time = INIMIGO;
+    atributos.time = player_CPU->time;
     atributos.nivel = 1;
     cria_uni_estatico(mapa, 3, 19, atributos, player_CPU);
+    if(player_CPU->time == ALIADO)
+        cria_uni_estatico(mapa, 19, 3, atributos, player_CPU);
     atributos.classe = DEFESA_OFENSIVA;
     atributos.divisao = MECANICO;
-    atributos.time = INIMIGO;
+    atributos.time = player_CPU->time;
     atributos.nivel = 1;
     cria_uni_estatico(mapa, 14, 22, atributos, player_CPU);
+    if(player_CPU->time == ALIADO)
+        cria_uni_estatico(mapa, 22, 14, atributos, player_CPU);
     atributos.classe = DEFESA_OFENSIVA;
     atributos.divisao = ELETRICO;
-    atributos.time = INIMIGO;
+    atributos.time = player_CPU->time;
     atributos.nivel = 1;
     cria_uni_estatico(mapa, 15, 35, atributos, player_CPU);
+    if(player_CPU->time == ALIADO)
+        cria_uni_estatico(mapa, 35, 15, atributos, player_CPU);
 }
 
 void criacoes_iniciais_3(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU) {
@@ -118,7 +136,7 @@ void criacoes_iniciais_3(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_d
     for (divisao = HUMANO; divisao <= ELETRICO; divisao++) {
         atributos.classe = DEFESA_PASSIVA;
         atributos.divisao = divisao;
-        atributos.time = INIMIGO;
+        atributos.time = player_CPU->time;
         count = 3+rand()%2;
         while (count--) {
             do {
@@ -126,6 +144,8 @@ void criacoes_iniciais_3(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_d
                 j = rand()%40;
             } while (i-j > 0 || j+(39-i) > 53 || !verificador_CPU(mapa, i, j));
             cria_uni_estatico(mapa, i, j, atributos, player_CPU);
+            if(player_CPU->time == ALIADO)
+                cria_uni_estatico(mapa, j, i, atributos, player_CPU);
         }
     }
 }
@@ -137,7 +157,7 @@ atributos_data atributos, player_data *player_CPU) {
         for (divisao = HUMANO; divisao <= ELETRICO; divisao++) {
             atributos.classe = defesa;
             atributos.divisao = divisao;
-            atributos.time = INIMIGO;
+            atributos.time = player_CPU->time;
             count = 1;
             while (count--) {
                 k = 0;
@@ -148,6 +168,8 @@ atributos_data atributos, player_data *player_CPU) {
                 } while ((i-j > 0 || !cria_uni_estatico(mapa, i, j, atributos, player_CPU)) && k < 15);
                 if (k > 15)
                     break;
+                if(player_CPU->time == ALIADO)
+                    cria_uni_estatico(mapa, j, i, atributos, player_CPU);
             }
         }
     }
@@ -161,7 +183,7 @@ atributos_data atributos, player_data *player_CPU) {
     for (divisao = HUMANO; divisao <= ELETRICO; divisao++) {
         atributos.classe = GERADOR_DE_RECURSO;
         atributos.divisao = divisao;
-        atributos.time = INIMIGO;
+        atributos.time = player_CPU->time;
         atributos.nivel = 1;
         count = 0;
         if (divisao == HUMANO && player_CPU->comida < COMIDA_INICIAL/2)
@@ -179,6 +201,8 @@ atributos_data atributos, player_data *player_CPU) {
             } while ((i-j > 0 || !cria_uni_estatico(mapa, i, j, atributos, player_CPU)) && k < 15);
             if (k > 15)
                 break;
+            if(player_CPU->time == ALIADO)
+                cria_uni_estatico(mapa, j, i, atributos, player_CPU);
         }
     }
     // DEFESA
@@ -186,7 +210,7 @@ atributos_data atributos, player_data *player_CPU) {
         for (divisao = HUMANO; divisao <= ELETRICO; divisao++) {
             atributos.classe = defesa;
             atributos.divisao = divisao;
-            atributos.time = INIMIGO;
+            atributos.time = player_CPU->time;
             count = rand()%2;
             while (count--) {
                 k = 0;
@@ -197,6 +221,8 @@ atributos_data atributos, player_data *player_CPU) {
                 } while ((i-j > 0 || !cria_uni_estatico(mapa, i, j, atributos, player_CPU)) && k < 10);
                 if (k > 10)
                     break;
+                if(player_CPU->time == ALIADO)
+                    cria_uni_estatico(mapa, j, i, atributos, player_CPU);
             }
         }
     }
@@ -214,7 +240,7 @@ atributos_data atributos, player_data *player_CPU) {
             i = rand()%40;
             j = rand()%40;
             if (mapa[i][j].pUniImovel != NULL &&
-            mapa[i][j].pUniImovel->time == INIMIGO &&
+            mapa[i][j].pUniImovel->time == player_CPU->time &&
             mapa[i][j].pUniImovel->nivel < 3) {
                 pode_evoluir = 1;
                 evolution(mapa[i][j].pUniImovel, player_CPU);
@@ -237,12 +263,12 @@ atributos_data atributos, player_data *player_CPU) {
             i = rand()%40;
             j = rand()%40;
             if (mapa[i][j].pUniImovel != NULL &&
-            mapa[i][j].pUniImovel->time == INIMIGO &&
+            mapa[i][j].pUniImovel->time == player_CPU->time &&
             mapa[i][j].pUniImovel->classe == GERADOR_DE_TROPA) {
                 pode_gerar_tropas = true;
                 mouse.y_mem = i*LADO;
                 mouse.x_mem = j*LADO;
-                atributos.time = INIMIGO;
+                atributos.time = player_CPU->time;
                 atributos.nivel = 1+rand()%mapa[i][j].pUniImovel->nivel;
                 atributos.divisao = mapa[i][j].pUniImovel->divisao;
                 gera_tropa(mapa, &mouse, atributos, player_CPU);
@@ -264,10 +290,14 @@ atributos_data atributos, player_data *player_CPU) {
             i = rand()%40;
             j = rand()%40;
             if (mapa[i][j].pUniMovel != NULL &&
-            mapa[i][j].pUniMovel->time == INIMIGO) {
+            mapa[i][j].pUniMovel->time == player_CPU->time) {
                 pode_mover = true;
                 new_i = i+rand()%mapa[i][j].pUniMovel->velocidade;
                 new_j = j-rand()%mapa[i][j].pUniMovel->velocidade;
+                if(player_CPU->time == ALIADO) {
+                    new_i = i-rand()%mapa[i][j].pUniMovel->velocidade;
+                    new_j = j+rand()%mapa[i][j].pUniMovel->velocidade;
+                }
                 if(verificador_CPU(mapa, new_i, new_j))
                     move_unidade(mapa, mapa[i][j].pUniMovel, new_i, new_j);
                 else
@@ -290,13 +320,13 @@ atributos_data atributos, player_data *player_CPU) {
             j = rand()%40;
             loop = true;
             if (mapa[i][j].pUniMovel != NULL &&
-            mapa[i][j].pUniMovel->time == INIMIGO) {
+            mapa[i][j].pUniMovel->time == player_CPU->time) {
                 alcance = mapa[i][j].pUniMovel->alcance;
                 for (p = i - alcance; p <= i + alcance && loop == true; p++) {
                     for (q = j - alcance; q<= j + alcance && loop == true; q++) {
                         if(p >= 0 && p < BLOCOS_LINHA && q >= 0 && q < BLOCOS_LINHA) {
                             if (mapa[p][q].pUniImovel != NULL &&
-                            mapa[p][q].pUniImovel->time == ALIADO) {
+                            mapa[p][q].pUniImovel->time != player_CPU->time) {
                                 destruicao(mapa, mapa[i][j].pUniMovel, mapa[p][q].pUniImovel, player_CPU);
                                 loop = false;
                             }
@@ -323,13 +353,13 @@ atributos_data atributos, player_data *player_CPU) {
             j = rand()%40;
             loop = true;
             if (mapa[i][j].pUniMovel != NULL &&
-            mapa[i][j].pUniMovel->time == INIMIGO) {
+            mapa[i][j].pUniMovel->time == player_CPU->time) {
                 alcance = mapa[i][j].pUniMovel->alcance;
                 for (p = i - alcance; p <= i + alcance && loop == true; p++) {
                     for (q = j - alcance; q<= j + alcance && loop == true; q++) {
                         if(p >= 0 && p < BLOCOS_LINHA && q >= 0 && q < BLOCOS_LINHA) {
                             if (mapa[p][q].pUniMovel != NULL &&
-                            mapa[p][q].pUniMovel->time == ALIADO) {
+                            mapa[p][q].pUniMovel->time != player_CPU->time) {
                                 combate(mapa, mapa[i][j].pUniMovel, mapa[p][q].pUniMovel, player_CPU);
                                 loop = false;
                             }
@@ -353,15 +383,19 @@ atributos_data atributos, player_data *player_CPU) {
         do {
             i = 20+rand()%20;
             j = rand()%20;
+            if(player_CPU->time == ALIADO) {
+                i = rand()%20;
+                j = 20+rand()%20;
+            }
             loop = true;
             if (mapa[i][j].pUniMovel != NULL &&
-            mapa[i][j].pUniMovel->time == INIMIGO) {
+            mapa[i][j].pUniMovel->time == player_CPU->time) {
                 alcance = mapa[i][j].pUniMovel->alcance;
                 for (p = i - alcance; p <= i + alcance && loop == true; p++) {
                     for (q = j - alcance; q<= j + alcance && loop == true; q++) {
                         if(p >= 0 && p < BLOCOS_LINHA && q >= 0 && q < BLOCOS_LINHA) {
                             if (mapa[p][q].pBase != NULL &&
-                            mapa[p][q].pBase->time == ALIADO) {
+                            mapa[p][q].pBase->time != player_CPU->time) {
                                 destruicao_base(mapa, mapa[i][j].pUniMovel, mapa[p][q].pBase, player_CPU);
                                 loop = false;
                             }
@@ -386,19 +420,19 @@ void priorizar_contra_ataque(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atribut
             j = rand()%40;
             loop = true;
             if (mapa[i][j].pUniImovel != NULL &&
-            mapa[i][j].pUniImovel->time == INIMIGO &&
+            mapa[i][j].pUniImovel->time == player_CPU->time &&
             mapa[i][j].pUniImovel->classe == DEFESA_OFENSIVA) {
                 alcance = mapa[i][j].pUniImovel->alcance;
                 for (p = i - alcance; p <= i + alcance && loop == true; p++) {
                     for (q = j - alcance; q<= j + alcance && loop == true; q++) {
                         if(p >= 0 && p < BLOCOS_LINHA && q >= 0 && q < BLOCOS_LINHA) {
                             if (mapa[p][q].pUniMovel != NULL &&
-                            mapa[p][q].pUniMovel->time == ALIADO) {
+                            mapa[p][q].pUniMovel->time != player_CPU->time) {
                                 combate_defensivo(mapa, mapa[i][j].pUniImovel, mapa[p][q].pUniMovel, player_CPU);
                                 loop = false;
                             }
                             if (mapa[p][q].pUniImovel != NULL &&
-                            mapa[p][q].pUniImovel->time == ALIADO) {
+                            mapa[p][q].pUniImovel->time != player_CPU->time) {
                                 destruicao_defensiva(mapa, mapa[i][j].pUniImovel, mapa[p][q].pUniImovel, player_CPU);
                                 loop = false;
                             }
@@ -420,5 +454,4 @@ bool verificador_CPU (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j) 
     else
         return false;
 }
-
 
