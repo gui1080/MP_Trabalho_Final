@@ -367,7 +367,209 @@ TEST(Testa, cria_uni_movel_3) {
 
     free(player);
 }
- 
+
+TEST(Testa, move_unidade) {
+	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+    
+    atributos_data dados_uni;
+    dados_uni.divisao = MECANICO;
+    dados_uni.time = ALIADO;
+    dados_uni.nivel = 1;
+    ASSERT_EQ(0, cria_uni_movel(mapa, 1, 1, dados_uni, player));
+    ASSERT_EQ(0, move_unidade(mapa, mapa[1][1].pUniMovel, 2, 2));
+    free(player);
+}
+
+TEST(Testa, combate) {
+	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+
+    player_data *player_CPU = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, INIMIGO);
+    
+    atributos_data dados_uni;
+    dados_uni.divisao = MECANICO;
+    dados_uni.time = ALIADO;
+    dados_uni.nivel = 1;
+    ASSERT_EQ(0, cria_uni_movel(mapa, 1, 1, dados_uni, player));
+    dados_uni.time = INIMIGO;
+    ASSERT_EQ(0, cria_uni_movel(mapa, 2, 2, dados_uni, player));
+    ASSERT_EQ(0, combate(mapa, mapa[1][1].pUniMovel,  mapa[2][2].pUniMovel, player));
+    free(player);
+    free(player_CPU);
+}
+
+TEST(Testa, combate_defensivo) {
+	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+
+    player_data *player_CPU = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, INIMIGO);
+    
+    atributos_data dados_uni;
+    dados_uni.classe = DEFESA_OFENSIVA;
+    dados_uni.divisao = MECANICO;
+    dados_uni.time = ALIADO;
+    dados_uni.nivel = 1;
+    ASSERT_EQ(0, cria_uni_movel(mapa, 1, 1, dados_uni, player));
+    dados_uni.time = INIMIGO;
+    ASSERT_EQ(0, cria_uni_estatico(mapa, 2, 2, dados_uni, player));
+    ASSERT_EQ(0, combate_defensivo(mapa, mapa[2][2].pUniImovel,  mapa[1][1].pUniMovel, player_CPU));
+    free(player);
+    free(player_CPU);
+}
+
+TEST(Testa, destruicao) {
+	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+
+    player_data *player_CPU = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, INIMIGO);
+    
+    atributos_data dados_uni;
+    dados_uni.classe = GERADOR_DE_RECURSO;
+    dados_uni.divisao = MECANICO;
+    dados_uni.time = ALIADO;
+    dados_uni.nivel = 1;
+    ASSERT_EQ(0, cria_uni_movel(mapa, 1, 1, dados_uni, player));
+    dados_uni.time = INIMIGO;
+    ASSERT_EQ(0, cria_uni_estatico(mapa, 2, 2, dados_uni, player));
+    ASSERT_EQ(0, destruicao(mapa, mapa[1][1].pUniMovel,  mapa[2][2].pUniImovel, player));
+	Atualizar_recursos(mapa, player);
+	Atualizar_recursos(mapa, player_CPU);
+	restaurar_acoes(mapa);
+    ASSERT_EQ(0, destruicao(mapa, mapa[1][1].pUniMovel,  mapa[2][2].pUniImovel, player));
+    free(player);
+    free(player_CPU);
+}
+
+TEST(Testa, destruicao_defensiva) {
+	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+
+    player_data *player_CPU = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, INIMIGO);
+    
+    atributos_data dados_uni;
+    dados_uni.classe = DEFESA_PASSIVA;
+    dados_uni.divisao = MECANICO;
+    dados_uni.time = ALIADO;
+    dados_uni.nivel = 1;
+    ASSERT_EQ(0, cria_uni_estatico(mapa, 1, 1, dados_uni, player));
+    dados_uni.classe = DEFESA_OFENSIVA;
+    dados_uni.time = INIMIGO;
+    ASSERT_EQ(0, cria_uni_estatico(mapa, 2, 2, dados_uni, player));
+    ASSERT_EQ(0, destruicao_defensiva(mapa, mapa[2][2].pUniImovel,  mapa[1][1].pUniImovel, player_CPU));
+    free(player);
+    free(player_CPU);
+}
+
+TEST(Testa, destruicao_base) {
+	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+
+    player_data *player_CPU = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, INIMIGO);
+    
+    atributos_data dados_uni;
+    dados_uni.classe = DEFESA_PASSIVA;
+    dados_uni.divisao = MECANICO;
+    dados_uni.time = ALIADO;
+    dados_uni.nivel = 1;
+    ASSERT_EQ(0, cria_uni_movel(mapa, 1, 1, dados_uni, player));
+    dados_uni.classe = DEFESA_OFENSIVA;
+    dados_uni.time = INIMIGO;
+    ASSERT_EQ(0, cria_base(mapa, 2, 2, 4, VIDA_INICIAL_BASE, INIMIGO));
+    ASSERT_EQ(0, destruicao_base(mapa, mapa[1][1].pUniMovel,  mapa[2][2].pBase, player));
+    free(player);
+    free(player_CPU);
+}
+
+TEST(Testa, player_level) {
+	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+    player->xp = 51;
+    ASSERT_EQ(0, player_level(player));
+    free(player);
+}
+
+TEST(Testa, evolution) {
+	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+
+    atributos_data dados_uni;
+    dados_uni.classe = GERADOR_DE_RECURSO;
+    dados_uni.divisao = MECANICO;
+    dados_uni.time = ALIADO;
+    dados_uni.nivel = 1;
+    ASSERT_EQ(0, cria_uni_estatico(mapa, 1, 1, dados_uni, player));
+    ASSERT_EQ(0, evolution(mapa[1][1].pUniImovel, player));
+    free(player);
+}
+
+TEST(Testa, gera_operario) {
+	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+
+    ASSERT_EQ(0, cria_base(mapa, 1, 1, 4, VIDA_INICIAL_BASE, ALIADO));
+    atributos_data dados_uni;
+    dados_uni.classe = GERADOR_DE_RECURSO;
+    dados_uni.divisao = MECANICO;
+    dados_uni.time = ALIADO;
+    mouse_data mouse;
+    mouse.y_mem = 1*LADO;
+    mouse.x_mem = 1*LADO;
+    ASSERT_EQ(0, gera_operario(mapa, &mouse, dados_uni, player));
+    free(player);
+}
+
+TEST(Testa, gera_tropa) {
+	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+
+    atributos_data dados_uni;
+    dados_uni.classe = GERADOR_DE_RECURSO;
+    dados_uni.divisao = MECANICO;
+    dados_uni.time = ALIADO;
+    ASSERT_EQ(0, cria_uni_estatico(mapa, 1, 1, dados_uni, player));
+    mouse_data mouse;
+    mouse.y_mem = 1*LADO;
+    mouse.x_mem = 1*LADO;
+    ASSERT_EQ(0, gera_tropa(mapa, &mouse, dados_uni, player));
+    free(player);
+}
+
 TEST(Testa, CPU_module) {
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
     cria_mapa(mapa);
@@ -395,7 +597,6 @@ TEST(Testa, CPU_module) {
     free(player);
     free(player_CPU);
 } 
-    
     
 int main(int argc, char* argv[]) {
     testing::InitGoogleTest(&argc, argv);
