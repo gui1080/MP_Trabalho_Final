@@ -1,0 +1,5 @@
+IMPORTANTE: (PARA RENDERIZAR TEXTOS USANDO OPENGL)
+
+1. sudo add-apt-repository ppa:glasen/freetype2
+
+2. sudo apt update && sudo apt install freetype2-demos
