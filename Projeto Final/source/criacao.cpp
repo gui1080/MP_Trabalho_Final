@@ -72,6 +72,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
     //Unidade->nivel = atributos.nivel;
     Unidade->nivel = 1;
     Unidade->acao = true;
+    Unidade->cont_ataque = true;
 
     /*  
         CLASSE 1: GERADOR DE RECURSO
@@ -86,7 +87,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
             Unidade->dim = 3;
             Unidade->vida = 10;
             Unidade->ataque = 0;
-            Unidade->defesa = 5;
+            Unidade->defesa = 4;
             Unidade->alcance = 0;
             Unidade->custo_minerio = 2;
             Unidade->custo_comida = 3;
@@ -98,7 +99,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
             Unidade->dim = 3;
             Unidade->vida = 10;
             Unidade->ataque = 0;
-            Unidade->defesa = 5;
+            Unidade->defesa = 4;
             Unidade->alcance = 0;
             Unidade->custo_minerio = 2;
             Unidade->custo_comida = 3;
@@ -107,11 +108,11 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
             break;
 
         case DEFESA_OFENSIVA:
-            Unidade->dim = 2;
+            Unidade->dim = 1;
             Unidade->vida = 10;
             Unidade->ataque = 3;
-            Unidade->defesa = 5;
-            Unidade->alcance = 2;
+            Unidade->defesa = 4;
+            Unidade->alcance = 5;
             Unidade->custo_minerio = 2;
             Unidade->custo_comida = 3;
             Unidade->custo_eletricidade = 1;
@@ -122,7 +123,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
             Unidade->dim = 1;
             Unidade->vida = 10;
             Unidade->ataque = 0;
-            Unidade->defesa = 5;
+            Unidade->defesa = 4;
             Unidade->alcance = 0;
             Unidade->custo_minerio = 2;
             Unidade->custo_comida = 3;
@@ -135,7 +136,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
         player->minerio < Unidade->custo_minerio ||
         player->eletricidade < Unidade->custo_eletricidade){
         printf("Quantidade de recursos insuficientes\n");
-        return 0;
+        return 1;
     }
 
     player->comida = player->comida - Unidade->custo_comida;
@@ -166,6 +167,7 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
     Unidade->nivel = atributos.nivel;
     Unidade->dim = 1;
     Unidade->acao = true;
+    Unidade->cont_ataque = true;
 
     switch (Unidade->divisao) {
 

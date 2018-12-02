@@ -170,16 +170,73 @@ int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mo
         }
     } else if (verifica_selecao(mapa, *mouse) == 2) { //caso unidade estatica
 
-        int cell_i = mouse->y_mem/LADO;
-        int cell_j = mouse->x_mem/LADO;
+        bool stop = false;
+        SDL_Event evento;
+        int cell_i = mouse->y/LADO;
+        int cell_j = mouse->x/LADO;
+
         unidade_estatica* aux = mapa[cell_i][cell_j].pUniImovel;
+
+        if (aux == NULL) {
+            return -1;
+        }
 
         if (player->time != aux->time) {
             return 0;
         }
 
-        //evolution(aux, player);
-        //Atualizar_recursos(mapa, player);
+        if(aux->classe != DEFESA_OFENSIVA){
+            return 0;
+        }
+
+        while (!stop) {
+            while (SDL_PollEvent(&evento)) {
+                
+                if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
+                    cell_i = evento.button.y/LADO;
+                    cell_j = evento.button.x/LADO;
+
+                    if (verifica_alcance_defesa(aux, cell_i, cell_j)) {
+                        
+                        if (mapa[cell_i][cell_j].pUniMovel != NULL
+                            && (aux->i != cell_i || aux->j != cell_j)
+                            && verifica_oposicao_defesa(mapa, aux, cell_i, cell_j)) {
+
+                            printf("INICIAR COMBATE\n");
+                            unidade_movel* aux2 = mapa[cell_i][cell_j].pUniMovel;
+                            printf("%d %d\n", cell_i, cell_j);
+                            combate_defensivo(mapa, aux, aux2, player);
+                        }
+                            
+                        
+                        if (mapa[cell_i][cell_j].pUniImovel != NULL
+                            && (aux->i != cell_i || aux->j != cell_j)
+                            && verifica_oposicao_defesa(mapa, aux, cell_i, cell_j)) {
+
+                            printf("INICIAR ATAQUE\n");
+                            unidade_estatica* aux2 = mapa[cell_i][cell_j].pUniImovel;
+                            printf("%d %d\n", cell_i, cell_j);
+                            destruicao_defensiva(mapa, aux, aux2, player);
+                        }
+                        
+                        /*
+                        if (mapa[cell_i][cell_j].pBase != NULL
+                            && (aux->i != cell_i || aux->j != cell_j)
+                            && verifica_oposicao(mapa, aux, cell_i, cell_j)) {
+
+                            printf("INICIAR ATAQUE\n");
+                            base_principal* aux2 = mapa[cell_i][cell_j].pBase;
+                            printf("%d %d\n", cell_i, cell_j);
+                            destruicao_base(mapa, aux, aux2, player);
+                        }
+                        */
+                    }
+                    stop = true;
+                    mouse->x = -1;
+                    mouse->y = -1;
+                }
+            }
+        }
     }
     return 0;
 }
@@ -194,6 +251,15 @@ bool verifica_velocidade (unidade_movel* aux, int cell_i, int cell_j) {
 }
 
 bool verifica_alcance (unidade_movel* aux, int cell_i, int cell_j) {
+    if (cell_i <= min(aux->i + aux->alcance, 39) && cell_i >= max(aux->i - aux->alcance, 0)
+        && cell_j <= min(aux->j + aux->alcance, 39) && cell_j >= max(aux->j - aux->alcance, 0)) {
+        return true;
+    } else {
+        return false;
+    } 
+}
+
+bool verifica_alcance_defesa (unidade_estatica* aux, int cell_i, int cell_j) {
     if (cell_i <= min(aux->i + aux->alcance, 39) && cell_i >= max(aux->i - aux->alcance, 0)
         && cell_j <= min(aux->j + aux->alcance, 39) && cell_j >= max(aux->j - aux->alcance, 0)) {
         return true;
@@ -223,3 +289,28 @@ bool verifica_oposicao (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA],
         return false;
     }
 }
+
+bool verifica_oposicao_defesa (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA],
+                        unidade_estatica* aux, int i, int j) {
+    if (mapa[i][j].pUniMovel != NULL
+        && mapa[i][j].pUniMovel->time != aux->time) {
+
+        return true;
+
+    } else if (mapa[i][j].pUniImovel != NULL
+        && mapa[i][j].pUniImovel->time != aux->time) {
+
+        return true;
+
+    } else if (mapa[i][j].pBase != NULL
+        && mapa[i][j].pBase->time != aux->time) {
+
+        return true;
+
+    } else {
+        return false;
+    }
+}
+
+
+

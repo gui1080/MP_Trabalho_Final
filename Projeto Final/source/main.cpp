@@ -102,13 +102,16 @@ int main() {
     texto.nome_textura[GERAR_OPERARIO] = importText("Gerar Operario",50,255,255,255);
     texto.nome_textura[CRIAR_GER_REC] = importText("Criar Ger. de Rec.",50,255,255,255);
     texto.nome_textura[CRIAR_GER_TRO] = importText("Criar Ger. de Tropa",50,255,255,255);
+    texto.nome_textura[CRIAR_DEFESA] = importText("Criar Defesa",50,255,255,255);
     texto.nome_textura[CRIAR_MUR] = importText("   Criar Muralha   ",50,255,255,255);
+    texto.nome_textura[CRIAR_DEFESA_OF] = importText("Criar Defesa Ofensiva",50,255,255,255);
     texto.nome_textura[GERAR_TROPA] = importText("   Gerar Tropa   ",50,255,255,255);
     texto.nome_textura[EVOLUIR] = importText("   Evoluir   ",50,255,255,255);
     texto.nome_textura[NIVEL_MAXIMO] = importText("   NIVEL MAXIMO   ",50,255,255,255);
     texto.nome_textura[NIVEL_1] = importText("   NIVEL 1   ",50,255,255,255);
     texto.nome_textura[NIVEL_2] = importText("   NIVEL 2   ",50,255,255,255);
     texto.nome_textura[NIVEL_3] = importText("   NIVEL 3   ",50,255,255,255);
+    texto.nome_textura[EVOLUIR_NIVEL_INSUFICIENTE] = importText("   Evoluir (Nivel insuficiente)   ",50,255,255,255);
 
     // pegar textura
     unsigned int textura_grade;
@@ -255,11 +258,13 @@ int main() {
     dados_uni.nivel = 1;
     dados_uni.time = ALIADO;
     cria_uni_movel(mapa,10,10, dados_uni, player);
-    dados_uni.divisao = ELETRICO;
+    dados_uni.divisao = HUMANO;
     dados_uni.time = INIMIGO;
     cria_uni_movel(mapa,15,15, dados_uni, player);
-    dados_uni.nivel = 1;
+    dados_uni.nivel = 2;
+    dados_uni.time = ALIADO;
     cria_uni_movel(mapa,20,20, dados_uni, player);
+    dados_uni.time = INIMIGO;
 
     //cria_uni_estatico(mapa, 30, 30, dados_uni, player);
     dados_uni.nivel = 1;
@@ -283,6 +288,9 @@ int main() {
     dados_uni.divisao = OPERARIO;
     cria_uni_movel(mapa,2,2, dados_uni, player);
     dados_uni.divisao = MECANICO;
+
+    dados_uni.classe = DEFESA_OFENSIVA; 
+    cria_uni_estatico(mapa, 30, 18, dados_uni, player);
 
     int mouse_x = -1;
     int mouse_y = -1;

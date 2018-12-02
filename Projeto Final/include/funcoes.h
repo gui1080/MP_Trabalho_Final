@@ -39,8 +39,8 @@ enum classe {GERADOR_DE_RECURSO = 4, GERADOR_DE_TROPA,
 enum unidades_e_base {REPLICANTE = 8, EXTERMINADOR, HATSUNE, WALL,
                     DROIDES, IRON, MERCENARIOS, CAVALEIROS,
                     CHORIS, BASE, CUSTO};
-enum criacao {GERAR_OPERARIO = 19, CRIAR_GER_REC, CRIAR_GER_TRO, CRIAR_MUR, GERAR_TROPA};
-enum niveis {EVOLUIR = 24, NIVEL_MAXIMO, NIVEL_1, NIVEL_2, NIVEL_3};
+enum criacao {GERAR_OPERARIO = 19, CRIAR_GER_REC, CRIAR_GER_TRO, CRIAR_MUR, GERAR_TROPA, CRIAR_DEFESA_OF, CRIAR_DEFESA};
+enum niveis {EVOLUIR = 26, NIVEL_MAXIMO, NIVEL_1, NIVEL_2, NIVEL_3, EVOLUIR_NIVEL_INSUFICIENTE};
 enum time {ALIADO = 0, INIMIGO};
 
 typedef struct Player_Data {
@@ -69,6 +69,7 @@ typedef struct Unidade_Movel {
     int custo_comida;
     int custo_eletricidade;
     bool acao;
+    bool cont_ataque;
 }unidade_movel;
 
 typedef struct Unidade_Estatica {
@@ -88,6 +89,7 @@ typedef struct Unidade_Estatica {
     int custo_eletricidade;
     int producao;
     bool acao;
+    bool cont_ataque;
 }unidade_estatica;
 
 typedef struct Base_Principal {
@@ -153,7 +155,7 @@ typedef struct Atributos_Data {
 
 typedef struct Texto_Data {
     unsigned int numero_textura[101];
-    unsigned int nome_textura[30];
+    unsigned int nome_textura[35];
 }texto_data;
 
 
@@ -307,7 +309,11 @@ bool verifica_velocidade(unidade_movel* aux, int cell_i, int cell_j);
 
 bool verifica_alcance (unidade_movel* aux, int cell_i, int cell_j);
 
+bool verifica_alcance_defesa (unidade_estatica* aux, int cell_i, int cell_j);
+
 bool verifica_oposicao (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux, int i, int j);
+
+bool verifica_oposicao_defesa (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_estatica* aux, int i, int j);
 
 /**
  * @brief Cria unidade estática.
@@ -374,6 +380,8 @@ int carrega_mapa (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data image
 int carrega_layout();
 
 int colore_espacos_validos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux, player_data* player);
+
+int colore_espacos_validos_defesa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_estatica* aux, player_data* player);
 
 /**
  * @brief Carrega a unidade movel.
@@ -461,6 +469,8 @@ int carrega_barras(imagens_data imagens);
  */
 int combate(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unidade_movel *aux2, player_data *player);
 
+int combate_defensivo(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_estatica *aux, unidade_movel *aux2, player_data *player);
+
 
 /**
  * @brief Destruição de construção.
@@ -477,6 +487,8 @@ int combate(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unid
  * @return 0 - Se o procedimento foi bem sucedido.
  */
 int destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unidade_estatica *aux2, player_data *player);
+
+int destruicao_defensiva(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_estatica *aux, unidade_estatica *aux2, player_data *player);
 
 /**
  * @brief Carrega comandante.

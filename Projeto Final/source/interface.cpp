@@ -86,6 +86,7 @@ int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
 
     if (verifica_selecao(mapa, *mouse) != 0) {
         colore_espacos_validos(mapa, mapa[mouse->y/LADO][mouse->x/LADO].pUniMovel, player);
+        colore_espacos_validos_defesa(mapa, mapa[mouse->y/LADO][mouse->x/LADO].pUniImovel, player);
     }
 
     return 0;
@@ -605,7 +606,12 @@ int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse,
              if(mouse->botao_mem == -1) {
                 carrega_botao(imagens, texto, mouse, 0, CRIAR_GER_REC, mapa, atributos, player);
                 carrega_botao(imagens, texto, mouse, 1, CRIAR_GER_TRO, mapa, atributos, player);
-                carrega_botao(imagens, texto, mouse, 2, CRIAR_MUR, mapa, atributos, player);      
+                carrega_botao(imagens, texto, mouse, 2, CRIAR_DEFESA, mapa, atributos, player);      
+            } else if(mouse->botao_mem == 4)  {
+
+                carrega_botao(imagens, texto, mouse, 0, CRIAR_MUR, mapa, atributos, player);
+                carrega_botao(imagens, texto, mouse, 1, CRIAR_DEFESA_OF, mapa, atributos, player);
+
             } else {
                 carrega_botao(imagens, texto, mouse, 0, HUMANO, mapa, atributos, player);
                 carrega_botao(imagens, texto, mouse, 1, MECANICO, mapa, atributos, player);
@@ -616,6 +622,13 @@ int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse,
 
     if (valor == 2) {
         if(mouse->botao_mem == -1) {
+
+        if(player->nivel <= mapa[i][j].pUniImovel->nivel){
+
+        carrega_botao(imagens, texto, mouse, 0, EVOLUIR_NIVEL_INSUFICIENTE, mapa, atributos, player);   
+
+        } else {   
+
         if (mapa[i][j].pUniImovel->nivel < 3) {
 
         carrega_botao(imagens, texto, mouse, 0, EVOLUIR, mapa, atributos, player);
@@ -625,6 +638,8 @@ int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse,
         carrega_botao(imagens, texto, mouse, 0, NIVEL_MAXIMO, mapa, atributos, player);
 
         }
+
+    }
 
         if (mapa[i][j].pUniImovel->classe == GERADOR_DE_TROPA) {
 
@@ -690,9 +705,11 @@ int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int
                         mouse->botao_mem = 2;
                         printf("gera tropa\n");
                     break;
-                    case CRIAR_MUR:
+                    case CRIAR_DEFESA:
 
+                        mouse->botao_mem = 4;
 
+                    /*
                     if (mouse->botao_mem != 1){
 
                         printf("gera muralha\n");
@@ -707,6 +724,7 @@ int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int
                         cria_uni_estatico(mapa, x_c, y_c, atributos, player);
 
                         }
+                    */  
                         //funcao
 
                     break;
@@ -718,12 +736,8 @@ int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int
 
                     case EVOLUIR:
 
-                    if (mouse->botao_mem == 1){
-
-                        printf("Evoluiu\n");
+                    if (mouse->botao_mem != 1){
                         
-                        } else{
-
                         unidade_estatica *aux = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniImovel;
 
                         evolution(aux , player);
@@ -753,6 +767,20 @@ int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int
                         cria_uni_estatico(mapa, x_c, y_c, atributos, player);
                         
                         }
+
+                        else if (mouse->botao_mem == 5){
+    
+                        int x_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->i;
+                        int y_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->j;
+
+                        mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel = NULL;
+
+                        atributos.classe = DEFESA_OFENSIVA;
+                        atributos.divisao = HUMANO;
+                        cria_uni_estatico(mapa, x_c, y_c, atributos, player);
+                        
+                        }
+
                         else{
                             //funcao
                             printf("gera ger tropa tipo humano\n");
@@ -782,6 +810,20 @@ int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int
                         atributos.divisao = MECANICO;
                         cria_uni_estatico(mapa, x_c, y_c, atributos, player);
                         }
+
+                        else if (mouse->botao_mem == 5){
+    
+                        int x_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->i;
+                        int y_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->j;
+
+                        mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel = NULL;
+
+                        atributos.classe = DEFESA_OFENSIVA;
+                        atributos.divisao = MECANICO;
+                        cria_uni_estatico(mapa, x_c, y_c, atributos, player);
+                        
+                        }
+
                         else{
                             //funcao
                             printf("gera ger tropa tipo mecanico\n");
@@ -812,6 +854,20 @@ int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int
                         cria_uni_estatico(mapa, x_c, y_c, atributos, player);
                         
                         }
+
+                        else if (mouse->botao_mem == 5){
+    
+                        int x_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->i;
+                        int y_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->j;
+
+                        mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel = NULL;
+
+                        atributos.classe = DEFESA_OFENSIVA;
+                        atributos.divisao = ELETRICO;
+                        cria_uni_estatico(mapa, x_c, y_c, atributos, player);
+                        
+                        }
+
                         else{
                             //funcao
                             printf("gera ger tropa tipo eletrico\n");
@@ -876,6 +932,28 @@ int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int
                         }
                     mouse->botao_mem = -1;
                     break;
+
+                    case CRIAR_MUR:
+                    if (mouse->botao_mem != 1){
+
+                        printf("gera muralha\n");
+                    
+
+                        int x_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->i;
+                        int y_c = mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel->j;
+
+                        mapa[mouse->y_mem/LADO][mouse->x_mem/LADO].pUniMovel = NULL;
+
+                        atributos.classe = DEFESA_PASSIVA;
+                        cria_uni_estatico(mapa, x_c, y_c, atributos, player);
+
+                        }
+                        mouse->botao_mem = -1;
+                        break;
+
+                    case CRIAR_DEFESA_OF:
+                    mouse->botao_mem = 5;
+                    break;    
 
                 }
             }
@@ -1074,6 +1152,76 @@ int colore_espacos_validos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_m
 
     return 0;
 }
+
+int colore_espacos_validos_defesa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_estatica* aux, player_data* player) {
+
+    if (aux == NULL || player->time != aux->time) {
+        return 1;
+    }
+
+    //  cria matriz
+    glPushMatrix();
+
+    // dimensoes da matriz
+    glOrtho(0, RX, RY, 0, -1, 1); 
+
+    for (int i = max(aux->i - aux->alcance, 0); i <= min(aux->i + aux->alcance, 39); i++) {
+        for (int j = max(aux->j - aux->alcance, 0); j <= min(aux->j + aux->alcance, 39); j++) {
+
+            glColor4ub(0, 102, 0, 128);
+
+            if (mapa[i][j].pUniMovel == NULL &&
+                mapa[i][j].pUniImovel == NULL &&
+                mapa[i][j].pBase == NULL) {
+                // colore de verde
+                glColor4ub(0, 0, 255, 64);
+            }
+
+            if (mapa[i][j].pUniMovel != NULL) {
+                // colore para inimigos e deixa branco para aliados
+                if (verifica_oposicao_defesa(mapa, aux, i, j)) {
+                    glColor4ub(255, 255, 0, 128);
+                    if (verifica_alcance_defesa(aux, i, j)) {
+                        glColor4ub(255, 0, 0, 80);
+                    }
+                }
+            }
+
+            if (mapa[i][j].pUniImovel != NULL) {
+                // colore para inimigos e deixa branco para aliados
+                if (verifica_oposicao_defesa(mapa, aux, i, j)) {
+                    glColor4ub(255, 255, 0, 128);
+                    if (verifica_alcance_defesa(aux, i, j)) {
+                        glColor4ub(255, 0, 0, 80);
+                    }
+                }
+            }
+
+            if (mapa[i][j].pBase != NULL) {
+                // colore para inimigos e deixa branco para aliados
+                if (verifica_oposicao_defesa(mapa, aux, i, j)) {
+                    glColor4ub(255, 255, 0, 128);
+                    if (verifica_alcance_defesa(aux, i, j)) {
+                        glColor4ub(255, 0, 0, 80);
+                    }
+                }
+            }
+
+            glBegin(GL_QUADS);
+            glVertex2f(LADO*j, LADO*i);
+            glVertex2f(LADO*(j+1), LADO*i);
+            glVertex2f(LADO*(j+1), LADO*(i+1));
+            glVertex2f(LADO*j, LADO*(i+1));
+            glEnd();
+        }
+    }
+
+    // fecha matriz
+    glPopMatrix();
+
+    return 0;
+}
+
 
 /*
 int mostra_menu(SDL_Surface* screen, TTF_Font* font){

@@ -15,7 +15,7 @@ TEST(Testa, gtest_instalado) {
 }
 
 TEST(Testa, cria_mapa) {
-	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
     ASSERT_EQ(0, cria_mapa(mapa));
 }
 
@@ -126,17 +126,14 @@ TEST(Testa, velocidade) {
     
     ASSERT_EQ(false, verifica_oposicao(mapa, aux, i, j));
 }
-
 /*
-
 TEST(Testa, combate) {
     mouse_data *mouse;
     
-   	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
     cria_mapa(mapa);
     
     player_data player1;
-
     player1.comida = 40;
     player1.minerio = 40;
     player1.eletricidade = 40;
@@ -157,16 +154,12 @@ TEST(Testa, combate) {
     unidade_movel* aux = mapa[cell_i][cell_j].pUniMovel;
     ASSERT_EQ(0, move_unidade(mapa, aux, cell_i, cell_j));
 }
-
-
 TEST(Testa, cria_interface) {
-	cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
     cria_mapa(mapa);
   
     imagens_data imagens; 
-
     player_data player1;
-
     player1.comida = 40;
     player1.minerio = 40;
     player1.eletricidade = 40;
@@ -182,14 +175,11 @@ TEST(Testa, cria_interface) {
     cria_uni_movel(mapa, 5, 5, dados_uni, player);
     
     mouse_data *mouse;
-
     texto_data texto;
     mouse->x = 200;
     mouse->y = 200;
-
     ASSERT_EQ(0, carrega_interface(mapa, imagens, mouse, texto, player, dados_uni));
 }
-
 */
 
 TEST(Testa, cria_uni_movel) {

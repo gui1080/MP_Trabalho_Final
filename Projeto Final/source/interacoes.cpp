@@ -24,6 +24,12 @@ int move_unidade (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* uni
 
 int combate(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unidade_movel *aux2, player_data *player){
  	
+    if(aux->cont_ataque == false){
+        printf("Essa unidade já atacou esse turno\n");
+        return 0;
+    }
+
+
  	printf("Status da unidade 1:\n");
  	printf("Divisao: %d\n", aux->divisao);
     printf("Vida: %d\n", aux->vida);
@@ -91,10 +97,94 @@ int combate(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unid
     	printf("Nova vida do defensor: %d\n\n", aux2->vida);
     }
     
+    aux->cont_ataque = false;
     return 0;
  }
 
+int combate_defensivo(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_estatica *aux, unidade_movel *aux2, player_data *player){
+    
+    if(aux->cont_ataque == false){
+        printf("Essa unidade já atacou esse turno\n");
+        return 0;
+    }
+
+    printf("Status da unidade 1:\n");
+    printf("Divisao: %d\n", aux->divisao);
+    printf("Vida: %d\n", aux->vida);
+    printf("Ataque: %d\n", aux->ataque);
+    printf("Defesa: %d\n", aux->defesa);
+    printf("Alcance: %d\n", aux->alcance);
+
+    printf("Status da unidade 2 :\n");
+    printf("Divisao: %d\n", aux2->divisao);
+    printf("Vida: %d\n", aux2->vida);
+    printf("Ataque: %d\n", aux2->ataque);
+    printf("Defesa: %d\n", aux2->defesa);
+    printf("Alcance: %d\n", aux2->alcance);
+    printf("Velocidade: %d\n\n", aux2->velocidade);
+
+    int ataque = aux->ataque;
+    if ((aux->divisao == HUMANO && aux2->divisao == MECANICO)
+        || (aux->divisao == MECANICO && aux2->divisao == ELETRICO)
+        || (aux->divisao == ELETRICO && aux2->divisao == HUMANO)) {
+
+        ataque = aux->ataque + 2;
+
+    } else if ((aux->divisao == MECANICO && aux2->divisao == HUMANO)
+        || (aux->divisao == ELETRICO && aux2->divisao == MECANICO)
+        || (aux->divisao == HUMANO && aux2->divisao == ELETRICO)) {
+
+        ataque = aux->ataque - 2;
+    }
+
+    printf("Ataque: %d\n\n", ataque);
+
+    if (aux->nivel == 2){
+
+        aux2->vida = aux2->vida - ataque;   
+
+    } else if (aux2->defesa < ataque) {
+       aux2->vida = aux2->vida - (ataque - aux2->defesa);       
+    }
+  
+    if(aux2->vida <= 0){
+
+        mapa[aux2->i][aux2->j].pUniMovel = NULL;
+        player->xp = player->xp + (aux2->nivel)*2;
+        player_level(player);
+
+        printf("Unidade morta\n\n");
+
+        if (aux->nivel == 1) {
+            if(aux->divisao == HUMANO){
+                player->comida = player->comida + (aux2->nivel)*2;
+            }
+            if(aux->divisao == MECANICO){
+                player->minerio = player->minerio + (aux2->nivel)*2;
+            }
+            if(aux->divisao == ELETRICO){
+                player->eletricidade = player->eletricidade + (aux2->nivel)*2;
+            }
+        }
+
+        printf("XP do player:%d\n", player->xp);
+        printf("nivel do player: %d\n", player->nivel);
+
+    } else{
+        printf("Nova vida do defensor: %d\n\n", aux2->vida);
+    }
+    
+    aux->cont_ataque = false;
+    return 0;
+ }
+
+
 int destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unidade_estatica *aux2, player_data *player){
+
+    if(aux->cont_ataque == false){
+        printf("Essa unidade já atacou esse turno\n");
+        return 0;
+    }
  	
  	printf("Status da unidade 1:\n");
  	printf("Divisao: %d\n", aux->divisao);
@@ -159,7 +249,80 @@ int destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, u
     	printf("Nova vida da construção: %d\n", aux2->vida);
 
     }
-    
+    aux->cont_ataque = false;
+    return 0;
+ }
+
+ int destruicao_defensiva(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_estatica *aux, unidade_estatica *aux2, player_data *player){
+
+    if(aux->cont_ataque == false){
+        printf("Essa unidade já atacou esse turno\n");
+        return 0;
+    }
+
+    printf("Status da unidade 1:\n");
+    printf("Divisao: %d\n", aux->divisao);
+    printf("Vida: %d\n", aux->vida);
+    printf("Ataque: %d\n", aux->ataque);
+    printf("Defesa: %d\n", aux->defesa);
+    printf("Alcance: %d\n", aux->alcance);
+
+    printf("Status da unidade 2 :\n");
+    printf("Divisao: %d\n", aux2->divisao);
+    printf("Vida: %d\n", aux2->vida);
+    printf("Ataque: %d\n", aux2->ataque);
+    printf("Defesa: %d\n", aux2->defesa);
+    printf("Alcance: %d\n", aux2->alcance);
+    printf("Classe: %d\n", aux2->classe);
+    printf("Dim: %d\n\n", aux2->dim);
+
+    int ataque = aux->ataque;
+
+    if((aux->divisao == HUMANO && aux2->divisao == MECANICO)
+        || (aux->divisao == MECANICO && aux2->divisao == ELETRICO)
+        || (aux->divisao == ELETRICO && aux2->divisao == HUMANO)) {
+
+        ataque = aux->ataque + 2;
+
+    }else if((aux->divisao == MECANICO && aux2->divisao == HUMANO)
+        || (aux->divisao == ELETRICO && aux2->divisao == MECANICO)
+        || (aux->divisao == HUMANO && aux2->divisao == ELETRICO)) {
+
+        ataque = aux->ataque - 2;
+    }
+    printf("Ataque Total: %d\n", ataque);
+
+    if (aux->divisao == HUMANO && aux->nivel == 2) {
+
+        aux2->vida = aux2->vida - ataque;   
+
+    } else if (aux2->defesa < ataque) {
+       aux2->vida = aux2->vida - (ataque - aux2->defesa);       
+    }
+  
+    if (aux2->vida <= 0) {
+
+
+        for (int p = aux2->i; p < (aux2->i + aux2->dim); p++) {
+            for (int q = aux2->j; q < (aux2->j + aux2->dim); q++) {
+                mapa[p][q].pUniImovel = NULL;
+            }
+        }
+
+        mapa[aux2->i][aux2->j].pUniImovel = NULL;
+        mapa[aux2->i][aux2->j+1].pUniImovel = NULL;
+
+        printf("Construção destruida\n");
+        player->xp = player->xp + (aux2->classe)*2;
+        player_level(player);
+        printf("nivel do player: %d\n", player->nivel);
+        printf("XP do player:%d\n", player->xp);
+
+    } else{
+        printf("Nova vida da construção: %d\n", aux2->vida);
+
+    }
+    aux->cont_ataque = false;
     return 0;
  }
 
@@ -277,6 +440,12 @@ int evolution(unidade_estatica *aux, player_data *player) {
         return 0;
     }
 
+    if( player->nivel <= aux->nivel ){
+        printf("Nivel Insuficiente\n\n");
+        return 0;
+    }
+
+
     aux->nivel = aux->nivel + 1;
     aux->vida = aux->vida + 10;    
     player->comida = player->comida - (aux->custo_comida*3); 
@@ -359,7 +528,12 @@ void restaurar_acoes(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]) {
         for (j = 0; j < BLOCOS_LINHA; j++) {
             if (mapa[i][j].pUniMovel != NULL) {
                 mapa[i][j].pUniMovel->acao = true;
+                mapa[i][j].pUniMovel->cont_ataque = true;
             }
+            if (mapa[i][j].pUniImovel != NULL){
+                mapa[i][j].pUniImovel->cont_ataque = true;
+            }
+            
         }
     }
 }
