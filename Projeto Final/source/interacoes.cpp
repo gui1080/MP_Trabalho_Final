@@ -367,6 +367,7 @@ int destruicao_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *a
 
     }
     aux->cont_ataque = false;
+    player->vida_base = aux2->vida;
     return 0;
  }
 
