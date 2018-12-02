@@ -435,7 +435,7 @@ int main() {
 
     	}
     	else if (turno_de_quem == INIMIGO) {
-            CPU(mapa, imagens, *mouse, texto, player_CPU, dados_uni, contador_turno);
+            CPU(mapa, player_CPU, contador_turno);
             //Atualizacoes do turno:
             Atualizar_recursos(mapa, player_CPU);
             Atualizar_recursos(mapa, player);
