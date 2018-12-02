@@ -328,7 +328,10 @@ int destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, u
 
 
 int destruicao_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, base_principal *aux2, player_data *player){
-    
+    if(aux->cont_ataque == false){
+        printf("Essa unidade já atacou esse turno\n");
+        return 0;
+    }
     printf("Status da unidade 1:\n");
     printf("Divisao: %d\n", aux->divisao);
     printf("Vida: %d\n", aux->vida);
@@ -363,7 +366,7 @@ int destruicao_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *a
         printf("Nova vida da construção: %d\n", aux2->vida);
 
     }
-    
+    aux->cont_ataque = false;
     return 0;
  }
 
