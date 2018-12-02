@@ -37,11 +37,12 @@ const int LADO = RY/BLOCOS_LINHA;
 enum divisao {HUMANO = 0, MECANICO, ELETRICO, OPERARIO};
 enum classe {GERADOR_DE_RECURSO = 4, GERADOR_DE_TROPA,
                 DEFESA_OFENSIVA, DEFESA_PASSIVA};
-enum unidades_e_base {REPLICANTE = 8, EXTERMINADOR, HATSUNE, WALL,
+enum unidades {REPLICANTE = 8, EXTERMINADOR, HATSUNE, WALL,
                     DROIDES, IRON, MERCENARIOS, CAVALEIROS,
-                    CHORIS, BASE, CUSTO};
-enum criacao {GERAR_OPERARIO = 19, CRIAR_GER_REC, CRIAR_GER_TRO, CRIAR_MUR, GERAR_TROPA, CRIAR_DEFESA_OF, CRIAR_DEFESA};
-enum niveis {EVOLUIR = 26, NIVEL_MAXIMO, NIVEL_1, NIVEL_2, NIVEL_3, EVOLUIR_NIVEL_INSUFICIENTE};
+                    CHORIS, CUSTO};
+enum tipo {UNIDADE = 18, ESTRUTURA, BASE, VAZIO}; 
+enum criacao {GERAR_OPERARIO = 22, CRIAR_GER_REC, CRIAR_GER_TRO, CRIAR_MUR, GERAR_TROPA, CRIAR_DEFESA_OF, CRIAR_DEFESA};
+enum niveis {EVOLUIR = 29, NIVEL_MAXIMO, NIVEL_1, NIVEL_2, NIVEL_3, EVOLUIR_NIVEL_INSUFICIENTE};
 enum time {ALIADO = 0, INIMIGO};
 
 typedef struct Player_Data {
@@ -647,3 +648,8 @@ void cria_player(player_data *player, int time);
 void restaurar_acoes(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]);
 
 int destruicao_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, base_principal *aux2, player_data *player);
+
+void salva_jogo(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]);
+
+void carrega_jogo(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]);
+
