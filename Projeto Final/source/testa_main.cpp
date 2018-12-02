@@ -29,14 +29,8 @@ TEST(Testa, foto_n_existe) {
 
 TEST(Testa, carrega_numeros_recurso) {
     
-    player_data player1;
-
-    player1.comida = 40;
-    player1.minerio = 40;
-    player1.eletricidade = 40;
-    player1.xp = 0;
-    player1.nivel = 1;
-    player_data *player = &player1;
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
     
     texto_data texto;
 
@@ -45,7 +39,7 @@ TEST(Testa, carrega_numeros_recurso) {
     int num = 0;
 
     ASSERT_EQ(0, carrega_numeros_recurso(texto, player));
-    
+    free(player);
 }
 
 TEST(Testa, comandante_falha) {
@@ -182,43 +176,49 @@ TEST(Testa, cria_interface) {
 }
 */
 
-TEST(Testa, cria_uni_movel) {
+TEST(Testa, cria_uni_movel_recurso_MAX) {
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
     cria_mapa(mapa);
-        
-    player_data player1;
 
-    player1.comida = 40;
-    player1.minerio = 40;
-    player1.eletricidade = 40;
-    player1.xp = 0;
-    player1.nivel = 1;
-    player_data *player = &player1;
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
     
-    
+    player->comida = 999;
+    player->minerio = 999;
+    player->eletricidade = 999;
+    player->nivel = 3;
+
     atributos_data dados_uni;
-    dados_uni.classe = GERADOR_DE_RECURSO;
-    dados_uni.divisao = HUMANO;
-    dados_uni.time = INIMIGO;
-    dados_uni.nivel = 1;
-    //cria_uni_movel(mapa, 5, 5, dados_uni, player);
+    bool aux =false;
 
-    ASSERT_EQ(0, cria_uni_movel(mapa, 1, 1, dados_uni, player));
+    int divisao, classe, nivel, time;
+    for (divisao = HUMANO; divisao <= OPERARIO; divisao++) {
+        for (nivel = 1; nivel <=3; nivel++) {
+            for (time = ALIADO; time <= INIMIGO; time++) {
+                aux =false;
+                dados_uni.divisao = divisao;
+                dados_uni.time = time;
+                dados_uni.nivel = nivel;
+                mapa[1][1].pUniMovel = NULL;
+                mapa[1][1].pUniImovel = NULL;
+                mapa[1][1].pBase = NULL;
+                ASSERT_EQ(0, cria_uni_movel(mapa, 1, 1, dados_uni, player));
+                if(mapa[1][1].pUniMovel != NULL)
+                    aux = true;
+                ASSERT_EQ(true, aux);
+            }
+        }
+    }
+    free(player);
 }
+
 
 TEST(Testa, cria_uni_movel_espaco_ocupado) {
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
     cria_mapa(mapa);
         
-    player_data player1;
-
-    player1.comida = 40;
-    player1.minerio = 40;
-    player1.eletricidade = 40;
-    player1.xp = 0;
-    player1.nivel = 1;
-    player_data *player = &player1;
-    
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
     
     atributos_data dados_uni;
     dados_uni.classe = GERADOR_DE_RECURSO;
@@ -228,20 +228,15 @@ TEST(Testa, cria_uni_movel_espaco_ocupado) {
     cria_uni_movel(mapa, 5, 5, dados_uni, player);
 
     ASSERT_EQ(-1, cria_uni_movel(mapa, 5, 5, dados_uni, player));
+    free(player);
 }
  
 TEST(Testa, cria_uni_movel_2) {
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
     cria_mapa(mapa);
         
-    player_data player1;
-
-    player1.comida = 40;
-    player1.minerio = 40;
-    player1.eletricidade = 40;
-    player1.xp = 0;
-    player1.nivel = 1;
-    player_data *player = &player1;
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
     
     
     atributos_data dados_uni;
@@ -251,21 +246,15 @@ TEST(Testa, cria_uni_movel_2) {
     dados_uni.nivel = 1;
 
     ASSERT_EQ(0, cria_uni_movel(mapa, 5, 5, dados_uni, player));
+    free(player);
 }
 
 TEST(Testa, cria_uni_movel_3) {
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
     cria_mapa(mapa);
-        
-    player_data player1;
 
-    player1.comida = 40;
-    player1.minerio = 40;
-    player1.eletricidade = 40;
-    player1.xp = 0;
-    player1.nivel = 1;
-    player_data *player = &player1;
-    
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
     
     atributos_data dados_uni;
     dados_uni.classe = GERADOR_DE_RECURSO;
@@ -274,6 +263,8 @@ TEST(Testa, cria_uni_movel_3) {
     dados_uni.nivel = 1;
 
     ASSERT_EQ(0, cria_uni_movel(mapa, 5, 5, dados_uni, player));
+
+    free(player);
 }
  
 TEST(Testa, CPU_module) {
@@ -287,8 +278,9 @@ TEST(Testa, CPU_module) {
     cria_player( player_CPU, INIMIGO);
     cria_base(mapa, 35, 1, 4, VIDA_INICIAL_BASE, ALIADO);
     cria_base(mapa, 1, 35, 4, VIDA_INICIAL_BASE, INIMIGO);
-    int i, funciona = -1;
-    for (i = 0; i<=20; i++) {
+    int i, j, funciona = -1, alcance, p, q;
+    bool loop;
+    for (i = 0; i<=50; i++) {
         ASSERT_EQ(0, CPU(mapa, player, i));
         ASSERT_EQ(0, CPU(mapa, player_CPU, i+1));
         Atualizar_recursos(mapa, player_CPU);
@@ -296,8 +288,11 @@ TEST(Testa, CPU_module) {
         restaurar_acoes(mapa);
     }
     player->vida_base = VIDA_INICIAL_BASE/5;
-        ASSERT_EQ(0, CPU(mapa, player, 22));
-        ASSERT_EQ(0, CPU(mapa, player_CPU, 23));
+        ASSERT_EQ(0, CPU(mapa, player, 52));
+    player_CPU->vida_base = VIDA_INICIAL_BASE/5;
+        ASSERT_EQ(0, CPU(mapa, player_CPU, 53));
+    free(player);
+    free(player_CPU);
 } 
     
     

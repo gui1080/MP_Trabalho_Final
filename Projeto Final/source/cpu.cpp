@@ -13,7 +13,7 @@ void criacoes_iniciais_1(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_d
 void criacoes_iniciais_2(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU);
 void criacoes_iniciais_3(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU);
 void priorizar_defesa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU);
-void priorizar_recursos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU);
+void priorizar_geradores(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU);
 void priorizar_evolucoes(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU);
 void priorizar_tropas(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU);
 void priorizar_movimentacao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU);
@@ -37,14 +37,9 @@ int CPU(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA],player_data *player_CPU,int c
     else if(contador_turno/2 == 2){
         criacoes_iniciais_3(mapa, atributos, player_CPU);
     }
-    else{
+    else if(contador_turno/2 == 3) {
         usleep(10000);
-        if(player_CPU->vida_base < VIDA_INICIAL_BASE/2)
-            priorizar_defesa(mapa, atributos, player_CPU);
-        if(player_CPU->vida_base < VIDA_INICIAL_BASE/4)
-            priorizar_defesa(mapa, atributos, player_CPU);
-        usleep(10000);
-        priorizar_recursos(mapa, atributos, player_CPU);
+        priorizar_geradores(mapa, atributos, player_CPU);
         usleep(10000);
         priorizar_evolucoes(mapa, atributos, player_CPU);
         usleep(10000);
@@ -55,8 +50,34 @@ int CPU(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA],player_data *player_CPU,int c
         priorizar_destruicao(mapa, atributos, player_CPU);
         usleep(10000);
         priorizar_combate(mapa, atributos, player_CPU);
+        usleep(10000);
         priorizar_destruicao_base(mapa, atributos, player_CPU);
+        usleep(10000);
         priorizar_contra_ataque(mapa, atributos, player_CPU);
+        usleep(10000);
+    }
+    else{
+        usleep(10000);
+        if(player_CPU->vida_base < VIDA_INICIAL_BASE/2)
+            priorizar_defesa(mapa, atributos, player_CPU);
+        if(player_CPU->vida_base < VIDA_INICIAL_BASE/4)
+            priorizar_defesa(mapa, atributos, player_CPU);
+        usleep(10000);
+        priorizar_evolucoes(mapa, atributos, player_CPU);
+        usleep(10000);
+        priorizar_tropas(mapa, atributos, player_CPU);
+        usleep(10000);
+        priorizar_movimentacao(mapa, atributos, player_CPU);
+        usleep(10000);
+        priorizar_destruicao(mapa, atributos, player_CPU);
+        usleep(10000);
+        priorizar_combate(mapa, atributos, player_CPU);
+        usleep(10000);
+        priorizar_destruicao_base(mapa, atributos, player_CPU);
+        usleep(10000);
+        priorizar_contra_ataque(mapa, atributos, player_CPU);
+        usleep(10000);
+        priorizar_geradores(mapa, atributos, player_CPU);
     }
     return 0;
 }
@@ -143,8 +164,9 @@ void criacoes_iniciais_3(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_d
                 i = rand()%40;
                 j = rand()%40;
             } while (i-j > 0 || j+(39-i) > 53 || !verificador_CPU(mapa, i, j));
-            cria_uni_estatico(mapa, i, j, atributos, player_CPU);
-            if(player_CPU->time == ALIADO)
+            if(player_CPU->time == INIMIGO)
+                cria_uni_estatico(mapa, i, j, atributos, player_CPU);
+            if(player_CPU->time == ALIADO)  //Desenvolvido para testes
                 cria_uni_estatico(mapa, j, i, atributos, player_CPU);
         }
     }
@@ -159,23 +181,31 @@ atributos_data atributos, player_data *player_CPU) {
             atributos.divisao = divisao;
             atributos.time = player_CPU->time;
             count = 1;
-            while (count--) {
-                k = 0;
-                do {
-                    i = rand()%40;
-                    j = rand()%40;
-                    k++;
-                } while ((i-j > 0 || !cria_uni_estatico(mapa, i, j, atributos, player_CPU)) && k < 15);
-                if (k > 15)
-                    break;
-                if(player_CPU->time == ALIADO)
-                    cria_uni_estatico(mapa, j, i, atributos, player_CPU);
+            if(player_CPU->time == INIMIGO) {
+                while (count--) {
+                    k = 0;
+                    do {
+                        i = rand()%40;
+                        j = rand()%40;
+                        k++;
+                    } while ((i-j > 0 || !cria_uni_estatico(mapa, i, j, atributos, player_CPU)) && k < 15);
+                }
+            }
+            if(player_CPU->time == ALIADO) {  //Desenvolvido para testes
+                while (count--) {
+                    k = 0;
+                    do {
+                        i = rand()%40;
+                        j = rand()%40;
+                        k++;
+                    } while ((i-j < 0 || !cria_uni_estatico(mapa, i, j, atributos, player_CPU)) && k < 15);
+                }
             }
         }
     }
 }
 
-void priorizar_recursos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA],
+void priorizar_geradores(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA],
 atributos_data atributos, player_data *player_CPU) {
     int count;
     int i, j, divisao, defesa, k;
@@ -185,24 +215,54 @@ atributos_data atributos, player_data *player_CPU) {
         atributos.divisao = divisao;
         atributos.time = player_CPU->time;
         atributos.nivel = 1;
-        count = 0;
-        if (divisao == HUMANO && player_CPU->comida < COMIDA_INICIAL/2)
-            count = 1;
-        if (divisao == MECANICO && player_CPU->minerio < MINERIO_INICIAL/2)
-            count = 1;
-        if (divisao == ELETRICO && player_CPU->eletricidade < ELETRICIDADE_INICIAL/2)
-            count = 1;
-        while (count--) {
-            k = 0;
-            do {
-                i = rand()%40;
-                j = rand()%40;
-                k++;
-            } while ((i-j > 0 || !cria_uni_estatico(mapa, i, j, atributos, player_CPU)) && k < 15);
-            if (k > 15)
-                break;
-            if(player_CPU->time == ALIADO)
-                cria_uni_estatico(mapa, j, i, atributos, player_CPU);
+        count = 1;
+        if(player_CPU->time == INIMIGO) {
+            while (count--) {
+                k = 0;
+                do {
+                    i = rand()%40;
+                    j = rand()%40;
+                    k++;
+                } while ((i-j > 0 || !cria_uni_estatico(mapa, i, j, atributos, player_CPU)) && k < 15);
+            }
+        }
+        if(player_CPU->time == ALIADO) {
+            while (count--) {
+                k = 0;
+                do {
+                    i = rand()%40;
+                    j = rand()%40;
+                    k++;
+                } while ((i-j < 0 || !cria_uni_estatico(mapa, i, j, atributos, player_CPU)) && k < 15);
+            }
+        }
+    }
+    // TROPAS
+    for (divisao = HUMANO; divisao <= ELETRICO; divisao++) {
+        atributos.classe = GERADOR_DE_TROPA;
+        atributos.divisao = divisao;
+        atributos.time = player_CPU->time;
+        atributos.nivel = 1;
+        count = 1;
+        if(player_CPU->time == INIMIGO) {
+            while (count--) {
+                k = 0;
+                do {
+                    i = rand()%40;
+                    j = rand()%40;
+                    k++;
+                } while ((i-j > 0 || !cria_uni_estatico(mapa, i, j, atributos, player_CPU)) && k < 15);
+            }
+        }
+        if(player_CPU->time == ALIADO) {
+            while (count--) {
+                k = 0;
+                do {
+                    i = rand()%40;
+                    j = rand()%40;
+                    k++;
+                } while ((i-j < 0 || !cria_uni_estatico(mapa, i, j, atributos, player_CPU)) && k < 15);
+            }
         }
     }
     // DEFESA
@@ -212,17 +272,25 @@ atributos_data atributos, player_data *player_CPU) {
             atributos.divisao = divisao;
             atributos.time = player_CPU->time;
             count = rand()%2;
-            while (count--) {
-                k = 0;
-                do {
-                    i = rand()%40;
-                    j = rand()%40;
-                    k++;
-                } while ((i-j > 0 || !cria_uni_estatico(mapa, i, j, atributos, player_CPU)) && k < 10);
-                if (k > 10)
-                    break;
-                if(player_CPU->time == ALIADO)
-                    cria_uni_estatico(mapa, j, i, atributos, player_CPU);
+            if(player_CPU->time == INIMIGO) {
+                while (count--) {
+                    k = 0;
+                    do {
+                        i = rand()%40;
+                        j = rand()%40;
+                        k++;
+                    } while ((i-j > 0 || !cria_uni_estatico(mapa, i, j, atributos, player_CPU)) && k < 10);
+                }
+            }
+            if(player_CPU->time == ALIADO) {  //Desenvolvido para testes
+                while (count--) {
+                    k = 0;
+                    do {
+                        i = rand()%40;
+                        j = rand()%40;
+                        k++;
+                    } while ((i-j < 0 || !cria_uni_estatico(mapa, i, j, atributos, player_CPU)) && k < 10);
+                }
             }
         }
     }
@@ -274,7 +342,7 @@ atributos_data atributos, player_data *player_CPU) {
                 gera_tropa(mapa, &mouse, atributos, player_CPU);
             }
             k++;
-        } while (pode_gerar_tropas == false && k < 800);
+        } while (pode_gerar_tropas == false && k < 1600);
     }
 }
 void priorizar_movimentacao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA],
@@ -368,7 +436,7 @@ atributos_data atributos, player_data *player_CPU) {
                 }
             }
             k++;
-        } while (k < 800 && loop == true);
+        } while (k < 1600 && loop == true);
     }
 }
 
@@ -454,4 +522,3 @@ bool verificador_CPU (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j) 
     else
         return false;
 }
-
