@@ -307,14 +307,78 @@ int verifica_selecao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mous
  */
 int verifica_unidades(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse, player_data *player, atributos_data atributos, imagens_data imagens, texto_data texto);
 
+/**
+ * @brief Verifica velocidade.
+ * Função que verifica determinada velocidade.
+ *
+ * @param  unidade_movel* aux - A unidade móvel selecionada.
+ * 
+ * @param int cell_i - Auxiliar de coordenada da posição. 
+ *
+ * @param int cell_j - Auxiliar de coordenada da posição. 
+ *
+ * @return True ou false - Se tudo ocorre dentro do esperado ou não.
+ */
 bool verifica_velocidade(unidade_movel* aux, int cell_i, int cell_j);
 
+/**
+ * @brief Verifica alcance.
+ * Função que verifica determinado alcance.
+ *
+ * @param  unidade_movel* aux - A unidade móvel selecionada.
+ * 
+ * @param int cell_i - Auxiliar de coordenada da posição. 
+ *
+ * @param int cell_j - Auxiliar de coordenada da posição. 
+ *
+ * @return True ou false - Se tudo ocorre dentro do esperado ou não.
+ */
 bool verifica_alcance (unidade_movel* aux, int cell_i, int cell_j);
 
+/**
+ * @brief Verifica alcance da defesa.
+ * Função que verifica determinado alcance de situação de defesa.
+ *
+ * @param  unidade_movel* aux - A unidade móvel selecionada.
+ * 
+ * @param int cell_i - Auxiliar de coordenada da posição. 
+ *
+ * @param int cell_j - Auxiliar de coordenada da posição. 
+ *
+ * @return True ou false - Se tudo ocorre dentro do esperado ou não.
+ */
 bool verifica_alcance_defesa (unidade_estatica* aux, int cell_i, int cell_j);
 
+/**
+ * @brief Verifica oposição.
+ * Função que verifica oposição de uma ação.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo. 
+ *
+ * @param  unidade_movel* aux - A unidade móvel selecionada.
+ * 
+ * @param int i - Auxiliar de coordenada da posição. 
+ *
+ * @param int j - Auxiliar de coordenada da posição. 
+ *
+ * @return True ou false - Se tudo ocorre dentro do esperado ou não.
+ */
 bool verifica_oposicao (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux, int i, int j);
 
+/**
+ * @brief Verifica oposição da defesa.
+ * Função que verifica oposição à defesa..
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo. 
+ *
+ * @param  unidade_movel* aux - A unidade móvel selecionada.
+ * 
+ * @param int i - Auxiliar de coordenada da posição. 
+ *
+ * @param int j - Auxiliar de coordenada da posição. 
+ *
+ * @return True ou false - Se tudo ocorre dentro do esperado ou não.
+ */
 bool verifica_oposicao_defesa (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_estatica* aux, int i, int j);
 
 /**
@@ -381,8 +445,32 @@ int carrega_mapa (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data image
  */
 int carrega_layout();
 
+/**
+ * @brief Colore espaços.
+ * Função que colore espaços no mapa, se estão vazio.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo. 
+ *
+ * @param  unidade_movel* aux - A unidade móvel selecionada.
+ *
+ * @param  player_data *player - Informações de jogador.  
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 int colore_espacos_validos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux, player_data* player);
 
+/**
+ * @brief Colore espaços de defesa.
+ * Função que colore espaços no mapa, se são espaços válidos de defesa.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo. 
+ *
+ * @param  unidade_estatica* aux - A unidade estatica selecionada.
+ *
+ * @param  player_data *player - Informações de jogador.  
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 int colore_espacos_validos_defesa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_estatica* aux, player_data* player);
 
 /**
@@ -471,6 +559,20 @@ int carrega_barras(imagens_data imagens);
  */
 int combate(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unidade_movel *aux2, player_data *player);
 
+/**
+ * @brief Combate defensivo.
+ * Função que executa a atualização de informações de combate (defesa) entre unidade móveis.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo. 
+ *
+ * @param unidade_movel *aux - Unidade envolvida no combate
+ *
+ * @param unidade_movel *aux2 - Unidade envolvida no combate
+ *
+ * @param player_data *player - Informações de jogador.  
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 int combate_defensivo(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_estatica *aux, unidade_movel *aux2, player_data *player);
 
 
@@ -490,6 +592,20 @@ int combate_defensivo(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_estati
  */
 int destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unidade_estatica *aux2, player_data *player);
 
+/**
+ * @brief Destruição de construção de defesa.
+ * Função que executa a atualização de informações de combate entre uma unidade e um prédio.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo. 
+ *
+ * @param unidade_movel *aux - Unidade envolvida no combate.
+ *
+ * @param unidade_estatica *aux2 - Unidade envolvida no combate.
+ *
+ * @param  player_data *player - Informações de jogador.  
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 int destruicao_defensiva(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_estatica *aux, unidade_estatica *aux2, player_data *player);
 
 /**
@@ -612,8 +728,6 @@ void Atualizar_recursos(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], player_data 
  */
 int player_level(player_data *player);
 
-//define_mov_rang(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel* aux);
-
 /**
  * @brief Evolui construções.
  * Função que evolui determinada construção.
@@ -626,30 +740,130 @@ int player_level(player_data *player);
  */
 int evolution(unidade_estatica *aux, player_data *player);
 
+/**
+ * @brief Carrega botão.
+ * Função que carrega botões que interagem com o jogador.  
+ *
+ * @param imagens_data imagens - Imagens carregadas. 
+ *
+ * @param mouse_data mouse - Informações de localização do mouse do usuário.
+ *
+ * @param int local - local onde se amostra o botão.
+ *
+ * @param int tipo - tipo de botão.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo.
+ * 
+ * @param  atributos_data atributos - Atributos do jogador.
+ *
+ * @param  player_data *player - Informações do jogador.
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 int carrega_botao(imagens_data imagens, texto_data texto, mouse_data *mouse, int local, int tipo, cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player);
 
+/**
+ * @brief Gera operário.
+ * Função que gera os operários do jogador.  
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo.
+ *
+ * @param mouse_data mouse - Informações de localização do mouse do usuário.
+ * 
+ * @param  atributos_data atributos - Atributos do jogador.
+ *
+ * @param  player_data *player - Informações do jogador.
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 int gera_operario(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse, atributos_data atributos, player_data *player);
 
+/**
+ * @brief Geração de tropas.
+ * Função que gera as tropas de determinado jogador.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo.  
+ *
+ * @param mouse_data mouse - Informações de localização do mouse do usuário.
+ * 
+ * @param  atributos_data atributos - Atributos do jogador.
+ *
+ * @param  player_data *player - Informações do jogador.
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 int gera_tropa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse, atributos_data atributos, player_data *player);
 
-/**
- * @file cpu.cpp
- *
- * @brief Inteligencia artificial da CPU para simular o oponente
- *
- * @author Grupo 2
- *
- */
 
+/**
+ * @brief Definição da CPU.
+ * Função que define ações do jogador adversário.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo.  
+ *
+ * @param  player_data *player_CPU - Informações do adversário.
+ *
+ * @param int contador_turno - Marcador de turno.
+ *
+ * @return 0 - Se o procedimento foi bem sucedido.
+ */
 int CPU(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], player_data *player_CPU, int contador_turno);
-//int gera_operario(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data mouse, atributos_data atributos, player_data *player);
+
+/**
+ * @brief Criação de jogador.
+ * Função que cria determinado jogador.
+ *
+ * @param  player_data *player - Informações do jogador.
+ *
+ * @param int time - tempo da ocorrência.  
+ *
+ * @return Nada (função tipo void).
+ */
 void cria_player(player_data *player, int time);
 
+/**
+ * @brief Definição de nível.
+ * Função que define nível de determinado jogador.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo.  
+ *
+ * @return Nada (função tipo void).
+ */
 void restaurar_acoes(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]);
 
+/**
+ * @brief Salvar jogo.
+ * Função que carrega o jogo anterior do jogador.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo.  
+ *
+ * @param unidade_movel *aux -Unidade movel envolvida na destruição .
+ *
+ * @param base_principal *aux2 - Base envolvida na destruição .
+ *
+   @param  player_data *player - Informações de jogador.  
+ *
+ * @return Nada (função tipo void).
+ */
 int destruicao_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, base_principal *aux2, player_data *player);
 
+/**
+ * @brief Salvar jogo.
+ * Função que carrega o jogo anterior do jogador.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo.  
+ *
+ * @return Nada (função tipo void).
+ */
 void salva_jogo(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]);
 
+/**
+ * @brief Carregar jogo.
+ * Função que carrega o jogo anterior do jogador.
+ *
+ * @param cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA] - Mapa quadriculado do jogo. 
+ *
+ * @return Nada (função tipo void).
+ */
 void carrega_jogo(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]);
 
