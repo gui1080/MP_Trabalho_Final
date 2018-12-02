@@ -20,6 +20,8 @@ void priorizar_movimentacao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributo
 void priorizar_destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU);
 void priorizar_combate(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU);
 void priorizar_destruicao_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU);
+void priorizar_contra_ataque(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU);
+
 
 void CPU(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse,
 texto_data texto, player_data *player_CPU, atributos_data atributos, int contador_turno) {
@@ -54,6 +56,7 @@ texto_data texto, player_data *player_CPU, atributos_data atributos, int contado
         usleep(10000);
         priorizar_combate(mapa, atributos, player_CPU);
         priorizar_destruicao_base(mapa, atributos, player_CPU);
+        priorizar_contra_ataque(mapa, atributos, player_CPU);
     }
     mouse.x_mem = -1;
     mouse.y_mem = -1;
@@ -373,6 +376,43 @@ atributos_data atributos, player_data *player_CPU) {
     }
 }
 
+void priorizar_contra_ataque(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU) {
+    bool loop;
+    int count;
+    int i, j, alcance, k, p, q;
+    count = 3+rand()%3;
+    while (count--) {
+        k = 0;
+        do {
+            i = rand()%40;
+            j = rand()%40;
+            if (mapa[i][j].pUniImovel != NULL &&
+            mapa[i][j].pUniImovel->time == INIMIGO &&
+            mapa[i][j].pUniImovel->classe == DEFESA_OFENSIVA) {
+                alcance = mapa[i][j].pUniImovel->alcance;
+                loop = true;
+                for (p = i - alcance; p <= i + alcance && loop == true; p++) {
+                    for (q = j - alcance; q<= j + alcance && loop == true; q++) {
+                        if(p >= 0 && p < BLOCOS_LINHA && q >= 0 && q < BLOCOS_LINHA) {
+                            if (mapa[p][q].pUniMovel != NULL &&
+                            mapa[p][q].pUniMovel->time == ALIADO) {
+                                combate_defensivo(mapa, mapa[i][j].pUniImovel, mapa[p][q].pUniMovel, player_CPU);
+                                loop = false;
+                            }
+                            if (mapa[p][q].pUniImovel != NULL &&
+                            mapa[p][q].pUniImovel->time == ALIADO) {
+                                destruicao_defensiva(mapa, mapa[i][j].pUniImovel, mapa[p][q].pUniImovel, player_CPU);
+                                loop = false;
+                            }
+                        }
+                    }
+                }
+            }
+            k++;
+        } while (k < 800);
+    }
+}
+
 bool verificador_CPU (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j) {
     if (i >= 0 && i < BLOCOS_LINHA && j >= 0 && j < BLOCOS_LINHA &&
             mapa[i][j].pUniMovel == NULL &&
@@ -382,3 +422,5 @@ bool verificador_CPU (cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j) 
     else
         return false;
 }
+
+
