@@ -136,7 +136,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
         player->minerio < Unidade->custo_minerio ||
         player->eletricidade < Unidade->custo_eletricidade){
         printf("Quantidade de recursos insuficientes\n");
-        return 1;
+        return -2;
     }
 
     player->comida = player->comida - Unidade->custo_comida;
@@ -301,7 +301,7 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
         player->minerio < Unidade->custo_minerio ||
         player->eletricidade < Unidade->custo_eletricidade){
         printf("Quantidade de recursos insuficientes\n");
-        return 0;
+        return -2;
     }
 
     player->comida = player->comida - Unidade->custo_comida;
