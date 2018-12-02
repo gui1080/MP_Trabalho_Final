@@ -18,10 +18,10 @@ LIBS=-lm
 _DEPS = funcoes.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o criacao.o interface.o verificacao.o interacoes.o cpu.o
+_OBJ = main.o criacao.o interface.o verificacao.o interacoes.o cpu.o salva_carrega.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
-_OBJT = testa_main.o criacao.o interface.o verificacao.o interacoes.o cpu.o
+_OBJT = testa_main.o criacao.o interface.o verificacao.o interacoes.o cpu.o salva_carrega.o
 OBJT = $(patsubst %,$(ODIR)/%,$(_OBJT))
 
 all: jogo testa_jogo
