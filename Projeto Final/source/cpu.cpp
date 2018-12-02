@@ -284,15 +284,15 @@ atributos_data atributos, player_data *player_CPU) {
     bool loop;
     int count;
     int i, j, alcance, k, p, q;
-    count = 3+rand()%3;
+    count = 5;
     while (count--) {
         k = 0;
         do {
             i = rand()%40;
             j = rand()%40;
+            loop = true;
             if (mapa[i][j].pUniMovel != NULL &&
             mapa[i][j].pUniMovel->time == INIMIGO) {
-                loop = true;
                 alcance = mapa[i][j].pUniMovel->alcance;
                 for (p = i - alcance; p <= i + alcance && loop == true; p++) {
                     for (q = j - alcance; q<= j + alcance && loop == true; q++) {
@@ -308,7 +308,7 @@ atributos_data atributos, player_data *player_CPU) {
 
             }
             k++;
-        } while (k < 800);
+        } while (k < 800 && loop == true);
     }
 }
 
@@ -317,16 +317,16 @@ atributos_data atributos, player_data *player_CPU) {
     bool loop;
     int count;
     int i, j, alcance, k, p, q;
-    count = 3+rand()%3;
+    count = 5;
     while (count--) {
         k = 0;
         do {
             i = rand()%40;
             j = rand()%40;
+            loop = true;
             if (mapa[i][j].pUniMovel != NULL &&
             mapa[i][j].pUniMovel->time == INIMIGO) {
                 alcance = mapa[i][j].pUniMovel->alcance;
-                loop = true;
                 for (p = i - alcance; p <= i + alcance && loop == true; p++) {
                     for (q = j - alcance; q<= j + alcance && loop == true; q++) {
                         if(p >= 0 && p < BLOCOS_LINHA && q >= 0 && q < BLOCOS_LINHA) {
@@ -340,7 +340,7 @@ atributos_data atributos, player_data *player_CPU) {
                 }
             }
             k++;
-        } while (k < 800);
+        } while (k < 800 && loop == true);
     }
 }
 
@@ -355,10 +355,10 @@ atributos_data atributos, player_data *player_CPU) {
         do {
             i = 20+rand()%20;
             j = rand()%20;
+            loop = true;
             if (mapa[i][j].pUniMovel != NULL &&
             mapa[i][j].pUniMovel->time == INIMIGO) {
                 alcance = mapa[i][j].pUniMovel->alcance;
-                loop = true;
                 for (p = i - alcance; p <= i + alcance && loop == true; p++) {
                     for (q = j - alcance; q<= j + alcance && loop == true; q++) {
                         if(p >= 0 && p < BLOCOS_LINHA && q >= 0 && q < BLOCOS_LINHA) {
@@ -372,7 +372,7 @@ atributos_data atributos, player_data *player_CPU) {
                 }
             }
             k++;
-        } while (k < 800);
+        } while (k < 800 && loop == true);
     }
 }
 
@@ -380,17 +380,17 @@ void priorizar_contra_ataque(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atribut
     bool loop;
     int count;
     int i, j, alcance, k, p, q;
-    count = 3+rand()%3;
+    count = 5;
     while (count--) {
         k = 0;
         do {
             i = rand()%40;
             j = rand()%40;
+            loop = true;
             if (mapa[i][j].pUniImovel != NULL &&
             mapa[i][j].pUniImovel->time == INIMIGO &&
             mapa[i][j].pUniImovel->classe == DEFESA_OFENSIVA) {
                 alcance = mapa[i][j].pUniImovel->alcance;
-                loop = true;
                 for (p = i - alcance; p <= i + alcance && loop == true; p++) {
                     for (q = j - alcance; q<= j + alcance && loop == true; q++) {
                         if(p >= 0 && p < BLOCOS_LINHA && q >= 0 && q < BLOCOS_LINHA) {
@@ -409,7 +409,7 @@ void priorizar_contra_ataque(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atribut
                 }
             }
             k++;
-        } while (k < 800);
+        } while (k < 800 && loop == true);
     }
 }
 
