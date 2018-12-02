@@ -275,7 +275,30 @@ TEST(Testa, cria_uni_movel_3) {
 
     ASSERT_EQ(0, cria_uni_movel(mapa, 5, 5, dados_uni, player));
 }
-  
+ 
+TEST(Testa, CPU_module) {
+    cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+    // JOGADOR
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+    // CPU
+    player_data *player_CPU = (player_data *)malloc(sizeof(player_data));
+    cria_player( player_CPU, INIMIGO);
+    cria_base(mapa, 35, 1, 4, VIDA_INICIAL_BASE, ALIADO);
+    cria_base(mapa, 1, 35, 4, VIDA_INICIAL_BASE, INIMIGO);
+    int i, funciona = -1;
+    for (i = 0; i<=20; i++) {
+        ASSERT_EQ(0, CPU(mapa, player, i));
+        ASSERT_EQ(0, CPU(mapa, player_CPU, i+1));
+        Atualizar_recursos(mapa, player_CPU);
+        Atualizar_recursos(mapa, player);
+        restaurar_acoes(mapa);
+    }
+    player->vida_base = VIDA_INICIAL_BASE/5;
+        ASSERT_EQ(0, CPU(mapa, player, 22));
+        ASSERT_EQ(0, CPU(mapa, player_CPU, 23));
+} 
     
     
 int main(int argc, char* argv[]) {

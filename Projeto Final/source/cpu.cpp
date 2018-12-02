@@ -28,13 +28,13 @@ int CPU(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA],player_data *player_CPU,int c
     struct timeval time; 
     gettimeofday(&time,NULL);
     srand((time.tv_sec * 1000) + (time.tv_usec / 1000)); 
-    if(contador_turno == 1){
+    if(contador_turno/2 == 0){
         criacoes_iniciais_1(mapa, atributos, player_CPU);
     }
-    else if(contador_turno == 3){
+    else if(contador_turno/2 == 1){
         criacoes_iniciais_2(mapa, atributos, player_CPU);
     }
-    else if(contador_turno == 5){
+    else if(contador_turno/2 == 2){
         criacoes_iniciais_3(mapa, atributos, player_CPU);
     }
     else{
