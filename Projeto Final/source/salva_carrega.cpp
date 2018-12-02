@@ -83,6 +83,8 @@ void carrega_jogo(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA]) {
     int i, j, leitura, tipo, p, q;
     char c;
     FILE *arq  = fopen("jogo_salvo.txt", "r");
+    if(arq == NULL)
+        return;
     for (i = 0; i < BLOCOS_LINHA; i++) {
         for (j = 0; j < BLOCOS_LINHA; j++) {
                 mapa[i][j].pUniMovel = NULL;
