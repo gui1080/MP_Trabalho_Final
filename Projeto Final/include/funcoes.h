@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <time.h>
+#include <sys/time.h>
 #include <stdlib.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL.h>
