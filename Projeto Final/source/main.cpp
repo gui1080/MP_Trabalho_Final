@@ -325,7 +325,8 @@ int main() {
                 menu = false;
                 executando = true;
             } else if (eventos.type == SDL_KEYUP && eventos.key.keysym.sym == SDLK_s) {
-                menu = false;
+                carrega_jogo(mapa);
+		menu = false;
                 executando = true;
             } else if (eventos.type == SDL_KEYUP && eventos.key.keysym.sym == SDLK_f) {
                 menu = false;
@@ -447,7 +448,7 @@ int main() {
     }
 
     printf("Fechado com sucesso!\n");
-
+    salva_jogo(mapa);
     SDL_FreeSurface(screen);
     TTF_Quit();
     SDL_Quit();
