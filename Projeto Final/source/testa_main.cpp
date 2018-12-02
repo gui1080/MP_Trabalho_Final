@@ -176,6 +176,13 @@ TEST(Testa, cria_interface) {
 }
 */
 
+TEST(Testa, cria_base_espaco_ocupado) {
+    cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+    cria_base(mapa, 35, 1, 4, VIDA_INICIAL_BASE, ALIADO);
+    ASSERT_EQ(-1, cria_base(mapa, 35, 1, 4, VIDA_INICIAL_BASE, INIMIGO));
+}
+
 TEST(Testa, cria_uni_movel_recurso_MAX) {
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
     cria_mapa(mapa);
@@ -194,24 +201,21 @@ TEST(Testa, cria_uni_movel_recurso_MAX) {
     int divisao, classe, nivel, time;
     for (divisao = HUMANO; divisao <= OPERARIO; divisao++) {
         for (nivel = 1; nivel <=3; nivel++) {
-            for (time = ALIADO; time <= INIMIGO; time++) {
-                aux =false;
-                dados_uni.divisao = divisao;
-                dados_uni.time = time;
-                dados_uni.nivel = nivel;
-                mapa[1][1].pUniMovel = NULL;
-                mapa[1][1].pUniImovel = NULL;
-                mapa[1][1].pBase = NULL;
-                ASSERT_EQ(0, cria_uni_movel(mapa, 1, 1, dados_uni, player));
-                if(mapa[1][1].pUniMovel != NULL)
-                    aux = true;
-                ASSERT_EQ(true, aux);
-            }
+            aux =false;
+            dados_uni.divisao = divisao;
+            dados_uni.time = ALIADO;
+            dados_uni.nivel = nivel;
+            mapa[1][1].pUniMovel = NULL;
+            mapa[1][1].pUniImovel = NULL;
+            mapa[1][1].pBase = NULL;
+            ASSERT_EQ(0, cria_uni_movel(mapa, 1, 1, dados_uni, player));
+            if(mapa[1][1].pUniMovel != NULL)
+                aux = true;
+            ASSERT_EQ(true, aux);
         }
     }
     free(player);
 }
-
 
 TEST(Testa, cria_uni_movel_espaco_ocupado) {
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
@@ -223,13 +227,110 @@ TEST(Testa, cria_uni_movel_espaco_ocupado) {
     atributos_data dados_uni;
     dados_uni.classe = GERADOR_DE_RECURSO;
     dados_uni.divisao = HUMANO;
-    dados_uni.time = INIMIGO;
+    dados_uni.time = ALIADO;
     dados_uni.nivel = 1;
     cria_uni_movel(mapa, 5, 5, dados_uni, player);
 
     ASSERT_EQ(-1, cria_uni_movel(mapa, 5, 5, dados_uni, player));
     free(player);
 }
+
+TEST(Testa, cria_uni_movel_sem_recurso) {
+    cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+        
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+
+    player->comida = 0;
+    player->minerio = 0;
+    player->eletricidade = 0;
+    
+    atributos_data dados_uni;
+    dados_uni.classe = GERADOR_DE_RECURSO;
+    dados_uni.divisao = HUMANO;
+    dados_uni.time = ALIADO;
+    dados_uni.nivel = 1;
+    ASSERT_EQ(-2, cria_uni_movel(mapa, 5, 5, dados_uni, player));
+    free(player);
+}
+
+TEST(Testa, cria_uni_estatico_recurso_MAX) {
+    cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+    
+    player->comida = 999;
+    player->minerio = 999;
+    player->eletricidade = 999;
+    player->nivel = 3;
+
+    atributos_data dados_uni;
+    bool aux =false;
+
+    int divisao, classe, nivel, time, i, j;
+    for(classe = GERADOR_DE_RECURSO; classe <= DEFESA_PASSIVA; classe++) {
+        for (divisao = HUMANO; divisao <= ELETRICO; divisao++) {
+                aux =false;
+                dados_uni.classe = classe;
+                dados_uni.divisao = divisao;
+                dados_uni.time = ALIADO;
+                for (i = 1; i <= 5; i++) {
+                    for ( j= 1; j <= 5; j++) {
+                        mapa[i][j].pUniImovel = NULL;
+                        mapa[i][j].pUniMovel = NULL;
+                        mapa[i][j].pBase = NULL;
+                    }
+                }
+                ASSERT_EQ(0, cria_uni_estatico(mapa, 1, 1, dados_uni, player));
+                if(mapa[1][1].pUniImovel != NULL)
+                    aux = true;
+                ASSERT_EQ(true, aux);
+        }
+    }
+    free(player);
+}
+
+TEST(Testa, cria_uni_estatica_espaco_ocupado) {
+    cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+        
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+    
+    atributos_data dados_uni;
+    dados_uni.classe = GERADOR_DE_RECURSO;
+    dados_uni.divisao = HUMANO;
+    dados_uni.time = ALIADO;
+    dados_uni.nivel = 1;
+    cria_uni_estatico(mapa, 5, 5, dados_uni, player);
+
+    ASSERT_EQ(-1, cria_uni_estatico(mapa, 5, 5, dados_uni, player));
+    free(player);
+}
+
+TEST(Testa, cria_uni_estatica_sem_recurso) {
+    cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
+    cria_mapa(mapa);
+
+    player_data *player = (player_data *)malloc(sizeof(player_data));
+    cria_player( player, ALIADO);
+        
+    player->comida = 0;
+    player->minerio = 0;
+    player->eletricidade = 0;
+    
+    atributos_data dados_uni;
+    dados_uni.classe = GERADOR_DE_RECURSO;
+    dados_uni.divisao = HUMANO;
+    dados_uni.time = ALIADO;
+    dados_uni.nivel = 1;
+    ASSERT_EQ(-2, cria_uni_estatico(mapa, 5, 5, dados_uni, player));
+    free(player);
+}
+
  
 TEST(Testa, cria_uni_movel_2) {
     cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA];
