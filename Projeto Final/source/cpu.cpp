@@ -23,8 +23,8 @@ void priorizar_destruicao_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atrib
 void priorizar_contra_ataque(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU);
 
 
-void CPU(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, mouse_data mouse,
-texto_data texto, player_data *player_CPU, atributos_data atributos, int contador_turno) {
+int CPU(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA],player_data *player_CPU,int contador_turno) {
+    atributos_data atributos;
     struct timeval time; 
     gettimeofday(&time,NULL);
     srand((time.tv_sec * 1000) + (time.tv_usec / 1000)); 
@@ -58,9 +58,7 @@ texto_data texto, player_data *player_CPU, atributos_data atributos, int contado
         priorizar_destruicao_base(mapa, atributos, player_CPU);
         priorizar_contra_ataque(mapa, atributos, player_CPU);
     }
-    mouse.x_mem = -1;
-    mouse.y_mem = -1;
-    carrega_interface(mapa, imagens, &mouse, texto, player_CPU, atributos);
+    return 0;
 }
 
 void criacoes_iniciais_1(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], atributos_data atributos, player_data *player_CPU) {
