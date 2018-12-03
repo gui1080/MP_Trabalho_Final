@@ -85,9 +85,25 @@ int main() {
     texto.nome_textura[ELETRICO] = importText("Eletrico",200,255,255,255);
     texto.nome_textura[OPERARIO] = importText("Operario",200,255,255,255);
     texto.nome_textura[GERADOR_DE_RECURSO] = importText("Gerador de Recurso",200,255,255,255);
+   
+	texto.nome_textura[GERADOR_DE_COMIDA] = importText("Gerador de comida",200,255,255,255);
+	texto.nome_textura[GERADOR_DE_MINERIO] = importText("Gerador de minerio",200,255,255,255);
+	texto.nome_textura[GERADOR_DE_ELETRICIDADE] = importText("Gerador de eletricidade",200,255,255,255);
+
     texto.nome_textura[GERADOR_DE_TROPA] = importText("Gerador de Tropa",200,255,255,255);
+
+	texto.nome_textura[GERADOR_DE_TROPA_HUMANA] = importText("Gerador de tropa humana",200,255,255,255);
+	texto.nome_textura[GERADOR_DE_TROPA_MECANICA] = importText("Gerador de tropa mecanica",200,255,255,255);
+	texto.nome_textura[GERADOR_DE_TROPA_ELETRICA] = importText("Gerador de tropa eletrica",200,255,255,255);
+
+
     texto.nome_textura[DEFESA_PASSIVA] = importText("Muralha",200,255,255,255);
     texto.nome_textura[DEFESA_OFENSIVA] = importText("Torre",200,255,255,255);
+
+	texto.nome_textura[TORRE_TIPO_HUMANO] = importText("Torre tipo humano",200,255,255,255);
+	texto.nome_textura[TORRE_TIPO_MECANICO] = importText("Torre tipo mecanico",200,255,255,255);
+	texto.nome_textura[TORRE_TIPO_ELETRICO] = importText("Torre tipo eletrico",200,255,255,255);
+
     texto.nome_textura[REPLICANTE] = importText("Replicante",200,255,255,255);
     texto.nome_textura[EXTERMINADOR] = importText("Exterminador",200,255,255,255);
     texto.nome_textura[HATSUNE] = importText("Hatsune Miku",200,255,255,255);
@@ -133,6 +149,17 @@ int main() {
     unsigned int eletrico_DEF_PAS;
     unsigned int operario;
 
+    unsigned int cavaleiro_estelar;
+   	unsigned int choris;
+   	unsigned int droids;
+   	unsigned int exterminador;
+   	unsigned int hatsune;
+   	unsigned int iron_giant;
+   	unsigned int mercenario;
+   	unsigned int replicantes;
+   	unsigned int comandante;
+   	unsigned int wall_e;
+
     unsigned int botao1;
     unsigned int botao2;
 
@@ -172,7 +199,16 @@ int main() {
         verifica_imagem("imagens/Kuru.png") == false ||
         verifica_imagem("imagens/menu_principal.png") == false ||
         verifica_imagem("imagens/botao1.png") == false ||
-        verifica_imagem("imagens/botao2.png") == false
+        verifica_imagem("imagens/botao2.png") == false ||
+        verifica_imagem("imagens/cavaleiroestelar.png") == false ||
+        verifica_imagem("imagens/choris.png") == false ||
+        verifica_imagem("imagens/droids.png") == false ||
+        verifica_imagem("imagens/exterminador.png") == false ||
+        verifica_imagem("imagens/hatsune.png") == false ||
+        verifica_imagem("imagens/Iron_Giant.png") == false ||
+        verifica_imagem("imagens/mercenario.png") == false ||
+        verifica_imagem("imagens/replicantes.png") == false ||
+        verifica_imagem("imagens/terminator.png") == false
         ) {
 
         printf("FALHA AO CARREGAR IMAGEM\n");
@@ -202,6 +238,18 @@ int main() {
     textura_comida = loadTexture("imagens/comida.png");
     textura_raio = loadTexture("imagens/raio.png");
     operario = loadTexture("imagens/Kuru.png");
+
+    cavaleiro_estelar = loadTexture("imagens/cavaleiroestelar.png");
+   	choris = loadTexture("imagens/choris.png");
+   	droids = loadTexture("imagens/droids.png");
+   	exterminador = loadTexture("imagens/exterminador.png");
+   	hatsune = loadTexture("imagens/hatsune.png");
+   	iron_giant = loadTexture("imagens/Iron_Giant.png");
+   	mercenario = loadTexture("imagens/mercenario.png");
+   	replicantes = loadTexture("imagens/replicantes.png");
+   	comandante = loadTexture("imagens/terminator.png");
+   	wall_e = loadTexture("imagens/wall-e.png");
+
     botao1 = loadTexture("imagens/botao1.png");
     botao2 = loadTexture("imagens/botao2.png");
 
@@ -225,6 +273,18 @@ int main() {
     imagens.comida = textura_comida;
     imagens.minerio = textura_minerio;
     imagens.operario = operario;
+
+    imagens.cavaleiro_estelar = cavaleiro_estelar;
+   	imagens.choris = choris;
+   	imagens.droids = droids;
+   	imagens.exterminador = exterminador;
+   	imagens.hatsune = hatsune;
+   	imagens.iron_giant = iron_giant;
+   	imagens.mercenario = mercenario;
+   	imagens.replicantes = replicantes;
+   	imagens.comandante = comandante;
+   	imagens.wall_e = wall_e;
+
     imagens.botao1 = botao1;
     imagens.botao2 = botao2;
 
@@ -448,25 +508,10 @@ int main() {
     }
 
     printf("Fechado com sucesso!\n");
+    salva_jogo(mapa);
     SDL_FreeSurface(screen);
     TTF_Quit();
     SDL_Quit();
-
-    //finalizacoes
-    salva_jogo(mapa);
-    //desaloca memoria
-    free(player);
-    free(player_CPU);
-    for (i=0; i<BLOCOS_LINHA; i++) {
-    	for (j = 0; j < BLOCOS_LINHA; j++) {
-    		if(mapa[i][j].pUniMovel != NULL)
-    			free(mapa[i][j].pUniMovel);
-    		if(mapa[i][j].pUniImovel != NULL)
-    			free(mapa[i][j].pUniImovel);
-    		if(mapa[i][j].pBase != NULL)
-    			free(mapa[i][j].pBase);
-    	}
-    }
 
     return 0;
 }
