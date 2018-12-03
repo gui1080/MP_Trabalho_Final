@@ -45,6 +45,9 @@ enum criacao {GERAR_OPERARIO = 22, CRIAR_GER_REC, CRIAR_GER_TRO, CRIAR_MUR, GERA
 enum niveis {EVOLUIR = 29, NIVEL_MAXIMO, NIVEL_1, NIVEL_2, NIVEL_3, EVOLUIR_NIVEL_INSUFICIENTE};
 enum time {ALIADO = 0, INIMIGO};
 
+enum extra {GERADOR_DE_COMIDA = 35, GERADOR_DE_MINERIO, GERADOR_DE_ELETRICIDADE, GERADOR_DE_TROPA_HUMANA, GERADOR_DE_TROPA_MECANICA,
+			GERADOR_DE_TROPA_ELETRICA, TORRE_TIPO_HUMANO, TORRE_TIPO_MECANICO, TORRE_TIPO_ELETRICO};
+
 typedef struct Player_Data {
     int time;
     int comida;
@@ -132,6 +135,16 @@ typedef struct Imagens_Data {
     unsigned int raio;
     unsigned int comida;
     unsigned int operario;
+    unsigned int cavaleiro_estelar;
+    unsigned int choris;
+    unsigned int droids;
+    unsigned int exterminador;
+    unsigned int hatsune;
+    unsigned int iron_giant;
+    unsigned int mercenario;
+    unsigned int replicantes;
+    unsigned int comandante;
+    unsigned int wall_e;
     unsigned int botao1;
     unsigned int botao2;
 }imagens_data;
@@ -157,7 +170,7 @@ typedef struct Atributos_Data {
 
 typedef struct Texto_Data {
     unsigned int numero_textura[101];
-    unsigned int nome_textura[35];
+    unsigned int nome_textura[45];
 }texto_data;
 
 
@@ -409,7 +422,7 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
  *
  * @return 0 - Se o procedimento foi bem sucedido.
  */
-int carrega_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens);
+int carrega_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, texto_data texto);
 
 /**
  * @brief Carrega informações de recursos.
@@ -648,7 +661,7 @@ int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse,
  *
  * @return 0 - Se o procedimento foi bem sucedido.
  */
-int escolhe_imagem_estatica(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, int i, int j);
+int escolhe_imagem_estatica(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, int i, int j, int opcao, texto_data texto);
 
 /**
  * @brief Escolhe imagem móvel.
