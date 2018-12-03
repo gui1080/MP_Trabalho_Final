@@ -86,7 +86,7 @@ int main() {
     texto.nome_textura[OPERARIO] = importText("Operario",200,255,255,255);
     texto.nome_textura[GERADOR_DE_RECURSO] = importText("Gerador de Recurso",200,255,255,255);
     texto.nome_textura[GERADOR_DE_TROPA] = importText("Gerador de Tropa",200,255,255,255);
-    texto.nome_textura[DEFESA_PASSIVA] = importText("Construcao",200,255,255,255);
+    texto.nome_textura[DEFESA_PASSIVA] = importText("Muralha",200,255,255,255);
     texto.nome_textura[DEFESA_OFENSIVA] = importText("Torre",200,255,255,255);
     texto.nome_textura[REPLICANTE] = importText("Replicante",200,255,255,255);
     texto.nome_textura[EXTERMINADOR] = importText("Exterminador",200,255,255,255);

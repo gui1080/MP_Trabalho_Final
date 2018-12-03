@@ -73,7 +73,7 @@ int carrega_interface(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data i
     carrega_display_recursos(imagens, texto);
     carrega_mapa(mapa, imagens, *mouse);
     carrega_base(mapa, imagens);
-    carrega_uni_estatico(mapa, imagens);  
+    carrega_uni_estatico(mapa, imagens, texto);  
     carrega_uni_movel(mapa, imagens, texto);
     carrega_numeros_recurso (texto, player);
     carrega_barras(imagens);
@@ -301,7 +301,7 @@ int carrega_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagen
     return 0;
 }
 
-int carrega_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens) {
+int carrega_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, texto_data texto) {
 
     for (int i = 0; i < BLOCOS_LINHA; i++) {
         for (int j = 0; j < BLOCOS_LINHA; j++) {
@@ -312,7 +312,7 @@ int carrega_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_dat
                     else 
                         glColor4ub(255, 179, 179, 255);
 
-                        escolhe_imagem_estatica(mapa, imagens, i, j);               
+                        escolhe_imagem_estatica(mapa, imagens, i, j, 0, texto);               
                         
                         glBegin(GL_QUADS);
                         glTexCoord2d(0,0);  glVertex2f(j*LADO, i*LADO); // primeiro ponto
@@ -328,53 +328,65 @@ int carrega_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_dat
     return 0;
 }
 
-int escolhe_imagem_estatica(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, int i, int j) {
+int escolhe_imagem_estatica(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_data imagens, int i, int j, int opcao, texto_data texto) {
     switch (mapa[i][j].pUniImovel->divisao) {
         case HUMANO:
             switch (mapa[i][j].pUniImovel->classe) {
                 case GERADOR_DE_RECURSO:
-                    glBindTexture(GL_TEXTURE_2D, imagens.humano_GER_REC);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.humano_GER_REC);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_RECURSO]);
                 break;
                 case GERADOR_DE_TROPA:
-                    glBindTexture(GL_TEXTURE_2D, imagens.humano_GER_TROP);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.humano_GER_TROP);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_TROPA]);
                 break;
                 case DEFESA_OFENSIVA:
-                    glBindTexture(GL_TEXTURE_2D, imagens.humano_DEF_OFS);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.humano_DEF_OFS);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[DEFESA_OFENSIVA]);
                 break;
                 case DEFESA_PASSIVA:
-                    glBindTexture(GL_TEXTURE_2D, imagens.humano_DEF_PAS);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.humano_DEF_PAS);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[DEFESA_PASSIVA]);
                 break;
             }
             break;
         case MECANICO:
             switch (mapa[i][j].pUniImovel->classe) {
                 case GERADOR_DE_RECURSO:
-                    glBindTexture(GL_TEXTURE_2D, imagens.mecanico_GER_REC);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.mecanico_GER_REC);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_RECURSO]);
                 break;
                 case GERADOR_DE_TROPA:
-                    glBindTexture(GL_TEXTURE_2D, imagens.mecanico_GER_TROP);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.mecanico_GER_TROP);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_TROPA]);
                 break;
                 case DEFESA_OFENSIVA:
-                    glBindTexture(GL_TEXTURE_2D, imagens.mecanico_DEF_OFS);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.mecanico_DEF_OFS);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[DEFESA_OFENSIVA]);
                 break;
                 case DEFESA_PASSIVA:
-                    glBindTexture(GL_TEXTURE_2D, imagens.mecanico_DEF_PAS);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.mecanico_DEF_PAS);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[DEFESA_PASSIVA]);
                 break;
             }
         break;
         case ELETRICO:
             switch (mapa[i][j].pUniImovel->classe) {
                 case GERADOR_DE_RECURSO:
-                    glBindTexture(GL_TEXTURE_2D, imagens.eletrico_GER_REC);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.eletrico_GER_REC);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_RECURSO]);
                 break;
                 case GERADOR_DE_TROPA:
-                    glBindTexture(GL_TEXTURE_2D, imagens.eletrico_GER_TROP);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.eletrico_GER_TROP);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_TROPA]);
                 break;
                 case DEFESA_OFENSIVA:
-                    glBindTexture(GL_TEXTURE_2D, imagens.eletrico_DEF_OFS);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.eletrico_DEF_OFS);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[DEFESA_OFENSIVA]);
                 break;
                 case DEFESA_PASSIVA:
-                    glBindTexture(GL_TEXTURE_2D, imagens.eletrico_DEF_PAS);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.eletrico_DEF_PAS);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[DEFESA_PASSIVA]);
                 break;
             }
         break;
@@ -568,7 +580,7 @@ int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse,
             escolhe_imagem_movel(mapa, imagens, texto, i, j, 1);
         break;
         case 2:
-            glBindTexture(GL_TEXTURE_2D, texto.nome_textura[DEFESA_PASSIVA]);
+            escolhe_imagem_estatica(mapa, imagens, i, j, 1, texto);
         break;
         case 3:
             glBindTexture(GL_TEXTURE_2D, texto.nome_textura[BASE]);
@@ -587,7 +599,7 @@ int carrega_caixa(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], mouse_data *mouse,
     glEnd();
 
     if (valor == 1) escolhe_imagem_movel(mapa, imagens, texto, i, j, 0);
-    if (valor == 2) escolhe_imagem_estatica(mapa, imagens, i, j);
+    if (valor == 2) escolhe_imagem_estatica(mapa, imagens, i, j, 0, texto);
     if (valor == 3) glBindTexture(GL_TEXTURE_2D, imagens.textura_base); 
 
     glColor4ub(255, 255, 255, 255);
