@@ -334,15 +334,15 @@ int escolhe_imagem_estatica(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_
             switch (mapa[i][j].pUniImovel->classe) {
                 case GERADOR_DE_RECURSO:
                     if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.humano_GER_REC);
-                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_RECURSO]);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_COMIDA]);
                 break;
                 case GERADOR_DE_TROPA:
                     if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.humano_GER_TROP);
-                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_TROPA]);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_TROPA_HUMANA]);
                 break;
                 case DEFESA_OFENSIVA:
                     if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.humano_DEF_OFS);
-                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[DEFESA_OFENSIVA]);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[TORRE_TIPO_HUMANO]);
                 break;
                 case DEFESA_PASSIVA:
                     if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.humano_DEF_PAS);
@@ -354,15 +354,15 @@ int escolhe_imagem_estatica(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_
             switch (mapa[i][j].pUniImovel->classe) {
                 case GERADOR_DE_RECURSO:
                     if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.mecanico_GER_REC);
-                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_RECURSO]);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_MINERIO]);
                 break;
                 case GERADOR_DE_TROPA:
                     if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.mecanico_GER_TROP);
-                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_TROPA]);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_TROPA_MECANICA]);
                 break;
                 case DEFESA_OFENSIVA:
                     if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.mecanico_DEF_OFS);
-                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[DEFESA_OFENSIVA]);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[TORRE_TIPO_MECANICO]);
                 break;
                 case DEFESA_PASSIVA:
                     if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.mecanico_DEF_PAS);
@@ -374,15 +374,15 @@ int escolhe_imagem_estatica(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_
             switch (mapa[i][j].pUniImovel->classe) {
                 case GERADOR_DE_RECURSO:
                     if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.eletrico_GER_REC);
-                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_RECURSO]);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_ELETRICIDADE]);
                 break;
                 case GERADOR_DE_TROPA:
                     if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.eletrico_GER_TROP);
-                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_TROPA]);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[GERADOR_DE_TROPA_MECANICA]);
                 break;
                 case DEFESA_OFENSIVA:
                     if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.eletrico_DEF_OFS);
-                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[DEFESA_OFENSIVA]);
+                    else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[TORRE_TIPO_ELETRICO]);
                 break;
                 case DEFESA_PASSIVA:
                     if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.eletrico_DEF_PAS);

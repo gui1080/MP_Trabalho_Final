@@ -85,9 +85,25 @@ int main() {
     texto.nome_textura[ELETRICO] = importText("Eletrico",200,255,255,255);
     texto.nome_textura[OPERARIO] = importText("Operario",200,255,255,255);
     texto.nome_textura[GERADOR_DE_RECURSO] = importText("Gerador de Recurso",200,255,255,255);
+   
+	texto.nome_textura[GERADOR_DE_COMIDA] = importText("Gerador de comida",200,255,255,255);
+	texto.nome_textura[GERADOR_DE_MINERIO] = importText("Gerador de minerio",200,255,255,255);
+	texto.nome_textura[GERADOR_DE_ELETRICIDADE] = importText("Gerador de eletricidade",200,255,255,255);
+
     texto.nome_textura[GERADOR_DE_TROPA] = importText("Gerador de Tropa",200,255,255,255);
+
+	texto.nome_textura[GERADOR_DE_TROPA_HUMANA] = importText("Gerador de tropa humana",200,255,255,255);
+	texto.nome_textura[GERADOR_DE_TROPA_MECANICA] = importText("Gerador de tropa mecanica",200,255,255,255);
+	texto.nome_textura[GERADOR_DE_TROPA_ELETRICA] = importText("Gerador de tropa eletrica",200,255,255,255);
+
+
     texto.nome_textura[DEFESA_PASSIVA] = importText("Muralha",200,255,255,255);
     texto.nome_textura[DEFESA_OFENSIVA] = importText("Torre",200,255,255,255);
+
+	texto.nome_textura[TORRE_TIPO_HUMANO] = importText("Torre tipo humano",200,255,255,255);
+	texto.nome_textura[TORRE_TIPO_MECANICO] = importText("Torre tipo mecanico",200,255,255,255);
+	texto.nome_textura[TORRE_TIPO_ELETRICO] = importText("Torre tipo eletrico",200,255,255,255);
+
     texto.nome_textura[REPLICANTE] = importText("Replicante",200,255,255,255);
     texto.nome_textura[EXTERMINADOR] = importText("Exterminador",200,255,255,255);
     texto.nome_textura[HATSUNE] = importText("Hatsune Miku",200,255,255,255);
