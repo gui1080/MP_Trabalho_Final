@@ -448,10 +448,25 @@ int main() {
     }
 
     printf("Fechado com sucesso!\n");
-    salva_jogo(mapa);
     SDL_FreeSurface(screen);
     TTF_Quit();
     SDL_Quit();
+
+    //finalizacoes
+    salva_jogo(mapa);
+    //desaloca memoria
+    free(player);
+    free(player_CPU);
+    for (i=0; i<BLOCOS_LINHA; i++) {
+    	for (j = 0; j < BLOCOS_LINHA; j++) {
+    		if(mapa[i][j].pUniMovel != NULL)
+    			free(mapa[i][j].pUniMovel);
+    		if(mapa[i][j].pUniImovel != NULL)
+    			free(mapa[i][j].pUniImovel);
+    		if(mapa[i][j].pBase != NULL)
+    			free(mapa[i][j].pBase);
+    	}
+    }
 
     return 0;
 }

@@ -71,7 +71,7 @@ int combate(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, unid
     }
   
     if(aux2->vida <= 0){
-
+    	free(mapa[aux2->i][aux2->j].pUniMovel);
         mapa[aux2->i][aux2->j].pUniMovel = NULL;
     	player->xp = player->xp + (aux2->nivel)*2;
         player_level(player);
@@ -148,7 +148,7 @@ int combate_defensivo(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_estati
     }
   
     if(aux2->vida <= 0){
-
+    	free(mapa[aux2->i][aux2->j].pUniMovel);
         mapa[aux2->i][aux2->j].pUniMovel = NULL;
         player->xp = player->xp + (aux2->nivel)*2;
         player_level(player);
@@ -232,10 +232,12 @@ int destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, u
 
     	for (int p = aux2->i; p < (aux2->i + aux2->dim); p++) {
             for (int q = aux2->j; q < (aux2->j + aux2->dim); q++) {
+            	free(mapa[p][q].pUniImovel);
                 mapa[p][q].pUniImovel = NULL;
             }
     	}
-
+    	free(mapa[aux2->i][aux2->j].pUniImovel);
+    	free(mapa[aux2->i][aux2->j+1].pUniImovel);
     	mapa[aux2->i][aux2->j].pUniImovel = NULL;
     	mapa[aux2->i][aux2->j+1].pUniImovel = NULL;
 
@@ -305,10 +307,12 @@ int destruicao(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *aux, u
 
         for (int p = aux2->i; p < (aux2->i + aux2->dim); p++) {
             for (int q = aux2->j; q < (aux2->j + aux2->dim); q++) {
+            	free(mapa[p][q].pUniImovel);
                 mapa[p][q].pUniImovel = NULL;
             }
         }
-
+        free(mapa[aux2->i][aux2->j].pUniImovel);
+        free(mapa[aux2->i][aux2->j+1].pUniImovel);
         mapa[aux2->i][aux2->j].pUniImovel = NULL;
         mapa[aux2->i][aux2->j+1].pUniImovel = NULL;
 
@@ -350,6 +354,7 @@ int destruicao_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], unidade_movel *a
 
         for (int p = aux2->i; p < (aux2->i + aux2->dim); p++) {
             for (int q = aux2->j; q < (aux2->j + aux2->dim); q++) {
+            	free(mapa[p][q].pBase);
                 mapa[p][q].pBase = NULL;
             }
         }
