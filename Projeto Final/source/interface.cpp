@@ -411,15 +411,15 @@ int escolhe_imagem_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_dat
         case HUMANO:
             switch (mapa[i][j].pUniMovel->nivel) {
                 case 1:
-                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.humano_GER_REC);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.mercenario);
                     else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[MERCENARIOS]);
                 break;
                 case 2:
-                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.humano_GER_TROP);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.cavaleiro_estelar);
                     else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[CAVALEIROS]);
                 break;
                 case 3:
-                    if (!opcao)glBindTexture(GL_TEXTURE_2D, imagens.humano_DEF_OFS);
+                    if (!opcao)glBindTexture(GL_TEXTURE_2D, imagens.choris);
                     else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[CHORIS]);
                 break;
             }
@@ -427,15 +427,15 @@ int escolhe_imagem_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_dat
         case MECANICO:
             switch (mapa[i][j].pUniMovel->nivel) {
                 case 1:
-                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.mecanico_GER_REC);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.wall_e);
                     else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[WALL]);
                 break;
                 case 2:
-                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.mecanico_GER_TROP);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.droids);
                     else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[DROIDES]);
                 break;
                 case 3:
-                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.mecanico_DEF_OFS);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.iron_giant);
                     else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[IRON]);
                 break;
             }
@@ -443,15 +443,15 @@ int escolhe_imagem_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], imagens_dat
         case ELETRICO:
             switch (mapa[i][j].pUniMovel->nivel) {
                 case 1:
-                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.eletrico_GER_REC);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.replicantes);
                     else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[REPLICANTE]);
                 break;
                 case 2:
-                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.eletrico_GER_TROP);
+                    if (!opcao) glBindTexture(GL_TEXTURE_2D, imagens.exterminador);
                     else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[EXTERMINADOR]);
                 break;
                 case 3:
-                    if (!opcao)glBindTexture(GL_TEXTURE_2D, imagens.eletrico_DEF_OFS);
+                    if (!opcao)glBindTexture(GL_TEXTURE_2D, imagens.hatsune);
                     else glBindTexture(GL_TEXTURE_2D, texto.nome_textura[HATSUNE]);
                 break;
             }
@@ -493,7 +493,7 @@ int carrega_barras(imagens_data imagens) {
 
 int carrega_comandante(imagens_data imagens) {
 
-    glBindTexture(GL_TEXTURE_2D, imagens.mecanico_GER_REC);
+    glBindTexture(GL_TEXTURE_2D, imagens.comandante);
     glColor4ub(255, 255, 255, 255);
 
     glBegin(GL_QUADS);

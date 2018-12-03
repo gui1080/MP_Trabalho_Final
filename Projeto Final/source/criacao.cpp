@@ -50,10 +50,8 @@ int cria_base(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, int dim,
 
     for (int p = i; p <= (i + dim-1); p++) {
         for (int q = j; q <= (j + dim-1); q++) {
-            if (!verifica_espaco(mapa, p, q)) {
-            	free(Base);
+            if (!verifica_espaco(mapa, p, q))
                 return -1;
-            }
         }
     }
     for (int p = i; p <= (i + dim-1); p++) {
@@ -138,7 +136,6 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
         player->minerio < Unidade->custo_minerio ||
         player->eletricidade < Unidade->custo_eletricidade){
         printf("Quantidade de recursos insuficientes\n");
-    	free(Unidade);
         return -2;
     }
 
@@ -149,10 +146,8 @@ int cria_uni_estatico(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, 
 
     for (int p = i; p <= (i + Unidade->dim-1); p++) {
         for (int q = j; q <= (j + Unidade->dim-1); q++) {
-            if (!verifica_espaco(mapa, p, q)) {
-            	free(Unidade);
+            if (!verifica_espaco(mapa, p, q))
                 return -1;
-            }
         }
     }
     for (int p = i; p <= (i + Unidade->dim-1); p++) {
@@ -306,7 +301,6 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
         player->minerio < Unidade->custo_minerio ||
         player->eletricidade < Unidade->custo_eletricidade){
         printf("Quantidade de recursos insuficientes\n");
-        free(Unidade);
         return -2;
     }
 
@@ -317,10 +311,8 @@ int cria_uni_movel(cell_mapa mapa[BLOCOS_LINHA][BLOCOS_LINHA], int i, int j, atr
 
     for (int p = i; p <= (i + Unidade->dim-1); p++) {
         for (int q = j; q <= (j + Unidade->dim-1); q++) {
-            if (!verifica_espaco(mapa, p, q)) {
-                free(Unidade);
+            if (!verifica_espaco(mapa, p, q))
                 return -1;
-            }
         }
     }
     for (int p = i; p <= (i + Unidade->dim-1); p++) {
